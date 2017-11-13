@@ -45,7 +45,7 @@ RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bd
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357169/libopenjpeg-dev_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg-dev_1.3+dfsg-4.6ubuntu2_amd64.deb
 
 # vips
-RUN cd /tmp && wget http://www.vips.ecs.soton.ac.uk/supported/8.0/vips-8.0.2.tar.gz && tar -zxvf ./vips-8.0.2.tar.gz && cd ./vips-8.0.2 && sh bootstrap.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
+RUN cd /tmp && wget https://github.com/jcupitt/libvips/releases/download/v8.5.1/vips-8.5.1.tar.gz && tar -zxvf ./vips-8.5.1.tar.gz && cd ./vips-8.5.1 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
 
 #openslide-java
 RUN update-java-alternatives -s java-8-oracle
