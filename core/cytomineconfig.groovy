@@ -22,6 +22,6 @@ cytomine.customUI.global = [
 ]
 
 
-grails.mongo.options.connectionsPerHost=10
-grails.mongo.options.threadsAllowedToBlockForConnectionMultiplier=5
+grails.mongo.options.connectionsPerHost=50
+grails.mongo.options.threadsAllowedToBlockForConnectionMultiplier=10
 

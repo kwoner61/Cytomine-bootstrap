@@ -68,12 +68,12 @@ then
 fi
 
 # create mongodb docker
-docker run -d -p 22 --name mongodb -v mongodb_data:/data/db \
+docker run -d -p 22 --name mongodb -v mongodb_data:/data/db -v /etc/localtime:/etc/localtime \
 --restart=unless-stopped cytomine/mongodb:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
 # create database docker
-docker run -d -p 22 -m 8g --name db -v postgis_data:/var/lib/postgresql \
+docker run -d -p 22 -m 8g --name db -v postgis_data:/var/lib/postgresql -v /etc/localtime:/etc/localtime \
 --restart=unless-stopped cytomine/postgis:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
@@ -118,6 +118,12 @@ docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAG
 cytomine/iipcyto:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
+docker run -p 22 --privileged -d --name iipJ2 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
+--link memcached1:memcached \
+-e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
+cytomine/iipjpeg2000 > /dev/null
+nb_docker=$((nb_docker+1))
+
 if [ $BIOFORMAT_ENABLED = true ]
 then
 	docker run -p 22 -d --name bioformat -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
@@ -134,6 +140,7 @@ docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --re
 -v /tmp/uploaded/ \
 -e IIP_OFF_URL=$IIP_OFF_URL \
 -e IIP_CYTO_URL=$IIP_CYTO_URL \
+-e IIP_JP2_URL=$IIP_JP2_URL \
 -e IMS_URLS=$IMS_URLS \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
 -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
@@ -163,6 +170,7 @@ RABBITMQ_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 
 # create CORE docker
 docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --link mongodb:mongodb --restart=unless-stopped \
+-v /etc/timezone:/etc/timezone \
 -v /etc/localtime:/etc/localtime \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -226,6 +234,7 @@ then
 	--volumes-from ims --link retrieval:retrieval \
 	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
+	--link iipJ2:iip_jpeg2000 \
 	--link iris:iris \
 	--name nginx \
 	--restart=unless-stopped \
@@ -234,6 +243,7 @@ then
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
 	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
+	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_URL=$IRIS_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
@@ -243,6 +253,7 @@ else
 	--volumes-from ims --link retrieval:retrieval \
 	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
+	--link iipJ2:iip_jpeg2000 \
 	--name nginx \
 	--restart=unless-stopped \
 	-e CORE_URL=$CORE_URL \
@@ -250,6 +261,7 @@ else
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
 	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
+	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
 	cytomine/nginx:v1.1 > /dev/null
@@ -350,6 +362,7 @@ then
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipCyto; then echo "iipCyto container is not running !"; fi
+	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
 
