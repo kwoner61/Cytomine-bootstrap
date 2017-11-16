@@ -109,13 +109,13 @@ fi
 docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
 --link memcached1:memcached \
 -e NB_IIP_PROCESS=10 \
-cytomine/iipofficial:v1.1 > /dev/null
+cytomine/iipofficial > /dev/null
 nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
 --link memcached2:memcached \
 -e NB_IIP_PROCESS=10 \
-cytomine/iipcyto:v1.1 > /dev/null
+cytomine/iipcyto > /dev/null
 nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipJ2 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
@@ -151,7 +151,7 @@ docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --re
 -e BIOFORMAT_ENABLED=$BIOFORMAT_ENABLED \
 -e BIOFORMAT_LOCATION=$BIOFORMAT_ALIAS \
 -e BIOFORMAT_PORT=$BIOFORMAT_PORT \
-cytomine/ims:v1.1 > /dev/null
+cytomine/ims > /dev/null
 nb_docker=$((nb_docker+1))
 
 # add a dynamic link to bioformat
@@ -193,7 +193,7 @@ docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --li
 -e SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS \
 -e SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST \
 -e SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT \
-cytomine/core:v1.1 > /dev/null
+cytomine/core > /dev/null
 nb_docker=$((nb_docker+1))
 
 # create retrieval docker
@@ -306,7 +306,7 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomine/software_router:v1.1 > /dev/null
+cytomine/software_router > /dev/null
 nb_docker=$((nb_docker+1))
 
 
@@ -327,7 +327,7 @@ then
 			-e UPLOAD_URL=$UPLOAD_URL \
 			-e PUBLIC_KEY=$SUPERADMIN_PUB_KEY \
 			-e PRIVATE_KEY=$SUPERADMIN_PRIV_KEY \
-			cytomine/data_test:v1.1 > /dev/null
+			cytomine/data_test > /dev/null
 			nb_docker=$((nb_docker+1))
 
 			echo "Data test in installation."
