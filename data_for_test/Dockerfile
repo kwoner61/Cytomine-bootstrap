@@ -20,7 +20,7 @@ MAINTAINER Cytomine Team "support@cytomine.be"
 
 RUN apt-get update -y && apt-get install -y groovy
 RUN cd /tmp/  && wget -q http://cytomine.be/release/java/cytomine-java-client.jar -O Cytomine-client-java.jar
-RUN cd /tmp/ && wget -q http://cytomine.be/release/demo_script.zip -O demo_script.zip && unzip demo_script.zip
+RUN cd /tmp/ && wget -q http://cytomine.be/release/data/data-demo.tar.gz -O data-demo.tar.gz && tar -zxvf data-demo.tar.gz
 
 ADD injectdata.groovy /tmp/injectdata.groovy
 RUN chmod +x /tmp/injectdata.groovy

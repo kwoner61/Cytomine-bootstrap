@@ -61,7 +61,7 @@ RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-tools.g
 
 
 # Cytomine-python-datamining
-RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout tags/v1.1
+RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout ULiegeDev
 RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
 
 RUN cd /root/Cytomine/ && git clone https://github.com/waliens/sldc.git && cd sldc && python setup.py install
@@ -75,8 +75,8 @@ RUN cd /tmp/ && curl http://get.sdkman.io | bash
 RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh && sdk install groovy 2.4.4 --yes"
 
 
-RUN mkdir -p /software_router && cd /software_router && wget https://github.com/cytomine/Cytomine-software-router/releases/download/v1.1/Cytomine-software-router.jar -O Cytomine-software-router.jar
-RUN cd /software_router && wget https://github.com/cytomine/Cytomine-java-client/releases/download/v1.1.2/cytomine-java-client.jar -O cytomine-java-client.jar
+RUN mkdir -p /software_router && cd /software_router && wget http://cytomine.be/release/java/Cytomine-software-router.jar -O Cytomine-software-router.jar
+RUN cd /software_router && wget https://cytomine.be/release/java/cytomine-java-client.jar -O cytomine-java-client.jar
 
 # Install Docker from Docker Inc. repositories.
 RUN curl -sSL https://get.docker.com/ | sh
