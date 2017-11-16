@@ -18,7 +18,7 @@
 #get all the config values.
 . ./configuration.sh
 
-#cd base && docker build -t="cytomine/base" .
+cd base #&& docker build -t="cytomine/base" .
 #cd ../memcached && docker build -t="cytomine/memcached" .
 #cd ../rabbitmq && docker build -t="cytomine/rabbitmq" .
 #cd ../java7 && docker build -t="cytomine/java7" .
