@@ -57,8 +57,8 @@ EXPOSE 8082
 
 RUN ldconfig -v
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget -q http://cytomine.be/release/IMS/latest.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget -q http://cytomine.be/release/IMS/restapidoc.json -O restapidoc.json
 
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh

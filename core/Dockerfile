@@ -20,8 +20,8 @@ MAINTAINER Cytomine Team "support@cytomine.be"
 
 ADD cytomineconfig.groovy /tmp/cytomineconfig.groovy
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v1.1/cytomine.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v1.1/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget http://cytomine.be/release/core/latest.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget http://cytomine.be/release/core/restapidoc.json -O restapidoc.json
 
 ADD setenv.sh /tmp/setenv.sh
 RUN chmod +x /tmp/setenv.sh
