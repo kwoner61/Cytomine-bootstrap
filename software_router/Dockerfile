@@ -30,8 +30,8 @@ RUN conda install pillow=3.4.2 --yes
 RUN conda install numpy=1.11.2 --yes
 RUN conda install shapely --yes
 RUN conda install scipy=0.18.1 --yes
-RUN conda install scikit-learn=0.18.1 --yes
-RUN conda install opencv=2.4.10 --yes
+RUN conda install scikit-learn=0.19 --yes
+RUN conda install opencv=3.1.0 --yes
 RUN conda install libgfortran==1 --yes
 RUN conda install matplotlib=1.4 --yes
 
@@ -52,19 +52,20 @@ RUN pip install sumproduct
 
 RUN dpkg-reconfigure locales
 
-# Cytomine-python-datamining
-
-RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout tags/v1.1
-RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
-
-
 # Cytomine-python-client
-
-RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout tags/v1.1
+RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout ULiegeDev
 RUN cd /root/Cytomine/Cytomine-python-client/client/ && python setup.py build && python setup.py install
 RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py build && python setup.py install
 
 RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-tools.git && cd Cytomine-tools/ && git checkout tags/v1.1
+
+
+# Cytomine-python-datamining
+RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout tags/v1.1
+RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
+
+RUN cd /root/Cytomine/ && git clone https://github.com/waliens/sldc.git && cd sldc && python setup.py install
+RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/cellcounting/ && python setup.py build && python setup.py install
 
 
 # Groovy Installation
@@ -83,9 +84,6 @@ RUN curl -sSL https://get.docker.com/ | sh
 # Install the magic wrapper.
 ADD ./wrapdocker /usr/local/bin/wrapdocker
 RUN chmod +x /usr/local/bin/wrapdocker
-
-
-#RUN git clone https://github.com/waliens/sldc.git && cd sldc && python setup.py install
 
 ADD config.groovy /tmp/config.groovy
 
