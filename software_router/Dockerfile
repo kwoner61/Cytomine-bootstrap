@@ -65,7 +65,7 @@ RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py buil
 RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-tools.git && cd Cytomine-tools/ && git checkout tags/v1.1
 
 RUN cd /root/Cytomine/ && git clone https://github.com/waliens/sldc.git && cd sldc && python setup.py install
-RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/cellcounting/ && python setup.py build && python setup.py install
+RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/counting/ && python setup.py build && python setup.py install
 
 
 # Groovy Installation
@@ -76,7 +76,7 @@ RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh && sdk install groovy 
 
 
 RUN mkdir -p /software_router && cd /software_router && wget http://cytomine.be/release/java/Cytomine-software-router.jar -O Cytomine-software-router.jar
-RUN cd /software_router && wget https://cytomine.be/release/java/cytomine-java-client.jar -O cytomine-java-client.jar
+RUN cd /software_router && wget http://cytomine.be/release/java/cytomine-java-client.jar -O cytomine-java-client.jar
 
 # Install Docker from Docker Inc. repositories.
 RUN curl -sSL https://get.docker.com/ | sh

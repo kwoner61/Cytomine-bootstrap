@@ -62,10 +62,10 @@ cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/counting_E
 cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/counting_ET_prediction .
 
 # Inject cell counting algos
-python counting_CNN_model_builder/add_software.py --cytomine_host http://$CORE_URL --cytomine_pulic_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_CNN_model_builder --software_working_path algo/data/
-python counting_CNN_prediction/add_software.py --cytomine_host http://$CORE_URL --cytomine_pulic_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_CNN_prediction --software_working_path algo/data/
-python counting_ET_model_builder/add_software.py --cytomine_host http://$CORE_URL --cytomine_pulic_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_ET_model_builder --software_working_path algo/data/
-python counting_ET_prediction/add_software.py --cytomine_host http://$CORE_URL --cytomine_pulic_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_ET_prediction --software_working_path algo/data/
+python counting_CNN_model_builder/add_software.py --cytomine_host http://$CORE_URL --cytomine_public_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_CNN_model_builder --software_working_path algo/data/
+python counting_CNN_prediction/add_software.py --cytomine_host http://$CORE_URL --cytomine_public_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_CNN_prediction --software_working_path algo/data/
+python counting_ET_model_builder/add_software.py --cytomine_host http://$CORE_URL --cytomine_public_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_ET_model_builder --software_working_path algo/data/
+python counting_ET_prediction/add_software.py --cytomine_host http://$CORE_URL --cytomine_public_key $RABBITMQ_PUB_KEY --cytomine_private_key $RABBITMQ_PRIV_KEY --software_router --software_path algo/counting_ET_prediction --software_working_path algo/data/
 
 
 mkdir -p /software_router/algo/simple_elastix
