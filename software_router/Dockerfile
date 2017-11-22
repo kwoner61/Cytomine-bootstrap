@@ -34,6 +34,8 @@ RUN conda install scikit-learn=0.19 --yes
 RUN conda install opencv=3.1.0 --yes
 RUN conda install libgfortran==1 --yes
 RUN conda install matplotlib=1.4 --yes
+RUN conda install tensorflow --yes
+RUN conda install keras=2.0.8 --yes
 
 RUN apt-get -y update && apt-get install -y \
       apt-transport-https \
@@ -46,7 +48,8 @@ RUN apt-get -y update && apt-get install -y \
       lxc \
       iptables \
       make \
-      zip
+      zip \
+      libhdf5-dev
 
 RUN pip install sumproduct
 
