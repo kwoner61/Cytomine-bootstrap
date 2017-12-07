@@ -56,11 +56,13 @@ RUN pip install sumproduct
 RUN dpkg-reconfigure locales
 
 # Cytomine-python-datamining
+ADD https://api.github.com/repos/cytomine/Cytomine-python-datamining/git/refs/heads/ULiegeDev /tmp/python-datamining-version.json
 RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout ULiegeDev
 RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
 
 
 # Cytomine-python-client
+ADD https://api.github.com/repos/cytomine/Cytomine-python-client/git/refs/heads/ULiegeDev /tmp/python-client-version.json
 RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout ULiegeDev
 RUN cd /root/Cytomine/Cytomine-python-client/client/ && python setup.py build && python setup.py install
 RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py build && python setup.py install

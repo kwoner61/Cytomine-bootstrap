@@ -26,6 +26,7 @@ RUN apt-get -y update && \
       libopenjpeg-dev \
       libssl-dev \
       libtiff5-dev \
+      libpng-dev \
       psmisc \
       software-properties-common && \
       apt-get -y build-dep iipimage-server openslide
