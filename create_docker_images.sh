@@ -40,7 +40,7 @@ cd ../iipJpeg2000 && docker build -t="cytomine/iipjpeg2000" .
 #cd ../bioformat && docker build -t="cytomine/bioformat" .
 cd ../ims && docker build -t="cytomine/ims" .
 cd ../data_for_test && docker build -t="cytomine/data_test" .
-#cd ../nginx && docker build -t="cytomine/nginx" .
+cd ../nginx && docker build -t="cytomine/nginx" .
 #cd ../mongodb && docker build -t="cytomine/mongodb" .
 #cd ../auto_backup && docker build -t="cytomine/backup" .
 cd ..

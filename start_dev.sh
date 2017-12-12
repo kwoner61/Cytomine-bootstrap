@@ -78,15 +78,15 @@ then
 fi
 
 # create IIP dockers
-docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
---link memcached1:memcached \
--e NB_IIP_PROCESS=10 \
-cytomine/iipofficial
-nb_docker=$((nb_docker+1))
+#docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
+#--link memcached1:memcached \
+#-e NB_IIP_PROCESS=10 \
+#cytomine/iipofficial
+#nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
 --link memcached2:memcached \
--e NB_IIP_PROCESS=10 \
+-e NB_IIP_PROCESS=$NB_IIP_PROCESS \
 cytomine/iipcyto
 nb_docker=$((nb_docker+1))
 
@@ -149,14 +149,12 @@ if [ $IRIS_ENABLED = true ]
 then
 	docker run -m 1g -d -p 22 -p 80:80 \
 	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 \
 	--link iris:iris \
 	--name nginx \
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
 	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
@@ -166,13 +164,11 @@ then
 else
 	docker run -m 1g -d -p 22 -p 80:80 \
 	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 \
 	--name nginx \
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
 	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
@@ -221,7 +217,6 @@ else
 	if ! echo "$running_containers" | grep -q -w memcached2; then echo "memcached2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached3; then echo "memcached3 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
-	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipCyto; then echo "iipCyto container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi

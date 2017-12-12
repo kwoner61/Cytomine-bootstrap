@@ -106,15 +106,15 @@ fi
 
 # create IIP dockers
 # privileged for somaxconn
-docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
---link memcached1:memcached \
--e NB_IIP_PROCESS=10 \
-cytomine/iipofficial > /dev/null
-nb_docker=$((nb_docker+1))
+#docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
+#--link memcached1:memcached \
+#-e NB_IIP_PROCESS=$NB_IIP_PROCESS \
+#cytomine/iipofficial > /dev/null
+#nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
 --link memcached2:memcached \
--e NB_IIP_PROCESS=10 \
+-e NB_IIP_PROCESS=$NB_IIP_PROCESS \
 cytomine/iipcyto > /dev/null
 nb_docker=$((nb_docker+1))
 
@@ -136,9 +136,9 @@ IMS_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 
 # create IMS docker
+#-e IIP_OFF_URL=$IIP_OFF_URL \
 docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --restart=unless-stopped \
 -v /tmp/uploaded/ \
--e IIP_OFF_URL=$IIP_OFF_URL \
 -e IIP_CYTO_URL=$IIP_CYTO_URL \
 -e IIP_JP2_URL=$IIP_JP2_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -228,11 +228,13 @@ fi
 
 # create nginx docker
 #if iris is not linked, nginx doesn't start. No other way for a condition. :/
+
+#	--link iipOff:iip_official \
+#	-e IIP_OFF_URL=$IIP_OFF_URL \
 if [ $IRIS_ENABLED = true ]
 then
 	docker run -m 1g -d -p 22 -p 80:80 --link core:core --link ims:ims \
 	--volumes-from ims --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
 	--link iipJ2:iip_jpeg2000 \
 	--link iris:iris \
@@ -241,17 +243,15 @@ then
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
 	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_URL=$IRIS_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginx:v1.1 > /dev/null
+	cytomine/nginx > /dev/null
 else
 	docker run -m 1g -d -p 22 -p 80:80 --link core:core --link ims:ims \
 	--volumes-from ims --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
 	--link iipJ2:iip_jpeg2000 \
 	--name nginx \
@@ -259,12 +259,11 @@ else
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
 	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginx:v1.1 > /dev/null
+	cytomine/nginx > /dev/null
 fi
 nb_docker=$((nb_docker+1))
 
@@ -360,7 +359,7 @@ then
 	if ! echo "$running_containers" | grep -q -w memcached1; then echo "memcached1 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached2; then echo "memcached2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
-	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
+#	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipCyto; then echo "iipCyto container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi

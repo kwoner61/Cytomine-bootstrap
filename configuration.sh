@@ -56,9 +56,12 @@ IRIS_ADMIN_EMAIL="ian.admin@somewhere.edu"
 # ---------------------------
 
 IS_LOCAL=true
-IIP_OFF_URL=localhost-iip-base
+
+#IIP_OFF_URL=localhost-iip-base
 IIP_CYTO_URL=localhost-iip-cyto
 IIP_JP2_URL=localhost-iip-jp2000
+NB_IIP_PROCESS=20
+
 RETRIEVAL_URL=localhost-retrieval
 
 BIOFORMAT_ENABLED="true"
