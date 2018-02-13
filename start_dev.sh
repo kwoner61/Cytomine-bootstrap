@@ -104,14 +104,71 @@ then
 	nb_docker=$((nb_docker+1))
 fi
 
-IMS_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-ADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-SUPERADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-SUPERADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-RABBITMQ_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-RABBITMQ_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
+if [ $DEV_IMS = true ]
+then
+    # add a dynamic link to bioformat with
+    if [ $BIOFORMAT_ENABLED = true ]
+    then
+        BIOFORMAT_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' bioformat)
+        echo $BIOFORMAT_IP       $BIOFORMAT_ALIAS >>  /etc/hosts
+    fi
+else
+    # create IMS docker
+    docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --restart=unless-stopped \
+    -v /tmp/uploaded/:/tmp/uploaded/ \
+    -e IIP_CYTO_URL=$IIP_CYTO_URL \
+    -e IIP_JP2_URL=$IIP_JP2_URL \
+    -e IMS_URLS=$IMS_URLS \
+    -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
+    -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+    -e IS_LOCAL=$IS_LOCAL \
+    -e CORE_URL=$CORE_URL \
+    -e IMS_PUB_KEY=$IMS_PUB_KEY \
+    -e IMS_PRIV_KEY=$IMS_PRIV_KEY \
+    -e BIOFORMAT_ENABLED=$BIOFORMAT_ENABLED \
+    -e BIOFORMAT_LOCATION=$BIOFORMAT_ALIAS \
+    -e BIOFORMAT_PORT=$BIOFORMAT_PORT \
+    cytomine/ims
+    nb_docker=$((nb_docker+1))
+
+    # add a dynamic link to bioformat
+    if [ $BIOFORMAT_ENABLED = true ]
+    then
+        BIOFORMAT_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' bioformat)
+        docker exec ims /bin/bash -c "echo $BIOFORMAT_IP       $BIOFORMAT_ALIAS >>  /etc/hosts"
+    fi
+fi
+
+if [ $DEV_CORE = false ]
+then
+    # create CORE docker
+    docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --link mongodb:mongodb --restart=unless-stopped \
+    -v /etc/timezone:/etc/timezone \
+    -v /etc/localtime:/etc/localtime \
+    -e CORE_URL=$CORE_URL \
+    -e IMS_URLS=$IMS_URLS \
+    -e RETRIEVAL_URL=$RETRIEVAL_URL \
+    -e UPLOAD_URL=$UPLOAD_URL \
+    -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
+    -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+    -e IS_LOCAL=$IS_LOCAL \
+    -e ADMIN_PWD="admin" \
+    -e ADMIN_PUB_KEY=$ADMIN_PUB_KEY \
+    -e ADMIN_PRIV_KEY=$ADMIN_PRIV_KEY \
+    -e SUPERADMIN_PUB_KEY=$SUPERADMIN_PUB_KEY \
+    -e SUPERADMIN_PRIV_KEY=$SUPERADMIN_PRIV_KEY \
+    -e RABBITMQ_PUB_KEY=$RABBITMQ_PUB_KEY \
+    -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
+    -e IMS_PUB_KEY=$IMS_PUB_KEY \
+    -e IMS_PRIV_KEY=$IMS_PRIV_KEY \
+    -e RETRIEVAL_PASSWD=$RETRIEVAL_PASSWD \
+    -e SENDER_EMAIL=$SENDER_EMAIL \
+    -e SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS \
+    -e SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST \
+    -e SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT \
+    cytomine/core
+    nb_docker=$((nb_docker+1))
+fi
 
 # create retrieval docker
 docker run -m 8g -d -p 22 --name retrieval \
@@ -145,40 +202,44 @@ fi
 
 # create nginx docker
 #if iris is not linked, nginx doesn't start. No other way for a condition. :/
+
+nginx="docker run -m 1g -d -p 22 -p 80:80 \
+	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
+	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 "
+
 if [ $IRIS_ENABLED = true ]
 then
-	docker run -m 1g -d -p 22 -p 80:80 \
-	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
-	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 \
-	--link iris:iris \
+    nginx="$nginx --link iris:iris "
+fi
+
+if [ $DEV_CORE = false ]
+then
+    nginx="$nginx --link core:core "
+fi
+
+if [ $DEV_IMS = false ]
+then
+    nginx="$nginx --link ims:ims "
+fi
+
+nginx="$nginx
 	--name nginx \
 	-e CORE_URL=$CORE_URL \
-	-e IMS_URLS="$IMS_URLS" \
+	-e IMS_URLS=\"$IMS_URLS\" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
 	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_URL=$IRIS_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginxdev
-else
-	docker run -m 1g -d -p 22 -p 80:80 \
-	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
-	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 \
-	--name nginx \
-	-e CORE_URL=$CORE_URL \
-	-e IMS_URLS="$IMS_URLS" \
-	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_CYTO_URL=$IIP_CYTO_URL \
-	-e IIP_JP2_URL=$IIP_JP2_URL \
-	-e UPLOAD_URL=$UPLOAD_URL \
-	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginxdev
-fi
+	-e DEV_CORE=$DEV_CORE \
+	-e DEV_IMS=$DEV_IMS \
+	cytomine/nginxdev"
+eval $nginx
 nb_docker=$((nb_docker+1))
 
 
-echo "Now launch core"
+echo "Now launch core and/or IMS"
 read waiting
 
 
@@ -221,6 +282,16 @@ else
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
+
+    if [ $DEV_IMS = false ]
+    then
+        if ! echo "$running_containers" | grep -q -w ims; then echo "ims container is not running !"; fi
+    fi
+
+    if [ $DEV_CORE = false ]
+    then
+        if ! echo "$running_containers" | grep -q -w core; then echo "core container is not running !"; fi
+    fi
 
 	if [ $BACKUP_BOOL = true ] 
 	then

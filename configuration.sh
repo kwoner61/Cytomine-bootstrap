@@ -74,3 +74,17 @@ MEMCACHED_PASS="mypass"
 BIOFORMAT_ALIAS="bioformat"
 BIOFORMAT_PORT="4321"
 
+
+# DO NOT USE DATA BELOW EXCEPT YOU WANT TO INSTALL A DEVELOPMENT ENV.
+DEV_CORE=false
+DEV_IMS=false
+# Complete the keys by running, for example $(cat /proc/sys/kernel/random/uuid) for each.
+# For a production deployment, these keys are automatically generated !
+IMS_PUB_KEY=
+IMS_PRIV_KEY=
+ADMIN_PUB_KEY=
+ADMIN_PRIV_KEY=
+SUPERADMIN_PUB_KEY=
+SUPERADMIN_PRIV_KEY=
+RABBITMQ_PUB_KEY=
+RABBITMQ_PRIV_KEY=
