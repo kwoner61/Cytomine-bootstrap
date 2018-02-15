@@ -28,8 +28,8 @@ docker run -d -p 22 \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
 -e UPLOAD_URL=$UPLOAD_URL \
--e PUBLIC_KEY=$1 \
--e PRIVATE_KEY=$2 \
+-e PUBLIC_KEY=$SUPERADMIN_PUB_KEY \
+-e PRIVATE_KEY=$SUPERADMIN_PRIV_KEY \
 cytomine/data_test > /dev/null
 
 
