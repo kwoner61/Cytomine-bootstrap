@@ -35,6 +35,7 @@ fi
 
 
 chown -R tomcat7:tomcat7 $IMS_STORAGE_PATH
+chown -R tomcat7:tomcat7 $FAST_DATA_PATH
 
 export LD_LIBRARY_PATH=/usr/local/lib/openslide-java
 

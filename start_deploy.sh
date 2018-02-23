@@ -137,13 +137,15 @@ IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 
 # create IMS docker
 #-e IIP_OFF_URL=$IIP_OFF_URL \
-docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --restart=unless-stopped \
+docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -v $FAST_DATA_PATH:$FAST_DATA_PATH \
+-m 8g -d --name ims --restart=unless-stopped \
 -v /tmp/uploaded/ \
 -e IIP_CYTO_URL=$IIP_CYTO_URL \
 -e IIP_JP2_URL=$IIP_JP2_URL \
 -e IMS_URLS=$IMS_URLS \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
 -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+-e FAST_DATA_PATH=$FAST_DATA_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_PUB_KEY=$IMS_PUB_KEY \
@@ -178,6 +180,7 @@ docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --li
 -e UPLOAD_URL=$UPLOAD_URL \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
 -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+-e FAST_DATA_PATH=$FAST_DATA_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e ADMIN_PWD=$admin_pwd \
 -e ADMIN_PUB_KEY=$ADMIN_PUB_KEY \
