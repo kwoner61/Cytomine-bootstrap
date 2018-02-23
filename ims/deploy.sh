@@ -47,7 +47,7 @@ echo "cytomine.storageBufferPath=$IMS_BUFFER_PATH" >> imageserverconfig.properti
 echo "cytomine.imageServerPublicKey=$IMS_PUB_KEY" >> imageserverconfig.properties
 echo "cytomine.imageServerPrivateKey=$IMS_PRIV_KEY" >> imageserverconfig.properties
 echo "cytomine.vips=/usr/local/bin/vips" >> imageserverconfig.properties
-echo "cytomine.identify=identify" >> imageserverconfig.properties
+echo "cytomine.identify=/usr/local/bin/identify" >> imageserverconfig.properties
 echo "cytomine.tiffinfo=tiffinfo" >> imageserverconfig.properties
 echo "cytomine.vipsthumbnail=/usr/local/bin/vipsthumbnail" >> imageserverconfig.properties
 
