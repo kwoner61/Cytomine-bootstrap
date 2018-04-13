@@ -37,6 +37,7 @@ cytomine/rabbitmq && nb_docker=$((nb_docker+1)) || docker start rabbitmq
 # create data volumes
 docker volume create --name postgis_data
 docker volume create --name mongodb_data
+docker volume create --name slurm_data
 if [ $IRIS_ENABLED = true ]
 then
 	docker volume create --name iris_data
@@ -50,7 +51,10 @@ nb_docker=$((nb_docker+1))
 docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgresql cytomine/postgis
 nb_docker=$((nb_docker+1))
 
-if [ $BACKUP_BOOL = true ] 
+# create slurm docker
+docker run -p 10022:22 -p 9090:80 -td -h cytomine-slurm -v slurm_data:/var/lib/mysql --privileged gmichiels/slurm-container
+
+if [ $BACKUP_BOOL = true ]
 then
 	# create backup docker
 	docker run -p 22 -d --name backup_postgis --link db:db -v $BACKUP_PATH/postgis:/backup \
@@ -296,7 +300,7 @@ else
         if ! echo "$running_containers" | grep -q -w core; then echo "core container is not running !"; fi
     fi
 
-	if [ $BACKUP_BOOL = true ] 
+	if [ $BACKUP_BOOL = true ]
 	then
 		if ! echo "$running_containers" | grep -q -w backup_postgis; then echo "backup_postgis container is not running !"; fi
 		if ! echo "$running_containers" | grep -q -w backup_mongo; then echo "backup_mongo container is not running !"; fi
@@ -312,4 +316,3 @@ else
         echo "Please check into your docker logs."
         #echo "A problem occurs. Please check into your docker logs."
 fi
-
