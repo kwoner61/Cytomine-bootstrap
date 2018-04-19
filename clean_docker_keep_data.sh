@@ -29,12 +29,10 @@ docker stop backup_postgis
 docker rm -v backup_postgis
 docker stop backup_mongo
 docker rm -v backup_mongo
-docker stop iipOff
-docker rm -v iipOff
 docker stop iipCyto
 docker rm -v iipCyto
-#docker stop iipJ2
-#docker rm -v iipJ2
+docker stop iipJ2
+docker rm -v iipJ2
 docker stop bioformat
 docker rm -v bioformat
 docker stop ims

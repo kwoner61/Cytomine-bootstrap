@@ -68,12 +68,12 @@ then
 fi
 
 # create mongodb docker
-docker run -d -p 22 --name mongodb -v mongodb_data:/data/db \
+docker run -d -p 22 --name mongodb -v mongodb_data:/data/db -v /etc/localtime:/etc/localtime \
 --restart=unless-stopped cytomine/mongodb:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
 # create database docker
-docker run -d -p 22 -m 8g --name db -v postgis_data:/var/lib/postgresql \
+docker run -d -p 22 -m 8g --name db -v postgis_data:/var/lib/postgresql -v /etc/localtime:/etc/localtime \
 --restart=unless-stopped cytomine/postgis:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
@@ -106,16 +106,22 @@ fi
 
 # create IIP dockers
 # privileged for somaxconn
-docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
---link memcached1:memcached \
--e NB_IIP_PROCESS=10 \
-cytomine/iipofficial:v1.1 > /dev/null
-nb_docker=$((nb_docker+1))
+#docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
+#--link memcached1:memcached \
+#-e NB_IIP_PROCESS=$NB_IIP_PROCESS \
+#cytomine/iipofficial > /dev/null
+#nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
 --link memcached2:memcached \
--e NB_IIP_PROCESS=10 \
-cytomine/iipcyto:v1.1 > /dev/null
+-e NB_IIP_PROCESS=$NB_IIP_PROCESS \
+cytomine/iipcyto > /dev/null
+nb_docker=$((nb_docker+1))
+
+docker run -p 22 --privileged -d --name iipJ2 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH --restart=unless-stopped \
+--link memcached1:memcached \
+-e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
+cytomine/iipjpeg2000 > /dev/null
 nb_docker=$((nb_docker+1))
 
 if [ $BIOFORMAT_ENABLED = true ]
@@ -130,13 +136,16 @@ IMS_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 
 # create IMS docker
-docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --restart=unless-stopped \
+#-e IIP_OFF_URL=$IIP_OFF_URL \
+docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -v $FAST_DATA_PATH:$FAST_DATA_PATH \
+-m 8g -d --name ims --restart=unless-stopped \
 -v /tmp/uploaded/ \
--e IIP_OFF_URL=$IIP_OFF_URL \
 -e IIP_CYTO_URL=$IIP_CYTO_URL \
+-e IIP_JP2_URL=$IIP_JP2_URL \
 -e IMS_URLS=$IMS_URLS \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
 -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+-e FAST_DATA_PATH=$FAST_DATA_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_PUB_KEY=$IMS_PUB_KEY \
@@ -144,7 +153,7 @@ docker run -p 22 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH -m 8g -d --name ims --re
 -e BIOFORMAT_ENABLED=$BIOFORMAT_ENABLED \
 -e BIOFORMAT_LOCATION=$BIOFORMAT_ALIAS \
 -e BIOFORMAT_PORT=$BIOFORMAT_PORT \
-cytomine/ims:v1.1 > /dev/null
+cytomine/ims > /dev/null
 nb_docker=$((nb_docker+1))
 
 # add a dynamic link to bioformat
@@ -163,6 +172,7 @@ RABBITMQ_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 
 # create CORE docker
 docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --link mongodb:mongodb --restart=unless-stopped \
+-v /etc/timezone:/etc/timezone \
 -v /etc/localtime:/etc/localtime \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -170,6 +180,7 @@ docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --li
 -e UPLOAD_URL=$UPLOAD_URL \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
 -e IMS_BUFFER_PATH=$IMS_BUFFER_PATH \
+-e FAST_DATA_PATH=$FAST_DATA_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e ADMIN_PWD=$admin_pwd \
 -e ADMIN_PUB_KEY=$ADMIN_PUB_KEY \
@@ -185,7 +196,7 @@ docker run -m 8g -d -p 22 --name core --link rabbitmq:rabbitmq --link db:db --li
 -e SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS \
 -e SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST \
 -e SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT \
-cytomine/core:v1.1 > /dev/null
+cytomine/core > /dev/null
 nb_docker=$((nb_docker+1))
 
 # create retrieval docker
@@ -220,39 +231,42 @@ fi
 
 # create nginx docker
 #if iris is not linked, nginx doesn't start. No other way for a condition. :/
+
+#	--link iipOff:iip_official \
+#	-e IIP_OFF_URL=$IIP_OFF_URL \
 if [ $IRIS_ENABLED = true ]
 then
 	docker run -m 1g -d -p 22 -p 80:80 --link core:core --link ims:ims \
 	--volumes-from ims --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
+	--link iipJ2:iip_jpeg2000 \
 	--link iris:iris \
 	--name nginx \
 	--restart=unless-stopped \
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
+	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_URL=$IRIS_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginx:v1.1 > /dev/null
+	cytomine/nginx > /dev/null
 else
 	docker run -m 1g -d -p 22 -p 80:80 --link core:core --link ims:ims \
 	--volumes-from ims --link retrieval:retrieval \
-	--link iipOff:iip_official \
 	--link iipCyto:iip_cyto \
+	--link iipJ2:iip_jpeg2000 \
 	--name nginx \
 	--restart=unless-stopped \
 	-e CORE_URL=$CORE_URL \
 	-e IMS_URLS="$IMS_URLS" \
 	-e RETRIEVAL_URL=$RETRIEVAL_URL \
-	-e IIP_OFF_URL=$IIP_OFF_URL \
 	-e IIP_CYTO_URL=$IIP_CYTO_URL \
+	-e IIP_JP2_URL=$IIP_JP2_URL \
 	-e UPLOAD_URL=$UPLOAD_URL \
 	-e IRIS_ENABLED=$IRIS_ENABLED \
-	cytomine/nginx:v1.1 > /dev/null
+	cytomine/nginx > /dev/null
 fi
 nb_docker=$((nb_docker+1))
 
@@ -294,7 +308,7 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomine/software_router:v1.1 > /dev/null
+cytomine/software_router > /dev/null
 nb_docker=$((nb_docker+1))
 
 
@@ -315,7 +329,7 @@ then
 			-e UPLOAD_URL=$UPLOAD_URL \
 			-e PUBLIC_KEY=$SUPERADMIN_PUB_KEY \
 			-e PRIVATE_KEY=$SUPERADMIN_PRIV_KEY \
-			cytomine/data_test:v1.1 > /dev/null
+			cytomine/data_test > /dev/null
 			nb_docker=$((nb_docker+1))
 
 			echo "Data test in installation."
@@ -348,8 +362,9 @@ then
 	if ! echo "$running_containers" | grep -q -w memcached1; then echo "memcached1 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached2; then echo "memcached2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
-	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
+#	if ! echo "$running_containers" | grep -q -w iipOff; then echo "iipOff container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipCyto; then echo "iipCyto container is not running !"; fi
+	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
 

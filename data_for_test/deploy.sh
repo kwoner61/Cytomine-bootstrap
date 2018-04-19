@@ -29,9 +29,8 @@ if [ $IS_LOCAL = true ]; then
 	done
 fi
 
-mv /tmp/injectdata.groovy /tmp/script/
 
-cd /tmp/script/ && groovy -cp '../Cytomine-client-java.jar' injectdata.groovy ./ http://$CORE_URL http://$x http://$UPLOAD_URL $PUBLIC_KEY $PRIVATE_KEY
+cd /tmp/ && groovy -cp 'Cytomine-client-java.jar' injectdata.groovy data/ http://$CORE_URL http://$x http://$UPLOAD_URL $PUBLIC_KEY $PRIVATE_KEY
 
 
 touch /tmp/test.out

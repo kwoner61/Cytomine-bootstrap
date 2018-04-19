@@ -18,13 +18,28 @@
 echo "Beginning of the deployment"
 
 sed -i "s/CORE_URL/$CORE_URL/g" /tmp/nginx.conf.sample
-sed -i "s/CORE_ALIAS/core/g" /tmp/nginx.conf.sample
-sed -i "s/IMS_ALIAS/ims/g" /tmp/nginx.conf.sample
 sed -i "s/RETRIEVAL_URL/$RETRIEVAL_URL/g" /tmp/nginx.conf.sample
 
-sed -i "s/IIP_OFF_URL/$IIP_OFF_URL/g" /tmp/nginx.conf.sample
+
+LOCAL=$(route -n | awk '/UG[ \t]/{print $2}')
+if [ $DEV_CORE = true ]
+then
+    sed -i "s/CORE_ALIAS/$LOCAL/g" /tmp/nginx.conf.sample
+else
+    sed -i "s/CORE_ALIAS/core/g" /tmp/nginx.conf.sample
+fi
+
+if [ $DEV_IMS = true ]
+then
+    sed -i "s/proxy_pass   http:\/\/IMS_ALIAS:8080;/proxy_pass   http:\/\/IMS_ALIAS;/g" /tmp/nginx.conf.sample
+    sed -i "s/IMS_ALIAS/$LOCAL:9080/g" /tmp/nginx.conf.sample
+else
+    sed -i "s/IMS_ALIAS/ims/g" /tmp/nginx.conf.sample
+fi
+
+#sed -i "s/IIP_OFF_URL/$IIP_OFF_URL/g" /tmp/nginx.conf.sample
 sed -i "s/IIP_CYTO_URL/$IIP_CYTO_URL/g" /tmp/nginx.conf.sample
-#sed -i "s/IIP_JP2_URL/$IIP_JP2_URL/g" /tmp/nginx.conf.sample
+sed -i "s/IIP_JP2_URL/$IIP_JP2_URL/g" /tmp/nginx.conf.sample
 
 sed -i "s/UPLOAD_URL/$UPLOAD_URL/g" /tmp/nginx.conf.sample
 
@@ -43,8 +58,15 @@ do
 	sed -i "s/IMS_URLS_CONFIG/                server_name  $x; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
 	sed -i "s/IMS_URLS_CONFIG/                location \/ { \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
 	sed -i "s/IMS_URLS_CONFIG/                        add_header Access-Control-Allow-Origin *; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
-	sed -i "s/IMS_URLS_CONFIG/			proxy_set_header Host \$host; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
-	sed -i "s/IMS_URLS_CONFIG/                        proxy_pass http:\/\/ims:8080; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
+	sed -i "s/IMS_URLS_CONFIG/                        proxy_set_header Host \$host; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
+
+	if [ $DEV_IMS = true ]
+	then
+	    sed -i "s/IMS_URLS_CONFIG/                        proxy_pass http:\/\/$LOCAL:9080; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
+	else
+	    sed -i "s/IMS_URLS_CONFIG/                        proxy_pass http:\/\/ims:8080; \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
+	fi
+
 	sed -i "s/IMS_URLS_CONFIG/                } \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
 	sed -i "s/IMS_URLS_CONFIG/    } \\`echo -e '\n\r'` \\`echo -e '\n\r'` IMS_URLS_CONFIG/g" /tmp/nginx.conf.sample
 done

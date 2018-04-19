@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright (c) 2009-2017. Authors: see NOTICE file.
 #
@@ -14,17 +15,17 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.1
+path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
+cd $path
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+# Uncomment if you need to re-build docker images (takes time)
+#sh create_docker_images.sh
 
-RUN apt-get update -y && apt-get install -y groovy
-RUN cd /tmp/  && wget -q http://cytomine.be/release/java/cytomine-java-client.jar -O Cytomine-client-java.jar
-RUN cd /tmp/ && mkdir data && cd data && wget -q http://cytomine.be/release/data/data-demo.tar.gz -O data-demo.tar.gz && tar -zxvf data-demo.tar.gz
 
-ADD injectdata.groovy /tmp/injectdata.groovy
-RUN chmod +x /tmp/injectdata.groovy
-ADD deploy.sh /tmp/deploy.sh
-RUN chmod +x /tmp/deploy.sh
+cd nginx && docker build -t="cytomine/nginxdev" .
+cd ..
 
-ENTRYPOINT ["/tmp/deploy.sh"]
+echo "clean containers"
+sh clean_docker_keep_data.sh > /dev/null
+echo "launch new containers"
+sh start_dev.sh

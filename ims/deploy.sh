@@ -22,7 +22,7 @@ arr=$(echo $arr | tr "]" "\n")
 if [ $IS_LOCAL = true ]; then
 	echo "#Custom adding" >> /etc/hosts
 	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $CORE_URL" >> /etc/hosts
-	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_OFF_URL" >> /etc/hosts
+#	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_OFF_URL" >> /etc/hosts
 	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_CYTO_URL" >> /etc/hosts
 	if [ ! -z "$IIP_JP2_URL" ]; then
 		echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_JP2_URL" >> /etc/hosts
@@ -35,6 +35,7 @@ fi
 
 
 chown -R tomcat7:tomcat7 $IMS_STORAGE_PATH
+chown -R tomcat7:tomcat7 $FAST_DATA_PATH
 
 export LD_LIBRARY_PATH=/usr/local/lib/openslide-java
 
@@ -47,11 +48,11 @@ echo "cytomine.storageBufferPath=$IMS_BUFFER_PATH" >> imageserverconfig.properti
 echo "cytomine.imageServerPublicKey=$IMS_PUB_KEY" >> imageserverconfig.properties
 echo "cytomine.imageServerPrivateKey=$IMS_PRIV_KEY" >> imageserverconfig.properties
 echo "cytomine.vips=/usr/local/bin/vips" >> imageserverconfig.properties
-echo "cytomine.identify=identify" >> imageserverconfig.properties
+echo "cytomine.identify=/usr/local/bin/identify" >> imageserverconfig.properties
 echo "cytomine.tiffinfo=tiffinfo" >> imageserverconfig.properties
 echo "cytomine.vipsthumbnail=/usr/local/bin/vipsthumbnail" >> imageserverconfig.properties
 
-echo "cytomine.iipImageServerBase=http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties
+#echo "cytomine.iipImageServerBase=http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties
 echo "cytomine.iipImageServerCyto=http://$IIP_CYTO_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties
 
 echo "bioformat.application.enabled=$BIOFORMAT_ENABLED" >> imageserverconfig.properties

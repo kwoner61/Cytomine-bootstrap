@@ -36,6 +36,7 @@ IMS_BUFFER_PATH=/data/_buffer
 BACKUP_PATH=/data/backup
 ALGO_PATH=/data/algo/
 RETRIEVAL_PATH=/data/thumb
+FAST_DATA_PATH=/data
 
 #middlewares
 RETRIEVAL_PASSWD='retrieval_default'
@@ -56,9 +57,12 @@ IRIS_ADMIN_EMAIL="ian.admin@somewhere.edu"
 # ---------------------------
 
 IS_LOCAL=true
-IIP_OFF_URL=localhost-iip-base
+
+#IIP_OFF_URL=localhost-iip-base
 IIP_CYTO_URL=localhost-iip-cyto
 IIP_JP2_URL=localhost-iip-jp2000
+NB_IIP_PROCESS=20
+
 RETRIEVAL_URL=localhost-retrieval
 
 BIOFORMAT_ENABLED="true"
@@ -71,3 +75,17 @@ MEMCACHED_PASS="mypass"
 BIOFORMAT_ALIAS="bioformat"
 BIOFORMAT_PORT="4321"
 
+
+# DO NOT USE DATA BELOW EXCEPT YOU WANT TO INSTALL A DEVELOPMENT ENV.
+DEV_CORE=false
+DEV_IMS=false
+# Complete the keys by running, for example $(cat /proc/sys/kernel/random/uuid) for each.
+# For a production deployment, these keys are automatically generated !
+IMS_PUB_KEY=XXX
+IMS_PRIV_KEY=XXX
+ADMIN_PUB_KEY=XXX
+ADMIN_PRIV_KEY=XXX
+SUPERADMIN_PUB_KEY=XXX
+SUPERADMIN_PRIV_KEY=XXX
+RABBITMQ_PUB_KEY=XXX
+RABBITMQ_PRIV_KEY=XXX

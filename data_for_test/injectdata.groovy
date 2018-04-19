@@ -172,7 +172,6 @@ void injectData(InjectedData data) {
 
         //for each image: upload image + add annotation from annotation.json
         injectedProject.images.each { injectedImage ->
-            Thread.sleep(5000);
             println "UPLOAD IMAGE ${new File(injectedImage.filename).name}"
             println "uploadImage(${injectedImage.filename}, ${project.getId()}, ${storages.get(0).id}, ${CYTOMINE.cytomineCoreUrl}, null, false)"
             def json = CYTOMINE.ims.uploadImage(injectedImage.filename, project.getId(), storages.get(0).id, CYTOMINE.cytomineCoreUrl, null, false);
@@ -186,7 +185,7 @@ void injectData(InjectedData data) {
 		println "value = $value"
                 idImageInstance = value?.id
 		waitingLimit++;
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             }
 	    if (idImageInstance==null){
 		warningMessages << "The image $injectedImage.filename was not uploaded"
