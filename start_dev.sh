@@ -52,7 +52,18 @@ docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgr
 nb_docker=$((nb_docker+1))
 
 # create slurm docker
-docker run -p 10022:22 -p 9090:80 -td -h cytomine-slurm -v slurm_data:/var/lib/mysql --privileged gmichiels/slurm-container
+docker run -td -p 10022:22  \
+--name slurm \
+-h cytomine-slurm \
+-v slurm_data:/var/lib/mysql \
+--privileged \
+-e CORE_URL=$CORE_URL \
+-e IMS_URLS=$IMS_URLS \
+-e UPLOAD_URL=$UPLOAD_URL \
+test-s
+# TODO : REPLACE NAME
+
+nb_docker=$((nb_docker+1))
 
 if [ $BACKUP_BOOL = true ]
 then
@@ -249,12 +260,12 @@ nb_docker=$((nb_docker+1))
 echo "Now launch core and/or IMS"
 read waiting
 
-
-# create software-router docker
 docker run -d -p 22 --link rabbitmq:rabbitmq \
+--link slurm:slurm \
 --privileged \
 --name software_router \
 -v $ALGO_PATH:/software_router/algo/ \
+-v $KEY_PATH:/root/.ssh/ \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -263,10 +274,10 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomine/software_router
-nb_docker=$((nb_docker+1))
+test-sr
+# TODO : REPLACE NAME + CECK PERMISSIONS RABBITMQ PUB_PRIV
 
-
+nb_docker=$((nb_docker + 1))
 
 # checking
 running_containers=$(sudo docker ps)

@@ -61,6 +61,7 @@ nb_docker=$((nb_docker+1))
 # create data volumes
 docker volume create --name postgis_data > /dev/null
 docker volume create --name mongodb_data > /dev/null
+docker volume create --name slurm_data > /dev/null
 
 if [ $IRIS_ENABLED = true ]
 then
@@ -77,7 +78,21 @@ docker run -d -p 22 -m 8g --name db -v postgis_data:/var/lib/postgresql -v /etc/
 --restart=unless-stopped cytomine/postgis:v1.1 > /dev/null
 nb_docker=$((nb_docker+1))
 
-if [ $BACKUP_BOOL = true ] 
+# create slurm docker
+docker run -td -p 10022:22  \
+--name slurm \
+-h cytomine-slurm \
+-v slurm_data:/var/lib/mysql \
+--privileged \
+-e CORE_URL=$CORE_URL \
+-e IMS_URLS=$IMS_URLS \
+-e UPLOAD_URL=$UPLOAD_URL \
+test-s
+# TODO : REPLACE NAME
+
+nb_docker=$((nb_docker+1))
+
+if [ $BACKUP_BOOL = true ]
 then
 	# create backup docker
 	docker run -p 22 -d --name backup_postgis --link db:db -v $BACKUP_PATH/postgis:/backup --restart=unless-stopped \
@@ -297,9 +312,11 @@ docker exec core /bin/bash -c "sed -i '/adminPrivateKey/d' /usr/share/tomcat7/.g
 
 # create software-router docker
 docker run -d -p 22 --link rabbitmq:rabbitmq \
+--link slurm:slurm \
 --privileged \
---name software_router --restart=unless-stopped \
+--name software_router \
 -v $ALGO_PATH:/software_router/algo/ \
+-v $KEY_PATH:/root/.ssh/ \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -308,18 +325,19 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomine/software_router > /dev/null
-nb_docker=$((nb_docker+1))
+test-sr
+# TODO : REPLACE NAME + CECK PERMISSIONS RABBITMQ PUB_PRIV
 
+nb_docker=$((nb_docker + 1))
 
 
 if [ $DATA_INSERTION = true ]
 then
-	echo 
+	echo
 	while true; do
 	    read -p "Do you wish to install some data test? y/n (It can take 45 minutes depending of your internet connexion.) " yn
 	    case $yn in
-	        [Yy]* ) 
+	        [Yy]* )
 			# create test docker
 			docker run -d -p 22 \
 			--name data_test \
@@ -335,7 +353,7 @@ then
 			echo "Data test in installation."
 			break
 			;;
-	        [Nn]* ) 
+	        [Nn]* )
 			DATA_INSERTION=false
 			break
 			;;
@@ -368,7 +386,7 @@ then
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
 
-	if [ $BACKUP_BOOL = true ] 
+	if [ $BACKUP_BOOL = true ]
 	then
 		if ! echo "$running_containers" | grep -q -w backup_postgis; then echo "backup_postgis container is not running !"; fi
 		if ! echo "$running_containers" | grep -q -w backup_mongo; then echo "backup_mongo container is not running !"; fi
@@ -405,4 +423,3 @@ then
 	fi
 fi
 echo "End of the installation."
-

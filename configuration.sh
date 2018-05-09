@@ -18,6 +18,7 @@
 CORE_URL=localhost-core
 IMS_URLS="[localhost-ims,localhost-ims2]"
 UPLOAD_URL=localhost-upload
+SLURM_URL=localhost-slurm
 
 #Backups
 # BACKUP_BOOL : backup active or not
@@ -35,6 +36,8 @@ IMS_STORAGE_PATH=/data
 IMS_BUFFER_PATH=/data/_buffer
 BACKUP_PATH=/data/backup
 ALGO_PATH=/data/algo/
+KEY_PATH=/data/ssh/
+IMAGES_PATH=/data/images
 RETRIEVAL_PATH=/data/thumb
 FAST_DATA_PATH=/data
 
@@ -77,15 +80,15 @@ BIOFORMAT_PORT="4321"
 
 
 # DO NOT USE DATA BELOW EXCEPT YOU WANT TO INSTALL A DEVELOPMENT ENV.
-DEV_CORE=false
+DEV_CORE=true
 DEV_IMS=false
 # Complete the keys by running, for example $(cat /proc/sys/kernel/random/uuid) for each.
 # For a production deployment, these keys are automatically generated !
-IMS_PUB_KEY=XXX
-IMS_PRIV_KEY=XXX
-ADMIN_PUB_KEY=XXX
-ADMIN_PRIV_KEY=XXX
-SUPERADMIN_PUB_KEY=XXX
-SUPERADMIN_PRIV_KEY=XXX
-RABBITMQ_PUB_KEY=XXX
-RABBITMQ_PRIV_KEY=XXX
+IMS_PUB_KEY=088ad89f-1404-4eef-8c86-c50287f54ece
+IMS_PRIV_KEY=77f922bf-81c4-4423-a791-24fb90a5c561
+ADMIN_PUB_KEY=8dd40d4e-42d8-4fe0-88a1-a943d25035f5
+ADMIN_PRIV_KEY=11b262d6-bd06-4468-b536-6c28344202e6
+SUPERADMIN_PUB_KEY=c48a6252-26ad-408f-989a-df311efe0d3b
+SUPERADMIN_PRIV_KEY=1003b5dc-b680-4106-b35b-faab0637f2b6
+RABBITMQ_PUB_KEY=e61dd2b9-8edb-4f97-a50d-8ee39d016297
+RABBITMQ_PRIV_KEY=66e6f160-f918-487e-b0d3-5107e9ad4510
