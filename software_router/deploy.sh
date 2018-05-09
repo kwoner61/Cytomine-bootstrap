@@ -41,13 +41,8 @@ echo "groovyPath='$GROOVY_PATH'" >> config.groovy
 echo "publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
 echo "privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
 
-# horrible hack for groovy with dash
-# PATH="$PATH:$GROOVY_HOME/bin:/root/anaconda/bin"
-
 touch /tmp/test.out
 
 java -jar Cytomine-software-router.jar > /tmp/test.out &
-
-# bash wrapdocker #&& service docker start
 
 tail -f /tmp/test.out
