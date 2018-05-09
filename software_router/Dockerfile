@@ -58,6 +58,7 @@ RUN wget https://github.com/singularityware/singularity/releases/download/$SINGU
 RUN mkdir -p /software_router && \
     cd /software_router
     # wget
+# TODO : Remove ADD and retrieve the release from GitHub
 ADD Cytomine-software-router.jar /software_router/
 ADD log4j.properties /software_router/
 
