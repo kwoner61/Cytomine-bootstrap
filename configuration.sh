@@ -35,6 +35,8 @@ IMS_STORAGE_PATH=/data
 IMS_BUFFER_PATH=/data/_buffer
 BACKUP_PATH=/data/backup
 ALGO_PATH=/data/algo/
+KEY_PATH=/data/ssh/
+IMAGES_PATH=/data/images
 RETRIEVAL_PATH=/data/thumb
 FAST_DATA_PATH=/data
 
