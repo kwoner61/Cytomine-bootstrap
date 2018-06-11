@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat7:v1.1
+FROM cytomineuliege/tomcat7
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget -q https://github.com/cytomine/Cytomine-IRIS/releases/download/v1.0/iris.war -O ROOT.war
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget -q http://release.cytomine.be/iris/iris.war -O ROOT.war
 
 ADD iris-config.groovy /tmp/iris-config.groovy
 ADD iris-production-config.groovy /tmp/iris-production-config.groovy

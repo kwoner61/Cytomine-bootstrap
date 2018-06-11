@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.1
+FROM cytomineuliege/java8
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
-RUN cd /tmp/ && wget -q https://github.com/cytomine/Cytomine-tools/releases/download/v1.1/BioFormatStandAlone.tar.gz -O BioFormatStandAlone.tar.gz && tar -zxvf BioFormatStandAlone.tar.gz
+RUN cd /tmp/ && wget -q http://release.cytomine.be/bioformat/BioFormatStandAlone.tar.gz -O BioFormatStandAlone.tar.gz && tar -zxvf BioFormatStandAlone.tar.gz
 
 ADD crontab /tmp/crontab
 ADD check_bioformat.py /tmp/check_bioformat.py

@@ -22,7 +22,6 @@ arr=$(echo $arr | tr "]" "\n")
 if [ $IS_LOCAL = true ]; then
 	echo "#Custom adding" >> /etc/hosts
 	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $CORE_URL" >> /etc/hosts
-#	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_OFF_URL" >> /etc/hosts
 	echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_CYTO_URL" >> /etc/hosts
 	if [ ! -z "$IIP_JP2_URL" ]; then
 		echo "$(route -n | awk '/UG[ \t]/{print $2}')       $IIP_JP2_URL" >> /etc/hosts
@@ -52,15 +51,11 @@ echo "cytomine.identify=/usr/local/bin/identify" >> imageserverconfig.properties
 echo "cytomine.tiffinfo=tiffinfo" >> imageserverconfig.properties
 echo "cytomine.vipsthumbnail=/usr/local/bin/vipsthumbnail" >> imageserverconfig.properties
 
-#echo "cytomine.iipImageServerBase=http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties
 echo "cytomine.iipImageServerCyto=http://$IIP_CYTO_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties
 
 echo "bioformat.application.enabled=$BIOFORMAT_ENABLED" >> imageserverconfig.properties
 echo "bioformat.application.location=$BIOFORMAT_LOCATION" >> imageserverconfig.properties
 echo "bioformat.application.port=$BIOFORMAT_PORT" >> imageserverconfig.properties
-
-echo "cytomine.hdf5.scriptToFindFiles=webapps/ROOT/WEB-INF/scripts/relatedFiles.sh" >> imageserverconfig.properties
-
 
 if [ ! -z "$IIP_JP2_URL" ]; then
 	echo "cytomine.iipImageServerJpeg2000=http://$IIP_JP2_URL/fcgi-bin/iipsrv.fcgi" >> imageserverconfig.properties

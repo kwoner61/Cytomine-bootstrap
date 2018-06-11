@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
+FROM cytomineuliege/base
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
@@ -29,23 +29,28 @@ RUN apt-get -y update && \
       libpng-dev \
       psmisc \
       software-properties-common && \
-      apt-get -y build-dep iipimage-server openslide
+      apt-get -y build-dep openslide
 
-
+# Nginx
 RUN mkdir -p /opt/nginx
 WORKDIR /opt/nginx
 RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
 RUN tar -zxvf nginx-1.10.1.tar.gz
+ADD nginx.conf.sample /tmp/nginx.conf.sample
 
-RUN git clone https://github.com/vkholodkov/nginx-upload-module.git
-RUN cd nginx-upload-module/ && git checkout 2.2 && git reset --hard && git clean -f && git pull && git status
+#openslide 2015/04/21
+RUN cd /tmp && git clone https://github.com/openslide/openslide && cd /tmp/openslide && git checkout tags/v3.4.1 && \
+    autoreconf -i && ./configure && make && make install
 
-WORKDIR /opt/nginx/nginx-1.10.1
-RUN ./configure --add-module=/opt/nginx/nginx-upload-module && make && sudo make install
+#IIP Image Server
+ADD https://api.github.com/repos/cytomine-uliege/iipsrv/git/refs/heads/master /tmp/iipsrv-version.json
+RUN cd /tmp && git clone https://github.com/cytomine-uliege/iipsrv && cd /tmp/iipsrv  && sh autogen.sh && ./configure && make
+RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
+
+RUN ldconfig -v
 
 RUN mkdir -p /opt/cytomine/bin
-
 ADD start-iip.sh /opt/cytomine/bin/start-iip.sh
 ADD stop-iip.sh /opt/cytomine/bin/stop-iip.sh
 ADD check-iip-status.py /opt/cytomine/bin/check-iip-status.py
@@ -58,4 +63,4 @@ RUN chmod +x /opt/cytomine/bin/start-iip.sh
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
 
-
+ENTRYPOINT ["/tmp/deploy.sh"]

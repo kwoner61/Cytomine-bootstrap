@@ -24,9 +24,8 @@ docker cp core:/var/lib/tomcat7/logs/catalina.out ./reporting/catalinaCore.out
 docker cp ims:/usr/share/tomcat7/.grails/imageserverconfig.properties ./reporting/configurationIMS.properties
 docker cp ims:/var/lib/tomcat7/logs/catalina.out ./reporting/catalinaIMS.out
 docker cp retrieval:/tmp/retrieval.log ./reporting/catalinaRetrieval.out
-#docker cp iipOff:/tmp/iip-openslide.out ./reporting/logIIPOff.out
 #docker cp iipJ2:/tmp/iip-openslide.out ./reporting/logIIPJ2.out
-docker cp iipCyto:/tmp/iip-openslide.out ./reporting/logIIPCyto.out
+docker cp iip:/tmp/iip-openslide.out ./reporting/logIIPCyto.out
 
 tail -n 200 ./reporting/catalinaCore.out           > ./reporting/catalinaCoreTail.out
 mv ./reporting/catalinaCoreTail.out                  ./reporting/catalinaCore.out
@@ -35,10 +34,6 @@ mv ./reporting/catalinaIMSTail.out                   ./reporting/catalinaIMS.out
 tail -n 200 ./reporting/catalinaRetrieval.out      > ./reporting/catalinaRetrievalTail.out
 mv ./reporting/catalinaRetrievalTail.out             ./reporting/catalinaRetrieval.out
 
-#tail -n 200 ./reporting/logIIPOff.out           > ./reporting/logIIPOffTail.out
-#mv ./reporting/logIIPOffTail.out                  ./reporting/logIIPOff.out
-#tail -n 200 ./reporting/logIIPJ2.out            > ./reporting/logIIPJ2Tail.out
-#mv ./reporting/logIIPJ2Tail.out                   ./reporting/logIIPJ2.out
 tail -n 200 ./reporting/logIIPCyto.out          > ./reporting/logIIPCytoTail.out
 mv ./reporting/logIIPCytoTail.out                 ./reporting/logIIPCyto.out
 

@@ -3,10 +3,6 @@ dataSource.username='docker'
 dataSource.password='docker'
 
 grails.admin.client='info@cytomine.be'
-grails.integration.aurora.url='http://localhost:8000/api/image/notify.json?test=true'
-grails.integration.aurora.username='xxx'
-grails.integration.aurora.password='xxx'
-grails.integration.aurora.interval='60000'
 
 cytomine.customUI.global = [
         dashboard: ["ALL"],
