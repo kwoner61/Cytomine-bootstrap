@@ -316,7 +316,7 @@ then
 			-e UPLOAD_URL=$UPLOAD_URL \
 			-e PUBLIC_KEY=$SUPERADMIN_PUB_KEY \
 			-e PRIVATE_KEY=$SUPERADMIN_PRIV_KEY \
-			cytomineuliege/data_test > /dev/null
+			cytomineuliege/data_for_test > /dev/null
 			nb_docker=$((nb_docker+1))
 
 			echo "Data test in installation."
