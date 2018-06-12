@@ -28,6 +28,8 @@ RUN apt-get -y update && \
       libtiff5-dev \
       libpng-dev \
       psmisc \
+      autoconf \
+      libtool \
       software-properties-common && \
       apt-get -y build-dep openslide
 
@@ -36,7 +38,6 @@ RUN mkdir -p /opt/nginx
 WORKDIR /opt/nginx
 RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
 RUN tar -zxvf nginx-1.10.1.tar.gz
-ADD nginx.conf.sample /tmp/nginx.conf.sample
 
 #openslide 2015/04/21
 RUN cd /tmp && git clone https://github.com/openslide/openslide && cd /tmp/openslide && git checkout tags/v3.4.1 && \
@@ -47,7 +48,10 @@ ADD https://api.github.com/repos/cytomine-uliege/iipsrv/git/refs/heads/master /t
 RUN cd /tmp && git clone https://github.com/cytomine-uliege/iipsrv && cd /tmp/iipsrv  && sh autogen.sh && ./configure && make
 RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
+WORKDIR /opt/nginx/nginx-1.10.1
+RUN ./configure && make && sudo make install
 
+ADD nginx.conf.sample /tmp/nginx.conf.sample
 RUN ldconfig -v
 
 RUN mkdir -p /opt/cytomine/bin
