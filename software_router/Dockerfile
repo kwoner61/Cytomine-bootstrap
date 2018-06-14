@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,93 +14,67 @@
 # limitations under the License.
 #
 
+#volume for keys and datas
+
 FROM cytomine/java8:v1.1
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
-# Miniconda Python environment
-RUN wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
-RUN bash Miniconda2-latest-Linux-x86_64.sh -b
+ARG SINGULARITY_VERSION=2.4.5
 
-ENV PATH /root/miniconda2/bin:$PATH 
-
-RUN conda install cython --yes
-RUN conda install joblib=0.11 --yes
-RUN conda install pillow=3.4.2 --yes
-RUN conda install numpy=1.11.2 --yes
-RUN conda install shapely --yes
-RUN conda install scipy=0.18.1 --yes
-RUN conda install scikit-learn=0.19 --yes
-RUN conda install opencv=3.1.0 --yes
-RUN conda install libgfortran==1 --yes
-RUN conda install matplotlib=1.4 --yes
-RUN conda install tensorflow --yes
-RUN conda install keras=2.0.8 --yes
-
-RUN apt-get -y update && apt-get install -y \
-      apt-transport-https \
-      ca-certificates \
-      curl \
-      git \
-      g++ \
-      language-pack-en-base \
-      libglib2.0-0 \
-      lxc \
-      iptables \
-      make \
-      zip \
-      libhdf5-dev
-
-RUN pip install sumproduct
+RUN apt-get -y update && \
+    apt-get -y install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        git \
+        g++ \
+        language-pack-en-base \
+        libglib2.0-0 \
+        lxc \
+        iptables \
+        make \
+        zip \
+        libhdf5-dev \
+        squashfs-tools \
+        openssh-client \
+        libarchive-dev
 
 RUN dpkg-reconfigure locales
 
-# Cytomine-python-datamining
-ADD https://api.github.com/repos/cytomine/Cytomine-python-datamining/git/refs/heads/ULiegeDev /tmp/python-datamining-version.json
-RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout ULiegeDev
-RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
-
-
-# Cytomine-python-client
-ADD https://api.github.com/repos/cytomine/Cytomine-python-client/git/refs/heads/ULiegeDev /tmp/python-client-version.json
-RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout ULiegeDev
-RUN cd /root/Cytomine/Cytomine-python-client/client/ && python setup.py build && python setup.py install
-RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py build && python setup.py install
-
-RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-tools.git && cd Cytomine-tools/ && git checkout tags/v1.1
-
-RUN cd /root/Cytomine/ && git clone https://github.com/waliens/sldc.git && cd sldc && python setup.py install
-RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/counting/ && python setup.py build && python setup.py install
-
-
-# Groovy Installation
+# Groovy installation
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 RUN cd /tmp/ && curl http://get.sdkman.io | bash
 RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh && sdk install groovy 2.4.4 --yes"
 
+# Singularity installation
+RUN wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
+    tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
+    cd singularity-$SINGULARITY_VERSION && \
+    ./configure --prefix=/usr/local && \
+    make && \
+    make install
 
-RUN mkdir -p /software_router && cd /software_router && wget http://cytomine.be/release/java/Cytomine-software-router.jar -O Cytomine-software-router.jar
-RUN cd /software_router && wget http://cytomine.be/release/java/cytomine-java-client.jar -O cytomine-java-client.jar
+# Software-router Installation
+RUN mkdir -p /software_router && \
+    cd /software_router
+    # wget
+# TODO : Remove ADD and retrieve the release from GitHub
+ADD Cytomine-software-router.jar /software_router/
+ADD log4j.properties /software_router/
 
-# Install Docker from Docker Inc. repositories.
-RUN curl -sSL https://get.docker.com/ | sh
-
-# Install the magic wrapper.
-ADD ./wrapdocker /usr/local/bin/wrapdocker
-RUN chmod +x /usr/local/bin/wrapdocker
-
-ADD config.groovy /tmp/config.groovy
+ADD config.groovy /tmp/
 
 # Fix path
 ENV GROOVY_HOME /root/.sdkman/candidates/groovy/current
 ENV GROOVY_PATH /root/.sdkman/candidates/groovy/current/bin/groovy
 
+# Create software_router directories
 RUN mkdir -p /software_router/algo
+RUN mkdir -p /software_router/logs
 
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
-ADD injectSoftware.groovy /tmp/injectSoftware.groovy
-RUN chmod +x /tmp/injectSoftware.groovy
 
 ENTRYPOINT ["/tmp/deploy.sh"]
