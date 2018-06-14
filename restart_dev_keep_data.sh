@@ -22,7 +22,7 @@ cd $path
 #sh create_docker_images.sh
 
 
-cd nginx && docker build -t="cytomine/nginxdev" .
+cd nginx && docker build -t="cytomineuliege/nginxdev" .
 cd ..
 
 echo "clean containers"

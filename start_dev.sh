@@ -23,16 +23,15 @@ nb_docker=$(echo "$(sudo docker ps)" | wc -l)
 nb_docker=$((nb_docker-1)) # remove the header line
 
 # create memcached docker
-docker run -d -e MEMCACHED_PASS="mypass" --name memcached1 cytomine/memcached
+docker run -d -e MEMCACHED_PASS="mypass" --name memcached1 cytomineuliege/memcached
 nb_docker=$((nb_docker+1))
-docker run -d -e MEMCACHED_PASS="mypass" --name memcached2 cytomine/memcached
+docker run -d -e MEMCACHED_PASS="mypass" --name memcached2 cytomineuliege/memcached
 nb_docker=$((nb_docker+1))
 
-RABBITMQ_PASS="mypass"
 # create rabbitmq docker
 docker run -d -p 22 -p 5672:5672 -p 15672:15672 --name rabbitmq \
--e RABBITMQ_PASS=$RABBITMQ_PASS \
-cytomine/rabbitmq && nb_docker=$((nb_docker+1)) || docker start rabbitmq
+-e RABBITMQ_PASS=$RABBITMQ_PASSWORD \
+cytomineuliege/rabbitmq && nb_docker=$((nb_docker+1)) || docker start rabbitmq
 
 # create data volumes
 docker volume create --name postgis_data
@@ -43,11 +42,11 @@ then
 fi
 
 # create mongodb docker
-docker run -d -p 22 -p 27017:27017 --name mongodb -v mongodb_data:/data/db cytomine/mongodb
+docker run -d -p 22 -p 27017:27017 --name mongodb -v mongodb_data:/data/db cytomineuliege/mongodb
 nb_docker=$((nb_docker+1))
 
 # create database docker
-docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgresql cytomine/postgis
+docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgresql cytomineuliege/postgis
 nb_docker=$((nb_docker+1))
 
 if [ $BACKUP_BOOL = true ] 
@@ -63,7 +62,7 @@ then
 	-e DATABASE='docker' \
 	-e USER='docker' \
 	-e PASSWD='docker' \
-	cytomine/backup
+	cytomineuliege/backup
 	nb_docker=$((nb_docker+1))
 
 	docker run -p 22 -d --name backup_mongo --link mongodb:db -v $BACKUP_PATH/mongo:/backup \
@@ -73,34 +72,27 @@ then
 	-e SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST \
 	-e SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT \
 	-e RECEIVER_EMAIL=$RECEIVER_EMAIL \
-	cytomine/backup
+	cytomineuliege/backup
 	nb_docker=$((nb_docker+1))
 fi
 
-# create IIP dockers
-#docker run -p 22 --privileged -d --name iipOff -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
-#--link memcached1:memcached \
-#-e NB_IIP_PROCESS=10 \
-#cytomine/iipofficial
-#nb_docker=$((nb_docker+1))
-
-docker run -p 22 --privileged -d --name iipCyto -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
+docker run -p 22 --privileged -d --name iip -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
 --link memcached2:memcached \
 -e NB_IIP_PROCESS=$NB_IIP_PROCESS \
-cytomine/iipcyto
+cytomineuliege/iip
 nb_docker=$((nb_docker+1))
 
 docker run -p 22 --privileged -d --name iipJ2 -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
 --link memcached1:memcached \
 -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
-cytomine/iipjpeg2000
+cytomineuliege/iip-jp2000
 nb_docker=$((nb_docker+1))
 
 if [ $BIOFORMAT_ENABLED = true ]
 then
 	docker run -p 22 -d --name bioformat -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
 	-e BIOFORMAT_PORT=$BIOFORMAT_PORT \
-	cytomine/bioformat
+	cytomineuliege/bioformat
 	nb_docker=$((nb_docker+1))
 fi
 
@@ -130,7 +122,7 @@ else
     -e BIOFORMAT_ENABLED=$BIOFORMAT_ENABLED \
     -e BIOFORMAT_LOCATION=$BIOFORMAT_ALIAS \
     -e BIOFORMAT_PORT=$BIOFORMAT_PORT \
-    cytomine/ims
+    cytomineuliege/ims
     nb_docker=$((nb_docker+1))
 
     # add a dynamic link to bioformat
@@ -169,7 +161,7 @@ then
     -e SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS \
     -e SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST \
     -e SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT \
-    cytomine/core
+    cytomineuliege/core
     nb_docker=$((nb_docker+1))
 fi
 
@@ -180,7 +172,7 @@ docker run -m 8g -d -p 22 --name retrieval \
 -e IS_LOCAL=$IS_LOCAL \
 -e ENGINE=$RETRIEVAL_ENGINE \
 -e RETRIEVAL_PASSWD=$RETRIEVAL_PASSWD \
-cytomine/retrieval
+cytomineuliege/retrieval
 nb_docker=$((nb_docker+1))
 
 if [ $IRIS_ENABLED = true ]
@@ -199,7 +191,7 @@ then
 	-e IRIS_ADMIN_NAME="$IRIS_ADMIN_NAME" \
 	-e IRIS_ADMIN_ORGANIZATION_NAME="$IRIS_ADMIN_ORGANIZATION_NAME" \
 	-e IRIS_ADMIN_EMAIL="$IRIS_ADMIN_EMAIL" \
-	cytomine/iris
+	cytomineuliege/iris
 	nb_docker=$((nb_docker+1))
 fi
 
@@ -208,7 +200,7 @@ fi
 
 nginx="docker run -m 1g -d -p 22 -p 80:80 \
 	-v /tmp/uploaded/:/tmp/uploaded/ --link retrieval:retrieval \
-	--link iipCyto:iip_cyto --link iipJ2:iip_jpeg2000 "
+	--link iip:iip_cyto --link iipJ2:iip_jpeg2000 "
 
 if [ $IRIS_ENABLED = true ]
 then
@@ -237,7 +229,7 @@ nginx="$nginx
 	-e IRIS_ENABLED=$IRIS_ENABLED \
 	-e DEV_CORE=$DEV_CORE \
 	-e DEV_IMS=$DEV_IMS \
-	cytomine/nginxdev"
+	cytomineuliege/nginxdev"
 eval $nginx
 nb_docker=$((nb_docker+1))
 
@@ -259,7 +251,7 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomine/software_router
+cytomineuliege/software_router
 nb_docker=$((nb_docker+1))
 
 
@@ -281,7 +273,7 @@ else
 	if ! echo "$running_containers" | grep -q -w memcached2; then echo "memcached2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached3; then echo "memcached3 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
-	if ! echo "$running_containers" | grep -q -w iipCyto; then echo "iipCyto container is not running !"; fi
+	if ! echo "$running_containers" | grep -q -w iip; then echo "iip container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
