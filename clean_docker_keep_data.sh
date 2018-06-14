@@ -47,8 +47,7 @@ docker stop nginx
 docker rm -v nginx
 docker stop software_router
 docker rm -v software_router
-docker stop data_test
-docker rm -v data_test
-
+docker stop data_for_test
+docker rm -v data_for_test
 docker stop slurm
 docker rm -v slurm

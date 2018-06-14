@@ -40,6 +40,10 @@ echo "rabbitPassword='$RABBITMQ_PASSWORD'" >> config.groovy
 echo "groovyPath='$GROOVY_PATH'" >> config.groovy
 echo "publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
 echo "privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
+echo "dataDirectory='$SOFTWARE_CODE_PATH'" >> config.groovy
+echo "imagesDirectory='$SOFTWARE_DOCKER_IMAGES_PATH'" >> config.groovy
+echo "logsDirectory='$JOBS_PATH'" >> config.groovy
+echo "keyFilePath='$PROCESSING_SERVERS_SSH_PATH/id_rsa'" >> config.groovy
 
 touch /tmp/test.out
 

@@ -18,3 +18,4 @@ sh clean_docker_keep_data.sh
 docker volume rm postgis_data
 docker volume rm mongodb_data
 docker volume rm iris_data
+docker volume rm slurm_data

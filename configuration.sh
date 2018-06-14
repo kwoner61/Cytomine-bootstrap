@@ -31,14 +31,15 @@ SENDER_EMAIL_SMTP_PORT='587'
 RECEIVER_EMAIL='receiver@XXX.com'
 
 #Paths
-IMS_STORAGE_PATH=/data
+IMS_STORAGE_PATH=/data/images
 IMS_BUFFER_PATH=/data/_buffer
 BACKUP_PATH=/data/backup
-ALGO_PATH=/data/algo/
-KEY_PATH=/data/ssh/
-IMAGES_PATH=/data/images
+SOFTWARE_CODE_PATH=/data/softwares/code
+SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
+JOBS_PATH=/data/jobs
+PROCESSING_SERVERS_SSH_PATH=/data/ssh/
 RETRIEVAL_PATH=/data/thumb
-FAST_DATA_PATH=/data
+FAST_DATA_PATH=/data/images
 
 #middlewares
 RETRIEVAL_PASSWD='retrieval_default'
@@ -79,7 +80,7 @@ BIOFORMAT_PORT="4321"
 
 
 # DO NOT USE DATA BELOW EXCEPT YOU WANT TO INSTALL A DEVELOPMENT ENV.
-DEV_CORE=true
+DEV_CORE=false
 DEV_IMS=false
 # Complete the keys by running, for example $(cat /proc/sys/kernel/random/uuid) for each.
 # For a production deployment, these keys are automatically generated !

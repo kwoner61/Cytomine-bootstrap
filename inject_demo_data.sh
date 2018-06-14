@@ -23,28 +23,28 @@
 
 # create test docker
 docker run -d -p 22 \
---name data_test \
+--name data_for_test \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
 -e UPLOAD_URL=$UPLOAD_URL \
 -e PUBLIC_KEY=$SUPERADMIN_PUB_KEY \
 -e PRIVATE_KEY=$SUPERADMIN_PRIV_KEY \
-cytomine/data_test > /dev/null
+cytomine/data_for_test > /dev/null
 
 
-OUTPUT_DATA_CYTOMINE=$(docker logs data_test)
+OUTPUT_DATA_CYTOMINE=$(docker logs data_for_test)
 COUNTER_CYTOMINE=0
 while [ "${OUTPUT_DATA_CYTOMINE#*END OF DATA INJECTION}" = "$OUTPUT_DATA_CYTOMINE" ] && [ $COUNTER_CYTOMINE -le 45 ]
 do
-   OUTPUT_DATA_CYTOMINE=$(docker logs data_test)
+   OUTPUT_DATA_CYTOMINE=$(docker logs data_for_test)
    OUTPUT_DATA_CYTOMINE=$(echo "$OUTPUT_DATA_CYTOMINE" | tail -n 100)
    COUNTER_CYTOMINE=$((COUNTER_CYTOMINE+1))
    sleep 60
 done
 if [ "${OUTPUT_DATA_CYTOMINE#*DATA SUCCESSFULLY INJECTED}" = "$OUTPUT_DATA_CYTOMINE" ]
 then
-   echo "Data are not plainfully injected. Please check the status with the command docker logs data_test."
+   echo "Data are not plainfully injected. Please check the status with the command docker logs data_for_test."
 else
    echo "Data successfully injected."
 fi

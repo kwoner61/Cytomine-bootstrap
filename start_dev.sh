@@ -51,16 +51,17 @@ docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgr
 nb_docker=$((nb_docker+1))
 
 # create slurm docker
-docker run -td -p 10022:22  \
+docker run -d -p 10022:22  \
 --name slurm \
 -h cytomine-slurm \
 -v slurm_data:/var/lib/mysql \
+-v /etc/localtime:/etc/localtime \
 --privileged \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
 -e UPLOAD_URL=$UPLOAD_URL \
-test-s
-# TODO : REPLACE NAME
+cytomineuliege/slurm > /dev/null
+nb_docker=$((nb_docker+1))
 
 nb_docker=$((nb_docker+1))
 
@@ -257,9 +258,11 @@ read waiting
 docker run -d -p 22 --link rabbitmq:rabbitmq \
 --link slurm:slurm \
 --privileged \
---name software_router \
--v $ALGO_PATH:/software_router/algo/ \
--v $KEY_PATH:/root/.ssh/ \
+--name software_router --restart=unless-stopped \
+-v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
+-v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+-v $JOBS_PATH:$JOBS_PATH \
+-v $PROCESSING_SERVERS_SSH_PATH:$PROCESSING_SERVERS_SSH_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -268,7 +271,11 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e RABBITMQ_PRIV_KEY=$RABBITMQ_PRIV_KEY \
 -e RABBITMQ_LOGIN=$RABBITMQ_LOGIN \
 -e RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD \
-cytomineuliege/software_router
+-e SOFTWARE_CODE_PATH=$SOFTWARE_CODE_PATH \
+-e SOFTWARE_DOCKER_IMAGES_PATH=$SOFTWARE_DOCKER_IMAGES_PATH \
+-e JOBS_PATH=$JOBS_PATH \
+-e PROCESSING_SERVERS_SSH_PATH=$PROCESSING_SERVERS_SSH_PATH \
+cytomineuliege/software_router > /dev/null
 nb_docker=$((nb_docker+1))
 
 # checking
@@ -292,6 +299,7 @@ else
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w retrieval; then echo "retrieval container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w software_router; then echo "software_router container is not running !"; fi
+	if ! echo "$running_containers" | grep -q -w slurm; then echo "slurm container is not running !"; fi
 
     if [ $DEV_IMS = false ]
     then

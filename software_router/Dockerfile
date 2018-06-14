@@ -56,21 +56,14 @@ RUN wget https://github.com/singularityware/singularity/releases/download/$SINGU
 
 # Software-router Installation
 RUN mkdir -p /software_router && \
-    cd /software_router
-    # wget
-# TODO : Remove ADD and retrieve the release from GitHub
-ADD Cytomine-software-router.jar /software_router/
+    cd /software_router && \
+    wget http://release.cytomine.be/java/Cytomine-software-router.jar -O Cytomine-software-router.jar
 ADD log4j.properties /software_router/
-
-ADD config.groovy /tmp/
+ADD config.groovy /tmp/config.groovy
 
 # Fix path
 ENV GROOVY_HOME /root/.sdkman/candidates/groovy/current
 ENV GROOVY_PATH /root/.sdkman/candidates/groovy/current/bin/groovy
-
-# Create software_router directories
-RUN mkdir -p /software_router/algo
-RUN mkdir -p /software_router/logs
 
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh

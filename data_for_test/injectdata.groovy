@@ -106,7 +106,7 @@ workingDir.listFiles().each { file ->
     }
 }
 
-data.imagefilters = createImageFilter(workingDir)
+//data.imagefilters = createImageFilter(workingDir)
 
 println data
 
@@ -126,13 +126,13 @@ void injectData(InjectedData data) {
         Thread.sleep(1000);
     }
 
-    ProcessingServer ps = CYTOMINE.getCytomineSuperAdmin().addProcessingServer(CYTOMINE.cytomineImsUrl+'/');
-    //for each imagefilter
-    data.imagefilters.each { injectedImagefilter ->
-        println injectedImagefilter
-        println "add imagefilter ${injectedImagefilter.name}"
-        ImageFilter project = CYTOMINE.getCytomineSuperAdmin().addImageFilter(injectedImagefilter.name, injectedImagefilter.baseUrl, CYTOMINE.cytomineImsUrl+'/')
-    }
+//    ProcessingServer ps = CYTOMINE.getCytomineSuperAdmin().addProcessingServer(CYTOMINE.cytomineImsUrl+'/');
+//    //for each imagefilter
+//    data.imagefilters.each { injectedImagefilter ->
+//        println injectedImagefilter
+//        println "add imagefilter ${injectedImagefilter.name}"
+//        ImageFilter project = CYTOMINE.getCytomineSuperAdmin().addImageFilter(injectedImagefilter.name, injectedImagefilter.baseUrl, CYTOMINE.cytomineImsUrl+'/')
+//    }
     //for each project
     data.projects.each { injectedProject ->
         Ontology ontology = null

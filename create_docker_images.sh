@@ -35,13 +35,14 @@ cd ../ims && docker build -t="cytomineuliege/ims" .
 cd ../core && docker build -t="cytomineuliege/core" .
 cd ../software_router && docker build -t="cytomineuliege/software_router" .
 cd ../retrieval && docker build -t="cytomineuliege/retrieval" .
+cd ../slurm && docker build -t="cytomineuliege/slurm" .
 
 if [ $IRIS_ENABLED = true ]
 then
 	cd ../iris && docker build -t="cytomineuliege/iris" .
 fi
 
-cd ../data_for_test && docker build -t="cytomineuliege/data_test" .
+cd ../data_for_test && docker build -t="cytomineuliege/data_for_test" .
 
 cd ..
 echo DONE
