@@ -333,13 +333,14 @@ cytomineuliege/software_router > /dev/null
 nb_docker=$((nb_docker+1))
 
 
+
 if [ $DATA_INSERTION = true ]
 then
-	echo
+	echo 
 	while true; do
 	    read -p "Do you wish to install some data test? y/n (It can take 45 minutes depending of your internet connexion.) " yn
 	    case $yn in
-	        [Yy]* )
+	        [Yy]* ) 
 			# create test docker
 			docker run -d -p 22 \
 			--name data_for_test \
