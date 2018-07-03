@@ -34,19 +34,20 @@ fi
 cd /software_router/
 mv /tmp/config.groovy .
 
-echo "cytomineCoreURL='http://$CORE_URL'" >> config.groovy
-echo "rabbitUsername='$RABBITMQ_LOGIN'" >> config.groovy
-echo "rabbitPassword='$RABBITMQ_PASSWORD'" >> config.groovy
+echo "cytomine.core.url='http://$CORE_URL'" >> config.groovy
+echo "cytomine.core.publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
+echo "cytomine.core.privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
+echo "rabbitmq.username='$RABBITMQ_LOGIN'" >> config.groovy
+echo "rabbitmq.password='$RABBITMQ_PASSWORD'" >> config.groovy
 echo "groovyPath='$GROOVY_PATH'" >> config.groovy
-echo "publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
-echo "privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
-echo "dataDirectory='$SOFTWARE_CODE_PATH'" >> config.groovy
-echo "imagesDirectory='$SOFTWARE_DOCKER_IMAGES_PATH'" >> config.groovy
-echo "logsDirectory='$JOBS_PATH'" >> config.groovy
-echo "keyFilePath='$PROCESSING_SERVERS_SSH_PATH/id_rsa'" >> config.groovy
 
-touch /tmp/test.out
+echo "cytomine.software.path.softwareSources='$SOFTWARE_CODE_PATH'" >> config.groovy
+echo "cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'" >> config.groovy
+echo "cytomine.software.jobs='$JOBS_PATH'" >> config.groovy
+echo "cytomine.software.sshKeysFile='$SERVER_SSHKEYS_PATH/id_rsa'" >> config.groovy
 
-java -jar Cytomine-software-router.jar > /tmp/test.out &
+touch /tmp/log.out
 
-tail -f /tmp/test.out
+java -jar Cytomine-software-router.jar > /tmp/log.out &
+
+tail -f /tmp/log.out

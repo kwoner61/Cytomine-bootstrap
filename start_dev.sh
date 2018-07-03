@@ -19,6 +19,15 @@
 #get all the config values.
 . ./configuration.sh
 
+
+# Create server SSH keys if needed
+SERVER_SSHKEYS_FILE="${SERVER_SSHKEYS_PATH}/id_rsa"
+if [ ! -e $SERVER_SSHKEYS_FILE ]
+then
+    apt-get install -y ssh-keygen
+    ssh-keygen -t rsa -N "" -C $CORE_URL -f $SERVER_SSHKEYS_FILE
+fi
+
 nb_docker=$(echo "$(sudo docker ps)" | wc -l)
 nb_docker=$((nb_docker-1)) # remove the header line
 
@@ -51,15 +60,18 @@ docker run -d -p 22 -p 5432:5432 -m 8g --name db -v postgis_data:/var/lib/postgr
 nb_docker=$((nb_docker+1))
 
 # create slurm docker
-docker run -d -p 10022:22  \
+docker run -td -p 10022:22  \
 --name slurm \
 -h cytomine-slurm \
 -v slurm_data:/var/lib/mysql \
 -v /etc/localtime:/etc/localtime \
+-v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
+-v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
 --privileged \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
 -e UPLOAD_URL=$UPLOAD_URL \
+-e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
 cytomineuliege/slurm > /dev/null
 nb_docker=$((nb_docker+1))
 
@@ -262,7 +274,7 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
 -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
 -v $JOBS_PATH:$JOBS_PATH \
--v $PROCESSING_SERVERS_SSH_PATH:$PROCESSING_SERVERS_SSH_PATH \
+-v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
 -e IS_LOCAL=$IS_LOCAL \
 -e CORE_URL=$CORE_URL \
 -e IMS_URLS=$IMS_URLS \
@@ -274,7 +286,7 @@ docker run -d -p 22 --link rabbitmq:rabbitmq \
 -e SOFTWARE_CODE_PATH=$SOFTWARE_CODE_PATH \
 -e SOFTWARE_DOCKER_IMAGES_PATH=$SOFTWARE_DOCKER_IMAGES_PATH \
 -e JOBS_PATH=$JOBS_PATH \
--e PROCESSING_SERVERS_SSH_PATH=$PROCESSING_SERVERS_SSH_PATH \
+-e SERVER_SSHKEYS_PATH=$SERVER_SSHKEYS_PATH \
 cytomineuliege/software_router > /dev/null
 nb_docker=$((nb_docker+1))
 
@@ -293,7 +305,6 @@ else
 	if ! echo "$running_containers" | grep -q -w mongodb; then echo "mongodb container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached1; then echo "memcached1 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w memcached2; then echo "memcached2 container is not running !"; fi
-	if ! echo "$running_containers" | grep -q -w memcached3; then echo "memcached3 container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w rabbitmq; then echo "rabbitmq container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iip; then echo "iip container is not running !"; fi
 	if ! echo "$running_containers" | grep -q -w iipJ2; then echo "iipJ2 container is not running !"; fi

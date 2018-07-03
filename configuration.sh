@@ -37,7 +37,7 @@ BACKUP_PATH=/data/backup
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs
-PROCESSING_SERVERS_SSH_PATH=/data/ssh/
+SERVER_SSHKEYS_PATH=/data/ssh
 RETRIEVAL_PATH=/data/thumb
 FAST_DATA_PATH=/data/images
 

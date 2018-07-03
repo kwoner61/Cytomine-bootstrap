@@ -18,8 +18,8 @@
 
 FROM centos:7.4.1708
 
-ARG SLURM_VERSION=17.11.5
-ARG SLURM_DOWNLOAD_MD5=21fbe051aee43689dcd7711e47064f89
+ARG SLURM_VERSION=17.11.7
+ARG SLURM_DOWNLOAD_MD5=6452300949ba375c3898ba7ce7959f05
 ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-"$SLURM_VERSION".tar.bz2
 ARG SINGULARITY_VERSION=2.4.5
 
@@ -135,8 +135,8 @@ COPY supervisord.conf /etc/
 
 VOLUME ["/var/lib/mysql", "/var/lib/slurmd", "/var/spool/slurmd", "/var/log/slurm"]
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY deploy.sh /usr/local/bin/deploy.sh
+RUN chmod +x /usr/local/bin/deploy.sh
 
 EXPOSE 22 80
 

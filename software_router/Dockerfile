@@ -24,27 +24,14 @@ RUN apt-get -y update && \
     apt-get -y install \
         apt-transport-https \
         ca-certificates \
-        curl \
-        git \
-        g++ \
-        language-pack-en-base \
-        libglib2.0-0 \
-        lxc \
         iptables \
         make \
-        zip \
-        libhdf5-dev \
         squashfs-tools \
         openssh-client \
-        libarchive-dev
+        libarchive-dev \
+        python
 
 RUN dpkg-reconfigure locales
-
-# Groovy installation
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
-RUN cd /tmp/ && curl http://get.sdkman.io | bash
-RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh && sdk install groovy 2.4.4 --yes"
 
 # Singularity installation
 RUN wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
@@ -57,13 +44,9 @@ RUN wget https://github.com/singularityware/singularity/releases/download/$SINGU
 # Software-router Installation
 RUN mkdir -p /software_router && \
     cd /software_router && \
-    wget http://release.cytomine.be/java/Cytomine-software-router.jar -O Cytomine-software-router.jar
+    wget http://release.cytomine.be/software-router/Cytomine-software-router.jar -O Cytomine-software-router.jar
 ADD log4j.properties /software_router/
 ADD config.groovy /tmp/config.groovy
-
-# Fix path
-ENV GROOVY_HOME /root/.sdkman/candidates/groovy/current
-ENV GROOVY_PATH /root/.sdkman/candidates/groovy/current/bin/groovy
 
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh

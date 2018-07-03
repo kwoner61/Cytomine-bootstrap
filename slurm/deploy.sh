@@ -64,5 +64,8 @@ do
     echo "$(route -n | awk '/UG[ \t]/{print $2}')       $x" >> /etc/hosts
 done
 
+mkdir -p /home/cytomine/.ssh
+cp $SERVER_SSHKEYS_FILE.pub /home/cytomine/.ssh/authorized_keys
+
 
 exec "$@"
