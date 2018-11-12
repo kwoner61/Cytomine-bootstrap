@@ -1,18 +1,19 @@
-exchangeCommunication = "exchangeCommunication"
-queueCommunication = "queueCommunication"
+rabbitmq.host="rabbitmq"
+rabbitmq.port="5672"
+rabbitmq.username='$RABBITMQ_LOGIN'
+rabbitmq.password='$RABBITMQ_PASSWORD'
 
-rabbitAddress="rabbitmq"
-rabbitPort="5672"
+cytomine.core.url='http://$CORE_URL'
+cytomine.core.publicKey='$RABBITMQ_PUB_KEY'
+cytomine.core.privateKey='$RABBITMQ_PRIV_KEY'
 
-jobDirectory = "./"
-logsDirectory = "algo/logs/"
-dataDirectory = "algo/data/"
+cytomine.software.communication.exchange="exchangeCommunication"
+cytomine.software.communication.queue="queueCommunication"
+cytomine.software.descriptorFile="descriptor.json"
+cytomine.software.ssh.maxRetries=3
+cytomine.software.repositoryManagerRefreshRate=300
 
-environment = "dev"
-
-cytomineCoreURL='http://$CORE_URL'
-rabbitUsername='$RABBITMQ_LOGIN'
-rabbitPassword='$RABBITMQ_PASS'
-groovyPath='/root/.sdkman/candidates/groovy/current/bin/groovy'
-publicKey='$RABBITMQ_PUB_KEY'
-privateKey='$RABBITMQ_PRIV_KEY'
+cytomine.software.path.softwareSources='$SOFTWARE_CODE_PATH'
+cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'
+cytomine.software.jobs='$JOBS_PATH'
+cytomine.software.sshKeysFile='$SERVER_SSHKEYS_PATH/id_rsa'

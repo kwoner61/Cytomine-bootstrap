@@ -15,10 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FILES=(configs/core/cytomineconfig.groovy configs/ims/imageserverconfig.properties configs/iipCyto/nginx.conf.sample configs/iipOff/nginx.conf.sample configs/iris/iris-config.groovy configs/iris/iris-production-config.groovy configs/nginx/nginx.conf configs/nginx/nginxDev.conf configs/software_router/config.groovy start_deploy.sh hosts/core/addHosts.sh hosts/ims/addHosts.sh hosts/retrieval/addHosts.sh hosts/iris/addHosts.sh hosts/software_router/addHosts.sh)
+FILES=(configs/core/cytomineconfig.groovy configs/ims/imageserverconfig.properties configs/iipCyto/nginx.conf.sample configs/iipJP2/nginx.conf.sample configs/iris/iris-config.groovy configs/iris/iris-production-config.groovy configs/nginx/nginx.conf configs/nginx/nginxDevCore.conf configs/nginx/nginxDevIMS.conf configs/software_router/config.groovy start_deploy.sh hosts/core/addHosts.sh hosts/ims/addHosts.sh hosts/retrieval/addHosts.sh hosts/iris/addHosts.sh hosts/software_router/addHosts.sh hosts/slurm/addHosts.sh)
 
 #get all the config values.
 . ./configuration.sh
+. ./versions.sh
 
 
 VARIABLES=()
@@ -28,6 +29,13 @@ while read LINE; do
         VARIABLES+=(${ADDR[0]})
     fi
 done <<< "$(cat configuration.sh)"
+
+while read LINE; do
+    if [[ $LINE == *"="* ]]; then
+        IFS='=' read -ra ADDR <<< "$LINE"
+        VARIABLES+=(${ADDR[0]})
+    fi
+done  <<< "$(cat versions.sh)"
 
 for i in ${FILES[@]}; do
     if [ -f "$i.sample" ]; then

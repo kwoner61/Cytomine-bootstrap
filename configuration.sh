@@ -17,8 +17,22 @@
 #URLs
 CORE_URL=localhost-core
 IMS_URL1=localhost-ims
-IMS_URL2=localhost-ims2
 UPLOAD_URL=localhost-upload
+IRIS_URL=localhost-iris
+RETRIEVAL_URL=localhost-retrieval
+
+
+#Paths
+IMS_STORAGE_PATH=/data/images
+IMS_BUFFER_PATH=/data/_buffer
+SOFTWARE_CODE_PATH=/data/softwares/code
+SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
+JOBS_PATH=/data/jobs
+SERVER_SSHKEYS_PATH=/data/ssh
+RETRIEVAL_PATH=/data/thumb
+FAST_DATA_PATH=/data/images
+BACKUP_PATH=/data/backup
+
 
 #Backups
 # BACKUP_BOOL : backup active or not
@@ -31,51 +45,37 @@ SENDER_EMAIL='your.email@gmail.com'
 # RECEIVER_EMAIL : email adress of the receiver
 RECEIVER_EMAIL='receiver@XXX.com'
 
-#Paths
-IMS_STORAGE_PATH=/data/images
-IMS_BUFFER_PATH=/data/images/_buffer
-BACKUP_PATH=/data/backup
-ALGO_PATH=/data/algo/
-RETRIEVAL_PATH=/data/thumb
 
 #middlewares
-RETRIEVAL_PASSWD='retrieval_default'
+RETRIEVAL_PASSWORD='retrieval_default'
 RABBITMQ_LOGIN="router"
-RABBITMQ_PASS="router"
+RABBITMQ_PASSWORD="router"
 
 
 #IRIS
 IRIS_ENABLED=false
-IRIS_URL=localhost-iris
 IRIS_ID="LOCAL_CYTOMINE_IRIS"
 IRIS_ADMIN_NAME="Ian Admin"
 IRIS_ADMIN_ORGANIZATION_NAME="University of Somewhere, Department of Whatever"
 IRIS_ADMIN_EMAIL="ian.admin@somewhere.edu"
 
 
-# You don't to change the datas below this line instead of advanced customization
+# ADVANCED CONFIGURATION
 # ---------------------------
-
-NB_IIP_PROCESS=10
-
-IIP_OFF_URL=localhost-iip-base
+IIP_OFF_URL=localhost-iip-cyto
 IIP_CYTO_URL=localhost-iip-cyto
 IIP_JP2_URL=localhost-iip-jp2000
-RETRIEVAL_URL=localhost-retrieval
 
-#possible values : memory, redis
-RETRIEVAL_ENGINE=redis
-
+RETRIEVAL_ENGINE=redis #possible values : memory, redis
 MEMCACHED_PASS="mypass"
+NB_IIP_PROCESS=10
 
 BIOFORMAT_ENABLED=true
 BIOFORMAT_ALIAS="bioformat"
 BIOFORMAT_PORT="4321"
 
-
-
 #keys
-ADMIN_PWD=$(cat /proc/sys/kernel/random/uuid)
+ADMIN_PWD="hello" #$(cat /proc/sys/kernel/random/uuid)
 ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 ADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 SUPERADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
@@ -84,4 +84,7 @@ RABBITMQ_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 RABBITMQ_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 IMS_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
+
+
+
 SERVER_ID=$(cat /proc/sys/kernel/random/uuid)

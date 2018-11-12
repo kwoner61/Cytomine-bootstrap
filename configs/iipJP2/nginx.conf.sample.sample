@@ -21,7 +21,7 @@ IIP_PROCESS
 
 	server {
         listen 80;
-		server_name iip_cyto;
+		server_name iip_jp2000;
         location /fcgi-bin/iipsrv.fcgi {
             add_header Access-Control-Allow-Origin *;
             fastcgi_pass    iip-up;

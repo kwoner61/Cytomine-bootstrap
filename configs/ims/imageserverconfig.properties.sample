@@ -12,10 +12,18 @@ cytomine.imageServerPublicKey=$IMS_PUB_KEY
 cytomine.imageServerPrivateKey=$IMS_PRIV_KEY
 cytomine.iipImageServerBase=http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi
 cytomine.iipImageServerCyto=http://$IIP_CYTO_URL/fcgi-bin/iipsrv.fcgi
+cytomine.iipImageServerJpeg2000=http://$IIP_JP2_URL/fcgi-bin/iipsrv.fcgi
 
 bioformat.application.enabled=$BIOFORMAT_ENABLED
 bioformat.application.location=bioformat
 bioformat.application.port=4321
 
-cytomine.Jpeg2000Enabled=false
+cytomine.Jpeg2000Enabled=true
 cytomine.deleteImageFilesFrequency=60000
+
+cytomine.vips=/usr/local/bin/vips
+cytomine.identify=/usr/local/bin/identify
+cytomine.tiffinfo=tiffinfo
+cytomine.vipsthumbnail=/usr/local/bin/vipsthumbnail
+cytomine.gdalinfo=gdalinfo
+cytomine.gdaltranslate=gdal_translate

@@ -29,8 +29,8 @@ docker stop backup_postgis
 docker rm -v backup_postgis
 docker stop retrieval
 docker rm -v retrieval
-docker stop iipOff
-docker rm -v iipOff
+docker stop iipJP2
+docker rm -v iipJP2
 docker stop iipCyto
 docker rm -v iipCyto
 docker stop bioformat
@@ -45,3 +45,5 @@ docker stop nginx
 docker rm -v nginx
 docker stop software_router
 docker rm -v software_router
+docker stop slurm
+docker rm -v slurm
