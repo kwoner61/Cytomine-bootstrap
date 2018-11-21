@@ -42,7 +42,7 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL_SMTP_HOST='smtp.gmail.com'
 SENDER_EMAIL_SMTP_PORT='587'
 SENDER_EMAIL='your.email@gmail.com'
-# RECEIVER_EMAIL : email adress of the receiver
+# RECEIVER_EMAIL : email address of the receiver
 RECEIVER_EMAIL='receiver@XXX.com'
 
 
@@ -75,7 +75,7 @@ BIOFORMAT_ALIAS="bioformat"
 BIOFORMAT_PORT="4321"
 
 #keys
-ADMIN_PWD="hello" #$(cat /proc/sys/kernel/random/uuid)
+ADMIN_PWD=$(cat /proc/sys/kernel/random/uuid)
 ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
 ADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
 SUPERADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
