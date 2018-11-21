@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,9 @@
 path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
 cd $path
 
-# Uncomment if you need to re-build docker images (takes time)
 #sh create_docker_images.sh
-
-
-cd nginx && docker build -t="cytomineuliege/nginxdev" .
-cd ..
-
 echo "clean containers"
 sh clean_docker_keep_data.sh > /dev/null
 echo "launch new containers"
-sh start_dev.sh
+sh start_deploy.sh
+
