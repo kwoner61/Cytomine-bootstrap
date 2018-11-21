@@ -19,7 +19,7 @@ bioformat.application.location=bioformat
 bioformat.application.port=4321
 
 cytomine.Jpeg2000Enabled=true
-cytomine.deleteImageFilesFrequency=60000
+cytomine.deleteImageFilesFrequency=900000
 
 cytomine.vips=/usr/local/bin/vips
 cytomine.identify=/usr/local/bin/identify
