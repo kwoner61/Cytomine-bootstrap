@@ -215,23 +215,6 @@ docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
 docker start slurm
 
 
-# wait for the admin password is setted by the core
-OUTPUT_CORE_CYTOMINE=$(sudo docker exec core tail -n 200 /var/lib/tomcat7/logs/catalina.out 2> /dev/null)
-COUNTER_CYTOMINE=0
-while [ "${OUTPUT_CORE_CYTOMINE#*Server startup}" = "$OUTPUT_CORE_CYTOMINE" ] && [ $COUNTER_CYTOMINE -le 720 ]
-do
-   OUTPUT_CORE_CYTOMINE=$(sudo docker exec core tail -n 200 /var/lib/tomcat7/logs/catalina.out 2> /dev/null)
-   COUNTER_CYTOMINE=$((COUNTER_CYTOMINE+1))
-   sleep 5
-done
-if [ "${OUTPUT_CORE_CYTOMINE#*Server startup}" = "$OUTPUT_CORE_CYTOMINE" ]
-then
-   echo "An error occured. Core Cytomine is too long to start. Please contact support for more details."
-else
-   echo "Core Cytomine launched."
-fi
-
-
 # ----- SOFTWARE ROUTER -----
 docker create --name software_router \
 --link rabbitmq:rabbitmq \
