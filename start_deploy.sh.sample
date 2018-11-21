@@ -124,6 +124,7 @@ docker create --name iipCyto \
 $IIPCYTO_NAMESPACE/iip-cyto:$IIPCYTO_VERSION > /dev/null
 
 docker cp $PWD/configs/iipCyto/nginx.conf.sample iipCyto:/tmp/nginx.conf.sample
+docker cp $PWD/configs/iipCyto/iip-configuration.sh iipCyto:/tmp/iip-configuration.sh
 docker start iipCyto
 
 
