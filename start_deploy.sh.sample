@@ -20,7 +20,9 @@
 SERVER_SSHKEYS_FILE="$SERVER_SSHKEYS_PATH/id_rsa"
 if [ ! -e $SERVER_SSHKEYS_FILE ]
 then
-    apt-get install -y ssh-keygen
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        apt-get install -y ssh-keygen
+    fi
     ssh-keygen -t rsa -N "" -C $CORE_URL -f $SERVER_SSHKEYS_FILE
 fi
 
@@ -59,7 +61,7 @@ $MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION > /dev/null
 
 
 # ----- BACKUP POSTGRESQL -----
-if [ $BACKUP_BOOL = true ] 
+if [[ $BACKUP_BOOL = true ]]
 then
 	# create backup docker
 	docker run -d --name backup_postgis --link postgresql:db -v $BACKUP_PATH/postgis:/backup --restart=unless-stopped \
@@ -77,7 +79,7 @@ fi
 
 
 # ----- BACKUP MONGODB -----
-if [ $BACKUP_BOOL = true ] 
+if [[ $BACKUP_BOOL = true ]]
 then
 	docker run -d --name backup_mongo --link mongodb:db -v $BACKUP_PATH/mongo:/backup --restart=unless-stopped \
 	-e SGBD='mongodb' \
@@ -203,7 +205,6 @@ docker volume create --name slurm_data > /dev/null
 docker create --name slurm -t -h cytomine-slurm \
 --privileged \
 -v slurm_data:/var/lib/mysql \
--v /etc/localtime:/etc/localtime \
 -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
 -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
 -e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
