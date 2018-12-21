@@ -73,18 +73,3 @@ NB_IIP_PROCESS=10
 BIOFORMAT_ENABLED=true
 BIOFORMAT_ALIAS="bioformat"
 BIOFORMAT_PORT="4321"
-
-#keys
-ADMIN_PWD=$(cat /proc/sys/kernel/random/uuid)
-ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-ADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-SUPERADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-SUPERADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-RABBITMQ_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-RABBITMQ_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-IMS_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
-IMS_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
-
-
-
-SERVER_ID=$(cat /proc/sys/kernel/random/uuid)
