@@ -90,3 +90,5 @@ for i in ${FILES[@]}; do
         fi
     fi
 done
+
+mv utils/start.sh ./start.sh
