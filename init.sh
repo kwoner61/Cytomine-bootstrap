@@ -20,6 +20,20 @@
 . configuration.sh
 . configuration-versions.sh
 
+# Fix container aliases for core/ims development
+ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS')
+POSTGRES_ALIAS=postgres
+MONGODB_ALIAS=mongodb
+RABBITMQ_ALIAS=rabbitmq
+BIOFORMAT_ALIAS=bioformat
+if [[ $CORE_DEVELOPMENT = true ]]; then
+    POSTGRES_ALIAS=localhost
+    MONGODB_ALIAS=localhost
+    RABBITMQ_ALIAS=localhost
+fi
+if [[ $IMS_DEVELOPMENT = true ]]; then
+    BIOFORMAT_ALIAS=localhost
+fi
 
 VARIABLES=()
 while read LINE; do
@@ -37,6 +51,7 @@ while read LINE; do
 done  <<< "$(cat versions.sh)"
 
 VARIABLES=("${VARIABLES[@]}" "${KEYS[@]}")
+VARIABLES=("${VARIABLES[@]}" "${ALIASES[@]}")
 
 for i in ${FILES[@]}; do
     if [[ -f "$i.sample" ]]; then
