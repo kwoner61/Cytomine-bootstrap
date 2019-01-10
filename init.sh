@@ -48,7 +48,7 @@ while read LINE; do
         IFS='=' read -ra ADDR <<< "$LINE"
         VARIABLES+=(${ADDR[0]})
     fi
-done  <<< "$(cat versions.sh)"
+done  <<< "$(cat configuration-versions.sh)"
 
 VARIABLES=("${VARIABLES[@]}" "${KEYS[@]}")
 VARIABLES=("${VARIABLES[@]}" "${ALIASES[@]}")
