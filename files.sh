@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-FILES=(configs/core/cytomineconfig.groovy configs/ims/imageserverconfig.properties configs/iipCyto/nginx.conf.sample configs/iipCyto/iip-configuration.sh configs/iipJP2/nginx.conf.sample configs/iris/iris-config.groovy configs/iris/iris-production-config.groovy configs/nginx/nginx.conf configs/nginx/nginxDevCore.conf configs/nginx/nginxDevIMS.conf configs/software_router/config.groovy start_deploy.sh dev_core_start_deploy.sh hosts/core/addHosts.sh hosts/ims/addHosts.sh hosts/retrieval/addHosts.sh hosts/iris/addHosts.sh hosts/software_router/addHosts.sh hosts/slurm/addHosts.sh)

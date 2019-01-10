@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#get all the config values.
-. ./files.sh
-. ./configuration.sh
-. ./versions.sh
-. ./keys.sh
+# Get all the config values.
+. utils/files.sh
+. utils/keys.sh
+. configuration.sh
+. configuration-versions.sh
 
 
 VARIABLES=()
@@ -55,9 +55,23 @@ for i in ${FILES[@]}; do
         if [[ "$OSTYPE" == "linux-gnu" ]]; then
             sed -i "s~\$IRIS_ADMIN_NAME~$IRIS_ADMIN_NAME~g" $i
             sed -i "s~\$IRIS_ADMIN_ORGANIZATION_NAME~$IRIS_ADMIN_ORGANIZATION_NAME~g" $i
+            if [[ $IRIS_ENABLED = false ]]; then sed -i "/--link iris:iris/d" $i; fi
+            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i "/--link retrieval:retrieval/d" $i; fi
+            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link bioformat:bioformat/d" $i; fi
+            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link iipJP2:iipJP2/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $CORE_DEVELOPMENT = true ]]; then sed -i "/--link core:core/d" $i; fi
+            if [[ $IMS_DEVELOPMENT = true ]]; then sed -i "/--link ims:ims/d" $i; fi
         elif [[ "$OSTYPE" == "darwin"* ]]; then
             sed -i '' -e "s~\$IRIS_ADMIN_NAME~$IRIS_ADMIN_NAME~g" $i
             sed -i '' -e "s~\$IRIS_ADMIN_ORGANIZATION_NAME~$IRIS_ADMIN_ORGANIZATION_NAME~g" $i
+            if [[ $IRIS_ENABLED = false ]]; then sed -i '' -e "/--link iris:iris/d" $i; fi
+            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i '' -e "/--link retrieval:retrieval/d" $i; fi
+            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link bioformat:bioformat/d" $i; fi
+            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link iipJP2:iipJP2/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $CORE_DEVELOPMENT = true ]]; then sed -i '' -e "/--link core:core/d" $i; fi
+            if [[ $IMS_DEVELOPMENT = true ]]; then sed -i '' -e "/--link ims:ims/d" $i; fi
         fi
     fi
 done
