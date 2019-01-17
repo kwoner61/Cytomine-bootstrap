@@ -77,6 +77,7 @@ for i in ${FILES[@]}; do
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then
                 sed -i "/--link core:core/d" $i
+            else
                 sed -i "/-p 5672:5672 -p 15672:15672/d" $i
                 sed -i "/-p 5432:5432/d" $i
                 sed -i "/-p 27017:27017 -p 28017:28017/d" $i
@@ -94,6 +95,7 @@ for i in ${FILES[@]}; do
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then 
                 sed -i '' -e "/--link core:core/d" $i
+            else
                 sed -i '' -e "/-p 5672:5672 -p 15672:15672/d" $i
                 sed -i '' -e "/-p 5432:5432/d" $i
                 sed -i '' -e "/-p 27017:27017 -p 28017:28017/d" $i
