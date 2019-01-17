@@ -33,7 +33,7 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=false
+CORE_DEVELOPMENT=true
 
 #------------------------------------------------------------------------------
 # IMS
@@ -74,7 +74,7 @@ RETRIEVAL_ENGINE=redis #possible values : memory, redis
 #------------------------------------------------------------------------------
 # PLUGIN: BIOFORMAT
 #------------------------------------------------------------------------------
-BIOFORMAT_ENABLED=false
+BIOFORMAT_ENABLED=true
 
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)

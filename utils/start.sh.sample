@@ -86,14 +86,20 @@ fi
 
 # ----- POSTGRESQL ------
 docker volume create --name postgis_data > /dev/null
-docker run -d -m 8g -p 5432:5432 --name postgresql -v postgis_data:/var/lib/postgresql \
+docker run -d -m 8g \
+-p 5432:5432 \
+--name postgresql \
+-v postgis_data:/var/lib/postgresql \
 --restart=unless-stopped \
 $POSTGIS_NAMESPACE/postgis:$POSTGIS_VERSION > /dev/null
 
 
 # ----- MONGODB -----
 docker volume create --name mongodb_data > /dev/null
-docker run -d -p 27017:27017 -p 28017:28017 --name mongodb -v mongodb_data:/data/db \
+docker run -d \
+-p 27017:27017 -p 28017:28017 \
+--name mongodb \
+-v mongodb_data:/data/db \
 --restart=unless-stopped \
 $MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION > /dev/null
 
