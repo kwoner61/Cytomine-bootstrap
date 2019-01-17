@@ -33,7 +33,7 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=true
+CORE_DEVELOPMENT=false
 
 #------------------------------------------------------------------------------
 # IMS
