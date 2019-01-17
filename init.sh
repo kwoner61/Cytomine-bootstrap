@@ -75,7 +75,14 @@ for i in ${FILES[@]}; do
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link iipJP2:iipJP2/d" $i; fi
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
-            if [[ $CORE_DEVELOPMENT = true ]]; then sed -i "/--link core:core/d" $i; fi
+            if [[ $CORE_DEVELOPMENT = true ]]; then
+                sed -i "/--link core:core/d" $i
+                sed -i "/-p 5672:5672 -p 15672:15672/d" $i
+                sed -i "/-p 5432:5432/d" $i
+                sed -i "/-p 27017:27017 -p 28017:28017/d" $i
+                sed -i "/-p 10022:22/d" $i
+                sed -i "/-p 22/d" $i
+            fi
             if [[ $IMS_DEVELOPMENT = true ]]; then sed -i "/--link ims:ims/d" $i; fi
         elif [[ "$OSTYPE" == "darwin"* ]]; then
             sed -i '' -e "s~\$IRIS_ADMIN_NAME~$IRIS_ADMIN_NAME~g" $i
@@ -85,7 +92,14 @@ for i in ${FILES[@]}; do
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link iipJP2:iipJP2/d" $i; fi
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
-            if [[ $CORE_DEVELOPMENT = true ]]; then sed -i '' -e "/--link core:core/d" $i; fi
+            if [[ $CORE_DEVELOPMENT = true ]]; then 
+                sed -i '' -e "/--link core:core/d" $i
+                sed -i '' -e "/-p 5672:5672 -p 15672:15672/d" $i
+                sed -i '' -e "/-p 5432:5432/d" $i
+                sed -i '' -e "/-p 27017:27017 -p 28017:28017/d" $i
+                sed -i '' -e "/-p 10022:22/d" $i
+                sed -i '' -e "/-p 22/d" $i
+            fi
             if [[ $IMS_DEVELOPMENT = true ]]; then sed -i '' -e "/--link ims:ims/d" $i; fi
         fi
     fi
