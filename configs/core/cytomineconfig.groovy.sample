@@ -35,6 +35,7 @@ grails.iipJP2.enabled=$IIP_JP2_ENABLED
 grails.software.enabled=$SOFTWARE_ENABLED
 grails.core.dev=$CORE_DEVELOPMENT
 grails.ims.dev=$IMS_DEVELOPMENT
+grails.software.dev=$SOFTWARE_DEVELOPMENT
 
 grails.adminPassword='$ADMIN_PWD'
 grails.adminPrivateKey='$ADMIN_PRIV_KEY'

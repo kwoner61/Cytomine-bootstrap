@@ -33,7 +33,8 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=false
+CORE_DEVELOPMENT=true
+
 
 #------------------------------------------------------------------------------
 # IMS
@@ -99,7 +100,8 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 # PLUGIN: SOFTWARE
 #------------------------------------------------------------------------------
-SOFTWARE_ENABLED=true
+SOFTWARE_ENABLED=false
+SOFTWARE_DEVELOPMENT=true
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs

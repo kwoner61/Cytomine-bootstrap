@@ -35,6 +35,11 @@ if [[ $IMS_DEVELOPMENT = true ]]; then
     BIOFORMAT_ALIAS=localhost
 fi
 
+if [[ $SOFTWARE_ENABLED = false ]]; then
+    RABBITMQ_ALIAS=rabbitmq
+fi
+
+
 VARIABLES=()
 while read LINE; do
     if [[ $LINE == *"="* ]]; then
@@ -53,7 +58,7 @@ done  <<< "$(cat configuration-versions.sh)"
 VARIABLES=("${VARIABLES[@]}" "${KEYS[@]}")
 VARIABLES=("${VARIABLES[@]}" "${ALIASES[@]}")
 
-for i in ${FILES[@]}; do
+for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr reguliere
     if [[ -f "$i.sample" ]]; then
         cp $i.sample $i
         for j in ${VARIABLES[@]}; do
