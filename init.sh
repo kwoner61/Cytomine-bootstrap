@@ -21,11 +21,13 @@
 . configuration-versions.sh
 
 # Fix container aliases for core/ims development
-ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS')
+ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS' 'SLURM_ALIAS')
+
 POSTGRES_ALIAS=postgresql
 MONGODB_ALIAS=mongodb
 RABBITMQ_ALIAS=rabbitmq
 BIOFORMAT_ALIAS=bioformat
+SLURM_ALIAS=slurm
 if [[ $CORE_DEVELOPMENT = true ]]; then
     POSTGRES_ALIAS=localhost
     MONGODB_ALIAS=localhost
@@ -35,9 +37,13 @@ if [[ $IMS_DEVELOPMENT = true ]]; then
     BIOFORMAT_ALIAS=localhost
 fi
 
-if [[ $SOFTWARE_ENABLED = false ]]; then
-    RABBITMQ_ALIAS=rabbitmq
+if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
+    SLURM_ALIAS=localhost
+    RABBITMQ_ALIAS=localhost
 fi
+#if [[ $SOFTWARE_ENABLED = false ]]; then
+#    RABBITMQ_ALIAS=rabbitmq
+#fi
 
 
 VARIABLES=()
@@ -79,7 +85,7 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
             if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i "/--link retrieval:retrieval/d" $i; fi
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $SOFTWARE_DEVELOPMENT = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then
                 sed -i "/--link core:core/d" $i
             else
@@ -97,7 +103,7 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
             if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i '' -e "/--link retrieval:retrieval/d" $i; fi
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $SOFTWARE_DEVELOPMENT = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then 
                 sed -i '' -e "/--link core:core/d" $i
             else

@@ -29,8 +29,9 @@ echo "RETRIEVAL=$RETRIEVAL_ENABLED"
 echo "IRIS=$IRIS_ENABLED"
 echo "IIPJP2=$IIP_JP2_ENABLED"
 echo "BIOFORMAT=$BIOFORMAT_ENABLED"
-echo "SOFTWARE=$SOFTWARE_ENABLED"
+echo "SOFTWARE enabled?=$SOFTWARE_ENABLED"
 echo "CORE_DEVELOPMENT=$CORE_DEVELOPMENT"
+echo "IMS_DEVELOPMENT=$IMS_DEVELOPMENT"
 echo "IMS_DEVELOPMENT=$IMS_DEVELOPMENT"
 echo ""
 echo "* Container versions *"
@@ -72,7 +73,8 @@ docker start memcached
 
 
 # ----- RABBITMQ -----
-if [[ $SOFTWARE_ENABLED = true ]]
+#whatever happen, we need rabbitMQ
+if [[ true = true ]]
 then
     docker create --name rabbitmq \
     -p 5672:5672 -p 15672:15672 \
@@ -275,7 +277,8 @@ docker start nginx
 
 
 # ----- SLURM -----
-if [[ $SOFTWARE_ENABLED = true ]]
+#whatever happen, we need SLURM
+if [[ true = true ]]
 then
     docker volume create --name slurm_data > /dev/null
     docker create --name slurm -t -h cytomine-slurm \
@@ -293,7 +296,7 @@ then
 fi
 
 # ----- SOFTWARE ROUTER -----
-if [[ $SOFTWARE_ENABLED = true ]]
+if [[ $SOFTWARE_DEVELOPMENT = false ]]
 then
     docker create --name software_router \
     --link rabbitmq:rabbitmq \
