@@ -46,9 +46,9 @@ if [[ $IIP_JP2_ENABLED = true ]]; then echo "$IIPJP2_NAMESPACE/iip-jp2000:$IIPJP
 echo "$MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION"
 if [[ $RETRIEVAL_ENABLED = true ]]; then echo "$RETRIEVAL_NAMESPACE/retrieval:$RETRIEVAL_VERSION"; fi
 if [[ $IRIS_ENABLED = true ]]; then echo "$IRIS_NAMESPACE/iris:$IRIS_VERSION"; fi
-if [[ true = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
-if [[ true = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
-if [[ true = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
+if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
+if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
+if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
 echo ""
 
 # Create server SSH keys if needed
