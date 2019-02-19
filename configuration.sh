@@ -80,7 +80,7 @@ BIOFORMAT_ENABLED=true
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)
 #------------------------------------------------------------------------------
-IIP_JP2_ENABLED=false
+IIP_JP2_ENABLED=true
 
 # Advanced configuration.
 IIP_JP2_URL=localhost-iip-jp2000
@@ -100,8 +100,8 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 # PLUGIN: SOFTWARE
 #------------------------------------------------------------------------------
-SOFTWARE_ENABLED=false
 SOFTWARE_DEVELOPMENT=true
+
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs

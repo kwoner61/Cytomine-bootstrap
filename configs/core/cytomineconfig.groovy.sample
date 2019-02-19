@@ -32,7 +32,6 @@ grails.retrieval.enabled=$RETRIEVAL_ENABLED
 grails.backup.enabled=$BACKUP_ENABLED
 grails.bioformat.enabled=$BIOFORMAT_ENABLED
 grails.iipJP2.enabled=$IIP_JP2_ENABLED
-grails.software.enabled=$SOFTWARE_ENABLED
 grails.core.dev=$CORE_DEVELOPMENT
 grails.ims.dev=$IMS_DEVELOPMENT
 grails.software.dev=$SOFTWARE_DEVELOPMENT

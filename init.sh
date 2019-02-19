@@ -28,6 +28,7 @@ MONGODB_ALIAS=mongodb
 RABBITMQ_ALIAS=rabbitmq
 BIOFORMAT_ALIAS=bioformat
 SLURM_ALIAS=slurm
+
 if [[ $CORE_DEVELOPMENT = true ]]; then
     POSTGRES_ALIAS=localhost
     MONGODB_ALIAS=localhost
@@ -41,9 +42,6 @@ if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
     SLURM_ALIAS=localhost
     RABBITMQ_ALIAS=localhost
 fi
-#if [[ $SOFTWARE_ENABLED = false ]]; then
-#    RABBITMQ_ALIAS=rabbitmq
-#fi
 
 
 VARIABLES=()
