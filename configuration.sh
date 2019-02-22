@@ -103,6 +103,8 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 SOFTWARE_DEVELOPMENT=true
 PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
+#SLURM_IP_CONTAINER="172.0.0.1"
+
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs

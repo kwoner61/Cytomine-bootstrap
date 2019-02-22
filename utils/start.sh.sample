@@ -292,6 +292,12 @@ then
 
     docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
     docker start slurm
+
+     #we will retrieve the ip of the slurm container. Because we need it for the softwareRouter
+
+     var=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slurm)
+     sed -i "s/SLURM_IP_CONTAINER/$var/g" configs/software_router/config.groovy
+     cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
 fi
 
 # ----- SOFTWARE ROUTER -----
@@ -313,4 +319,6 @@ then
     docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
     docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
     docker start software_router
+
 fi
+
