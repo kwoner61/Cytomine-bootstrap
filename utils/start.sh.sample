@@ -31,6 +31,7 @@ echo "IIPJP2=$IIP_JP2_ENABLED"
 echo "BIOFORMAT=$BIOFORMAT_ENABLED"
 echo "CORE_DEVELOPMENT=$CORE_DEVELOPMENT"
 echo "IMS_DEVELOPMENT=$IMS_DEVELOPMENT"
+echo "SOFTWARE=$SOFTWARE_ENABLED"
 echo "SOFTWARE_DEVELOPMENT=$SOFTWARE_DEVELOPMENT"
 echo ""
 echo "* Container versions *"
@@ -46,9 +47,9 @@ if [[ $IIP_JP2_ENABLED = true ]]; then echo "$IIPJP2_NAMESPACE/iip-jp2000:$IIPJP
 echo "$MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION"
 if [[ $RETRIEVAL_ENABLED = true ]]; then echo "$RETRIEVAL_NAMESPACE/retrieval:$RETRIEVAL_VERSION"; fi
 if [[ $IRIS_ENABLED = true ]]; then echo "$IRIS_NAMESPACE/iris:$IRIS_VERSION"; fi
-if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
-if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
-if [[ $SOFTWARE_DEVELOPMENT = false ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
+if [[ $SOFTWARE_ENABLED = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
+if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
+if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
 echo ""
 
 # Create server SSH keys if needed
@@ -72,8 +73,7 @@ docker start memcached
 
 
 # ----- RABBITMQ -----
-#whatever happen, we need rabbitMQ
-if [[ true = true ]]
+if [[ $SOFTWARE_ENABLED = true ]]
 then
     docker create --name rabbitmq \
     -p 5672:5672 -p 15672:15672 \
@@ -276,8 +276,7 @@ docker start nginx
 
 
 # ----- SLURM -----
-#whatever happen, we need SLURM
-if [[ true = true ]]
+if [[ $SOFTWARE_ENABLED = true ]]
 then
     docker volume create --name slurm_data > /dev/null
     docker create --name slurm -t -h cytomine-slurm \
@@ -307,22 +306,23 @@ fi
 # ----- SOFTWARE ROUTER -----
 if [[ $SOFTWARE_DEVELOPMENT = false ]]
 then
-    docker create --name software_router \
-    --link rabbitmq:rabbitmq \
-    --link slurm:slurm \
-    --privileged \
-    -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
-    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -v $JOBS_PATH:$JOBS_PATH \
-    -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
-    --restart=unless-stopped \
-    -p 22 \
-    $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
+    if [[ $SOFTWARE_ENABLED = true ]]
+    then
+        docker create --name software_router \
+        --link rabbitmq:rabbitmq \
+        --link slurm:slurm \
+        --privileged \
+        -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
+        -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+        -v $JOBS_PATH:$JOBS_PATH \
+        -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
+        --restart=unless-stopped \
+        -p 22 \
+        $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
 
-    docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
-    docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
-    docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
-    docker start software_router
-
+        docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
+        docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
+        docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
+        docker start software_router
+     fi
 fi
-

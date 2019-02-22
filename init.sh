@@ -62,7 +62,7 @@ done  <<< "$(cat configuration-versions.sh)"
 VARIABLES=("${VARIABLES[@]}" "${KEYS[@]}")
 VARIABLES=("${VARIABLES[@]}" "${ALIASES[@]}")
 
-for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr reguliere
+for i in ${FILES[@]}; do
     if [[ -f "$i.sample" ]]; then
         cp $i.sample $i
         for j in ${VARIABLES[@]}; do
@@ -83,7 +83,7 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
             if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i "/--link retrieval:retrieval/d" $i; fi
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_DEVELOPMENT = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then
                 sed -i "/--link core:core/d" $i
             else
@@ -101,7 +101,7 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
             if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i '' -e "/--link retrieval:retrieval/d" $i; fi
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_DEVELOPMENT = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
             if [[ $CORE_DEVELOPMENT = true ]]; then 
                 sed -i '' -e "/--link core:core/d" $i
             else
@@ -117,7 +117,3 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
 done
 
 mv utils/start.sh ./start.sh
-
-if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
-   cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
-fi

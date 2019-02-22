@@ -100,10 +100,15 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 # PLUGIN: SOFTWARE
 #------------------------------------------------------------------------------
+#Obviously, SOFTWARE_DEVELOPMENT=true implies SOFTWARE_ENABLED=true
+SOFTWARE_ENABLED=true
 SOFTWARE_DEVELOPMENT=true
 PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
-#SLURM_IP_CONTAINER="172.0.0.1"
+#note for the developers: this path is the path which refer to your cytomine software router folder
+#so basically, you have to fill this field with the correct path.
+# for example, you can fill the fiel like: PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
+
 
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
