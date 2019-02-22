@@ -117,3 +117,8 @@ for i in ${FILES[@]}; do ## cherche dans file.sh     sed=fct pour remplacer expr
 done
 
 mv utils/start.sh ./start.sh
+
+if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
+    SLURM_IP_CONTAINER="42"
+    cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
+fi

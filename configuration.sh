@@ -101,6 +101,7 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 # PLUGIN: SOFTWARE
 #------------------------------------------------------------------------------
 SOFTWARE_DEVELOPMENT=true
+PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
