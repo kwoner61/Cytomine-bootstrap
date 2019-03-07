@@ -34,6 +34,8 @@ SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
 CORE_DEVELOPMENT=false
+POSTGRESQL_VOLUME=postgis_data
+MONGODB_VOLUME=mongodb_data
 
 #------------------------------------------------------------------------------
 # IMS
@@ -95,6 +97,7 @@ IRIS_ADMIN_EMAIL="ian.admin@somewhere.edu"
 
 # Advanced configuration.
 IRIS_ID="LOCAL_CYTOMINE_IRIS"
+IRIS_VOLUME=iris_data
 
 #------------------------------------------------------------------------------
 # PLUGIN: SOFTWARE
@@ -108,3 +111,4 @@ SERVER_SSHKEYS_PATH=/data/ssh
 # Advanced configuration.
 RABBITMQ_LOGIN="router"
 RABBITMQ_PASSWORD="router"
+SLURM_VOLUME=slurm_data

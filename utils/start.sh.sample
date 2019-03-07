@@ -85,21 +85,21 @@ fi
 
 
 # ----- POSTGRESQL ------
-docker volume create --name postgis_data > /dev/null
+docker volume create --name $POSTGRESQL_VOLUME > /dev/null
 docker run -d -m 8g \
 -p 5432:5432 \
 --name postgresql \
--v postgis_data:/var/lib/postgresql \
+-v $POSTGRESQL_VOLUME:/var/lib/postgresql \
 --restart=unless-stopped \
 $POSTGIS_NAMESPACE/postgis:$POSTGIS_VERSION > /dev/null
 
 
 # ----- MONGODB -----
-docker volume create --name mongodb_data > /dev/null
+docker volume create --name $MONGODB_VOLUME > /dev/null
 docker run -d \
 -p 27017:27017 -p 28017:28017 \
 --name mongodb \
--v mongodb_data:/data/db \
+-v $MONGODB_VOLUME:/data/db \
 --restart=unless-stopped \
 $MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION > /dev/null
 
@@ -228,9 +228,9 @@ fi
 # ----- IRIS -----
 if [[ $IRIS_ENABLED = true ]]
 then
-    docker volume create --name iris_data > /dev/null
+    docker volume create --name $IRIS_VOLUME > /dev/null
     docker create --name iris \
-    -v iris_data:/var/lib/tomcat7/db \
+    -v $IRIS_VOLUME:/var/lib/tomcat7/db \
     --restart=unless-stopped \
     $IRIS_NAMESPACE/iris:$IRIS_VERSION > /dev/null
 
@@ -277,10 +277,10 @@ docker start nginx
 # ----- SLURM -----
 if [[ $SOFTWARE_ENABLED = true ]]
 then
-    docker volume create --name slurm_data > /dev/null
+    docker volume create --name $SLURM_VOLUME > /dev/null
     docker create --name slurm -t -h cytomine-slurm \
     --privileged \
-    -v slurm_data:/var/lib/mysql \
+    -v $SLURM_VOLUME:/var/lib/mysql \
     -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
     -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
     -e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
