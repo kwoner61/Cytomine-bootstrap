@@ -339,6 +339,7 @@ if [[ $SOFTWARE_DEVELOPMENT = false ]]
 then
     if [[ $SOFTWARE_ENABLED = true ]]
     then
+        echo "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs"
         docker create --name software_router \
         --link rabbitmq:rabbitmq \
         --link slurm:slurm \

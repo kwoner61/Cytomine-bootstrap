@@ -14,7 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+. ../configuration.sh
+
+if [[ $CORE_DEVELOPMENT = true ]]; then
+    ADMIN_PWD="A"
+    ADMIN_PUB_KEY="B"
+    ADMIN_PRIV_KEY="C"
+    SUPERADMIN_PUB_KEY="D"
+    SUPERADMIN_PRIV_KEY="E"
+    RABBITMQ_PUB_KEY="F"
+    RABBITMQ_PRIV_KEY="G"
+    IMS_PUB_KEY="H"
+    IMS_PRIV_KEY="I"
+    SERVER_ID="J"
+else
+
+ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     ADMIN_PWD=$(cat /proc/sys/kernel/random/uuid)
     ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
     ADMIN_PRIV_KEY=$(cat /proc/sys/kernel/random/uuid)
@@ -36,6 +51,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     IMS_PUB_KEY=$(uuidgen)
     IMS_PRIV_KEY=$(uuidgen)
     SERVER_ID=$(uuidgen)
+    fi
 fi
 
 KEYS=('ADMIN_PWD' 'ADMIN_PUB_KEY' 'ADMIN_PRIV_KEY' 'SUPERADMIN_PUB_KEY' 'SUPERADMIN_PRIV_KEY'
