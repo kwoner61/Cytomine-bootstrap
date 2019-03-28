@@ -33,7 +33,7 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=false
+CORE_DEVELOPMENT=true
 
 
 #------------------------------------------------------------------------------
@@ -102,17 +102,20 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 #Obviously, SOFTWARE_DEVELOPMENT=true implies SOFTWARE_ENABLED=true
 SOFTWARE_ENABLED=true
-SOFTWARE_DEVELOPMENT=true
-PATH_SOFTWAREROUTER_CONFIG=""
+SOFTWARE_DEVELOPMENT=false
+PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
 #note for the developers: this path is the path which refer to your cytomine software router folder
 #so basically, you have to fill this field with the correct path.
-# for example, you can fill the fiel like: PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
 
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs
+
+PREFIX_SSH_FILE=keyRSA
+SERVER_SSHKEYS_PATH_PUBLIC=/data/ssh/keyRSA.pub
+SERVER_SSHKEYS_PATH_PRIVATE=/data/ssh/keyRSA
 SERVER_SSHKEYS_PATH=/data/ssh
 
 # Advanced configuration.

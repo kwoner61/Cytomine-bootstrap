@@ -96,4 +96,10 @@ then
     docker rm -v slurm
 fi
 
+if [[ "$(docker ps -q -f name=slurm2)" ]]
+then
+    docker stop slurm2
+    docker rm -v slurm2
+fi
+
 echo "Done."

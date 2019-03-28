@@ -20,3 +20,4 @@ cytomine.software.sshKeysFile='$SERVER_SSHKEYS_PATH/id_rsa'
 
 cytomine.software.softDev='$SOFTWARE_DEVELOPMENT'
 cytomine.software.slurmip='SLURM_IP_CONTAINER'
+

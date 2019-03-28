@@ -50,7 +50,7 @@ if [[ $IRIS_ENABLED = true ]]; then echo "$IRIS_NAMESPACE/iris:$IRIS_VERSION"; f
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
-echo ""
+echo "create server ssh Keys"
 
 # Create server SSH keys if needed
 SERVER_SSHKEYS_FILE="$SERVER_SSHKEYS_PATH/id_rsa"
@@ -218,6 +218,7 @@ then
     --link mongodb:mongodb \
     --link rabbitmq:rabbitmq \
     -v /etc/localtime:/etc/localtime \
+    -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
     --restart=unless-stopped \
     $CORE_NAMESPACE/core:$CORE_VERSION > /dev/null
 
@@ -302,6 +303,36 @@ then
     fi
 
 fi
+
+# ----- SLURM 222222222-----
+if [[ false = true ]]
+then
+    docker volume create --name slurm2_data > /dev/null
+    docker create --name slurm2 -t -h cytomine-slurm \
+    --privileged \
+    -v slurm2_data:/var/lib/mysql \
+    -v $SERVER_SSHKEYS_PATH_PRIVATE:$SERVER_SSHKEYS_PATH_PRIVATE \
+    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+    -e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
+    -p 10023:22 \
+    --restart=unless-stopped \
+    --cpu-shares=0\
+    $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
+
+    docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
+    docker start slurm2
+
+    if [[ $SOFTWARE_DEVELOPMENT = true ]]
+    then
+         #we will retrieve the ip of the slurm container. Because we need it for the softwareRouter
+
+         var=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slurm2)
+         sed -i "s/SLURM2_IP_CONTAINER/$var/g" configs/software_router/config.groovy
+         cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
+    fi
+
+fi
+
 
 # ----- SOFTWARE ROUTER -----
 if [[ $SOFTWARE_DEVELOPMENT = false ]]
