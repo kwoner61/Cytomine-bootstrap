@@ -10,6 +10,5 @@ bash stop.sh
 echo "2/ Init..."
 bash init.sh
 
-
 echo "3/ Launch new containers..."
 bash start.sh

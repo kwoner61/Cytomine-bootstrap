@@ -112,9 +112,6 @@ SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs
 
-PREFIX_SSH_FILE=keyRSA
-SERVER_SSHKEYS_PATH_PUBLIC=/data/ssh/keyRSA.pub
-SERVER_SSHKEYS_PATH_PRIVATE=/data/ssh/keyRSA
 SERVER_SSHKEYS_PATH=/data/ssh
 
 # Advanced configuration.

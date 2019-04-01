@@ -53,15 +53,10 @@ if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software
 echo "create server ssh Keys"
 
 # Create server SSH keys if needed
-SERVER_SSHKEYS_FILE="$SERVER_SSHKEYS_PATH/id_rsa"
-if [ ! -e $SERVER_SSHKEYS_FILE ]
-then
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        apt-get install -y ssh-keygen
-    fi
-    ssh-keygen -t rsa -N "" -C $CORE_URL -f $SERVER_SSHKEYS_FILE
-fi
+SERVERLOCAL="slurm"
+SERVER_SSHKEYS_FILEPATH="$SERVER_SSHKEYS_PATH/slurm"
 
+mkdir SERVER_SSHKEYS_FILEPATH
 
 # ----- MEMCACHED -----
 docker create --name memcached \
@@ -283,9 +278,8 @@ then
     docker create --name slurm -t -h cytomine-slurm \
     --privileged \
     -v slurm_data:/var/lib/mysql \
-    -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
+    -v $SERVER_SSHKEYS_FILEPATH/:"/home/cytomine/.ssh/authorized_keys" \
     -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
     -p 10022:22 \
     --restart=unless-stopped \
     $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
@@ -313,7 +307,7 @@ then
     -v slurm2_data:/var/lib/mysql \
     -v $SERVER_SSHKEYS_PATH_PRIVATE:$SERVER_SSHKEYS_PATH_PRIVATE \
     -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -e SERVER_SSHKEYS_FILE=$SERVER_SSHKEYS_FILE \
+    -e SERVER_SSHKEYS_FILE="/home/cytomine/.ssh/authorized_keys" \
     -p 10023:22 \
     --restart=unless-stopped \
     --cpu-shares=0\
@@ -339,7 +333,6 @@ if [[ $SOFTWARE_DEVELOPMENT = false ]]
 then
     if [[ $SOFTWARE_ENABLED = true ]]
     then
-        echo "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs"
         docker create --name software_router \
         --link rabbitmq:rabbitmq \
         --link slurm:slurm \
@@ -347,7 +340,7 @@ then
         -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
         -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
         -v $JOBS_PATH:$JOBS_PATH \
-        -v $SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH \
+        -v $SERVER_SSHKEYS_FILEPATH:$SERVER_SSHKEYS_FILEPATH \
         --restart=unless-stopped \
         -p 22 \
         $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
