@@ -299,25 +299,22 @@ then
 fi
 
 # ----- SOFTWARE ROUTER -----
-if [[ $SOFTWARE_DEVELOPMENT = false ]]
+if [[ $SOFTWARE_DEVELOPMENT = false ] && [ $SOFTWARE_ENABLED = true ]]
 then
-    if [[ $SOFTWARE_ENABLED = true ]]
-    then
-        docker create --name software_router \
-        --link rabbitmq:rabbitmq \
-        --link slurm:slurm \
-        --privileged \
-        -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
-        -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-        -v $JOBS_PATH:$JOBS_PATH \
-        -v $SERVER_SSHKEYS_FILEPATH:$SERVER_SSHKEYS_FILEPATH \
-        --restart=unless-stopped \
-        -p 22 \
-        $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
+    docker create --name software_router \
+    --link rabbitmq:rabbitmq \
+    --link slurm:slurm \
+    --privileged \
+    -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
+    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+    -v $JOBS_PATH:$JOBS_PATH \
+    -v $SERVER_SSHKEYS_FILEPATH:$SERVER_SSHKEYS_FILEPATH \
+    --restart=unless-stopped \
+    -p 22 \
+    $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
 
-        docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
-        docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
-        docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
-        docker start software_router
-     fi
+    docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
+    docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
+    docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
+    docker start software_router
 fi
