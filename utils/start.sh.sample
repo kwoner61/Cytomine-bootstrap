@@ -51,8 +51,6 @@ if [[ $SOFTWARE_ENABLED = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABB
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
 
-SERVER_SSHKEYS_FILEPATH="$SERVER_SSHKEYS_PATH/slurm"
-
 # ----- MEMCACHED -----
 docker create --name memcached \
 --restart=unless-stopped \
@@ -273,7 +271,7 @@ then
     docker create --name slurm -t -h cytomine-slurm \
     --privileged \
     -v slurm_data:/var/lib/mysql \
-    -v $SERVER_SSHKEYS_FILEPATH/:"/home/cytomine/.ssh/authorized_keys" \
+    -v $SERVER_SSHKEYS_PATH/slurm/:"/home/cytomine/.ssh/authorized_keys" \
     -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
     -p 10022:22 \
     --restart=unless-stopped \
