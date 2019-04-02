@@ -39,7 +39,6 @@ fi
 
 if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
     SLURM_ALIAS=localhost
-    SLURM2_ALIAS=localhost
     RABBITMQ_ALIAS=localhost
 fi
 
