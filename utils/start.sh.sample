@@ -50,10 +50,7 @@ if [[ $IRIS_ENABLED = true ]]; then echo "$IRIS_NAMESPACE/iris:$IRIS_VERSION"; f
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
-echo "create server ssh Keys"
 
-# Create server SSH keys if needed
-SERVERLOCAL="slurm"
 SERVER_SSHKEYS_FILEPATH="$SERVER_SSHKEYS_PATH/slurm"
 
 mkdir SERVER_SSHKEYS_FILEPATH
