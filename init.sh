@@ -21,11 +21,13 @@
 . configuration-versions.sh
 
 # Fix container aliases for core/ims development
-ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS')
+ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS' 'SLURM_ALIAS')
+
 POSTGRES_ALIAS=postgresql
 MONGODB_ALIAS=mongodb
 RABBITMQ_ALIAS=rabbitmq
 BIOFORMAT_ALIAS=bioformat
+SLURM_ALIAS=slurm
 if [[ $CORE_DEVELOPMENT = true ]]; then
     POSTGRES_ALIAS=localhost
     MONGODB_ALIAS=localhost
@@ -34,6 +36,12 @@ fi
 if [[ $IMS_DEVELOPMENT = true ]]; then
     BIOFORMAT_ALIAS=localhost
 fi
+
+if [[ $SOFTWARE_DEVELOPMENT = true ]]; then
+    SLURM_ALIAS=localhost
+    RABBITMQ_ALIAS=localhost
+fi
+
 
 VARIABLES=()
 while read LINE; do

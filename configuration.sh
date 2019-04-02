@@ -79,7 +79,7 @@ BIOFORMAT_ENABLED=true
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)
 #------------------------------------------------------------------------------
-IIP_JP2_ENABLED=false
+IIP_JP2_ENABLED=true
 
 # Advanced configuration.
 IIP_JP2_URL=localhost-iip-jp2000
@@ -99,10 +99,18 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 # PLUGIN: SOFTWARE
 #------------------------------------------------------------------------------
+#Obviously, SOFTWARE_DEVELOPMENT=true implies SOFTWARE_ENABLED=true
 SOFTWARE_ENABLED=true
+SOFTWARE_DEVELOPMENT=false
+PATH_SOFTWAREROUTER_CONFIG=
+#note for the developers: this path is the path which refer to your cytomine software router folder
+#so basically, you have to fill this field with the correct path.
+#example: PATH_SOFTWAREROUTER_CONFIG="${HOME}/Cytomine-ULiege/Cytomine-software-router"
+
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs
+
 SERVER_SSHKEYS_PATH=/data/ssh
 
 # Advanced configuration.

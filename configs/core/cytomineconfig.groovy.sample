@@ -32,9 +32,9 @@ grails.retrieval.enabled=$RETRIEVAL_ENABLED
 grails.backup.enabled=$BACKUP_ENABLED
 grails.bioformat.enabled=$BIOFORMAT_ENABLED
 grails.iipJP2.enabled=$IIP_JP2_ENABLED
-grails.software.enabled=$SOFTWARE_ENABLED
 grails.core.dev=$CORE_DEVELOPMENT
 grails.ims.dev=$IMS_DEVELOPMENT
+grails.software.dev=$SOFTWARE_DEVELOPMENT
 
 grails.adminPassword='$ADMIN_PWD'
 grails.adminPrivateKey='$ADMIN_PRIV_KEY'
@@ -45,6 +45,12 @@ grails.ImageServerPrivateKey='$IMS_PRIV_KEY'
 grails.ImageServerPublicKey='$IMS_PUB_KEY'
 grails.rabbitMQPrivateKey='$RABBITMQ_PRIV_KEY'
 grails.rabbitMQPublicKey='$RABBITMQ_PUB_KEY'
+
+
+grails.prefixNameOfSSHFile='$PREFIX_SSH_FILE'
+grails.serverSshKeysPath='$SERVER_SSHKEYS_PATH'
+grails.serverSshKeysPathPrivate='$SERVER_SSHKEYS_PATH_PRIVATE'
+grails.serverSshKeysPathPublic='$SERVER_SSHKEYS_PATH_PUBLIC'
 
 grails.notification.email='$SENDER_EMAIL'
 grails.notification.password='$SENDER_EMAIL_PASS'
