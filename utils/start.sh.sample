@@ -294,7 +294,7 @@ then
 fi
 
 # ----- SOFTWARE ROUTER -----
-if [[ $SOFTWARE_DEVELOPMENT = false ] && [ $SOFTWARE_ENABLED = true ]]
+if [ $SOFTWARE_DEVELOPMENT = false ] && [ $SOFTWARE_ENABLED = true ]
 then
     docker create --name software_router \
     --link rabbitmq:rabbitmq \
