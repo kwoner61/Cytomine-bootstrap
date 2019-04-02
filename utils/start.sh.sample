@@ -298,36 +298,6 @@ then
 
 fi
 
-# ----- SLURM 222222222-----
-if [[ false = true ]]
-then
-    docker volume create --name slurm2_data > /dev/null
-    docker create --name slurm2 -t -h cytomine-slurm \
-    --privileged \
-    -v slurm2_data:/var/lib/mysql \
-    -v $SERVER_SSHKEYS_PATH_PRIVATE:$SERVER_SSHKEYS_PATH_PRIVATE \
-    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -e SERVER_SSHKEYS_FILE="/home/cytomine/.ssh/authorized_keys" \
-    -p 10023:22 \
-    --restart=unless-stopped \
-    --cpu-shares=0\
-    $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
-
-    docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
-    docker start slurm2
-
-    if [[ $SOFTWARE_DEVELOPMENT = true ]]
-    then
-         #we will retrieve the ip of the slurm container. Because we need it for the softwareRouter
-
-         var=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slurm2)
-         sed -i "s/SLURM2_IP_CONTAINER/$var/g" configs/software_router/config.groovy
-         cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
-    fi
-
-fi
-
-
 # ----- SOFTWARE ROUTER -----
 if [[ $SOFTWARE_DEVELOPMENT = false ]]
 then
