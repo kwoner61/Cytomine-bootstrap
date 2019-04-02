@@ -53,8 +53,6 @@ if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software
 
 SERVER_SSHKEYS_FILEPATH="$SERVER_SSHKEYS_PATH/slurm"
 
-mkdir SERVER_SSHKEYS_FILEPATH
-
 # ----- MEMCACHED -----
 docker create --name memcached \
 --restart=unless-stopped \
