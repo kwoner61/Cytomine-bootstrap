@@ -8,6 +8,7 @@ cytomine.hdf5.scriptToFindFiles=webapps/ROOT/WEB-INF/scripts/relatedFiles.sh
 cytomine.coreURL=http://$CORE_URL
 cytomine.storagePath=$IMS_STORAGE_PATH
 cytomine.storageBufferPath=$IMS_BUFFER_PATH
+cytomine.imageServerURL=$IMS_URL1
 cytomine.imageServerPublicKey=$IMS_PUB_KEY
 cytomine.imageServerPrivateKey=$IMS_PRIV_KEY
 cytomine.iipImageServerBase=http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi
@@ -27,3 +28,4 @@ cytomine.tiffinfo=tiffinfo
 cytomine.vipsthumbnail=/usr/local/bin/vipsthumbnail
 cytomine.gdalinfo=gdalinfo
 cytomine.gdaltranslate=gdal_translate
+

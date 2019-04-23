@@ -33,9 +33,9 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=false
-POSTGRESQL_VOLUME=postgis_data
-MONGODB_VOLUME=mongodb_data
+CORE_DEVELOPMENT=true
+POSTGRESQL_VOLUME=dev_5d_postgres
+MONGODB_VOLUME=dev_5d_mongo
 
 #------------------------------------------------------------------------------
 # IMS
@@ -48,7 +48,7 @@ IMS_BUFFER_PATH=/data/_buffer
 FAST_DATA_PATH=/data/images
 
 # Advanced configuration.
-IMS_DEVELOPMENT=false
+IMS_DEVELOPMENT=true
 
 IIP_OFF_URL=localhost-iip-cyto
 IIP_CYTO_URL=localhost-iip-cyto
