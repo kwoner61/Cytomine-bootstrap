@@ -35,7 +35,7 @@ echo "IMS_DEVELOPMENT=$IMS_DEVELOPMENT"
 echo ""
 echo "* Container versions *"
 echo "$NGINX_NAMESPACE/nginx:$NGINX_VERSION"
-if [[ $CORE_DEVELOPMENT = false ]]; then echo echo "$CORE_NAMESPACE/core:$CORE_VERSION"; fi
+if [[ $CORE_DEVELOPMENT = false ]]; then echo "$CORE_NAMESPACE/core:$CORE_VERSION"; fi
 echo "$POSTGIS_NAMESPACE/postgis:$POSTGIS_VERSION"
 echo "$MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION"
 if [[ $BACKUP_ENABLED = true ]]; then echo "$BACKUP_NAMESPACE/backup:$BACKUP_VERSION"; fi
