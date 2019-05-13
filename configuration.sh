@@ -108,6 +108,9 @@ PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 #so basically, you have to fill this field with the correct path.
 #example: PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
 
+LIMITCHECKCONTAINERS=50
+TIMETOSLEEP=5
+
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images
 JOBS_PATH=/data/jobs
