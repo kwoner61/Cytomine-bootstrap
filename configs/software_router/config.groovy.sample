@@ -16,5 +16,8 @@ cytomine.software.repositoryManagerRefreshRate=300
 cytomine.software.path.softwareSources='$SOFTWARE_CODE_PATH'
 cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'
 cytomine.software.jobs='$JOBS_PATH'
-cytomine.software.sshKeysFile='$SERVER_SSHKEYS_PATH/'
+cytomine.software.sshKeysFile='$SERVER_SSHKEYS_PATH'
+
+cytomine.software.ping.sleep=30000
+cytomine.software.ping.maxRetries=20
 
