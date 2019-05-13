@@ -33,7 +33,7 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=true
+CORE_DEVELOPMENT=false
 
 #------------------------------------------------------------------------------
 # IMS
@@ -101,13 +101,12 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #------------------------------------------------------------------------------
 #Obviously, SOFTWARE_DEVELOPMENT=true implies SOFTWARE_ENABLED=true
 SOFTWARE_ENABLED=true
-SOFTWARE_DEVELOPMENT=true
+SOFTWARE_DEVELOPMENT=false
 PATH_SOFTWAREROUTER_CONFIG=""
 
 #note for the developers: this path is the path which refer to your cytomine software router folder
 #so basically, you have to fill this field with the correct path.
-#example: PATH_SOFTWAREROUTER_CONFIG="${HOME}/IdeaProjects/Cytomine-software-router2"
-
+#example: PATH_SOFTWAREROUTER_CONFIG="${HOME}/Cytomine-ULiege/Cytomine-software-router"
 LIMITCHECKCONTAINERS=50
 TIMETOSLEEP=5
 
