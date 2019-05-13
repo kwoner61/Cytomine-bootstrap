@@ -51,7 +51,7 @@ if [[ $SOFTWARE_ENABLED = true ]]; then echo "$RABBITMQ_NAMESPACE/rabbitmq:$RABB
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SLURM_NAMESPACE/slurm:$SLURM_VERSION"; fi
 if [[ $SOFTWARE_ENABLED = true ]]; then echo "$SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION"; fi
 
-SERVER_SSHKEYS_FILEPATH="$SERVER_SSHKEYS_PATH/slurm"
+mkdir -m 777 $SERVER_SSHKEYS_PATH
 
 # ----- MEMCACHED -----
 docker create --name memcached \
@@ -265,51 +265,78 @@ if [[ $IIP_JP2_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iipjp
 
 docker start nginx
 
+#we'll check if the folder containing the ssh key for the slurm container exist. if yes, we'll check if the keys are in the folder.
+#if the folder does'nt exist, we'll wait a little bit. because it may means that the core is still in the starting mode and
+#then, the core will create the folder and the kpair of shh for slurm.
 
-# ----- SLURM -----
-if [[ $SOFTWARE_ENABLED = true ]]
-then
-    docker volume create --name slurm_data > /dev/null
-    docker create --name slurm -t -h cytomine-slurm \
-    --privileged \
-    -v slurm_data:/var/lib/mysql \
-    -v $SERVER_SSHKEYS_FILEPATH/:"/home/cytomine/.ssh/authorized_keys" \
-    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -p 10022:22 \
-    --restart=unless-stopped \
-    $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
-
-    docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
-    docker start slurm
-
-    if [[ $SOFTWARE_DEVELOPMENT = true ]]
+i=0
+while   [ $i -le $LIMITCHECKCONTAINERS ]
+do
+    if [[ -d $SERVER_SSHKEYS_PATH/slurm ]]
     then
-         #we will retrieve the ip of the slurm container. Because we need it for the softwareRouter
 
-         var=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slurm)
-         sed -i "s/SLURM_IP_CONTAINER/$var/g" configs/software_router/config.groovy
-         cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
+            echo "the folder exist!"
+            if [[ -f $SERVER_SSHKEYS_PATH/slurm/slurm.pub && -f $SERVER_SSHKEYS_PATH/slurm/slurm ]]
+            then
+                echo "pair of keys is here!"
+                echo create volume
+                # ----- SLURM -----
+                if [[ $SOFTWARE_ENABLED = true ]]
+                then
+                    docker volume create --name slurm_data > /dev/null
+                    docker create --name slurm -t -h cytomine-slurm \
+                    --privileged \
+                    -v slurm_data:/var/lib/mysql \
+                    -v "/data/ssh/slurm/":"/data/ssh/" \
+                    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+                    -p 10022:22 \
+                    --restart=unless-stopped \
+                    $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
+
+                    docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
+                    docker start slurm
+
+                    if [[ $SOFTWARE_DEVELOPMENT = true ]]
+                    then
+                         #we will retrieve the ip of the slurm container. Because we need it for the softwareRouter
+
+                         var=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slurm)
+                         sed -i "s/SLURM_IP_CONTAINER/$var/g" configs/software_router/config.groovy
+                         cp configs/software_router/config.groovy $PATH_SOFTWAREROUTER_CONFIG
+                    fi
+
+                fi
+
+                # ----- SOFTWARE ROUTER -----
+                if [ $SOFTWARE_DEVELOPMENT = false ] && [ $SOFTWARE_ENABLED = true ]
+                then
+                    docker create --name software_router \
+                    --link rabbitmq:rabbitmq \
+                    --link slurm:slurm \
+                    --privileged \
+                    -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
+                    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
+                    -v $JOBS_PATH:$JOBS_PATH \
+                    -v "/data/ssh/":"/data/ssh/" \
+                    --restart=unless-stopped \
+                    -p 22 \
+                    $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
+
+                    docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
+                    docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
+                    docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
+                    docker start software_router
+                fi
+
+                ((i=$LIMITCHECKCONTAINERS+1))
+            else
+                ((i++))
+                sleep $TIMETOSLEEP
+            fi
+
+        else
+            echo "folder doesn't exist!"
+            ((i++))
+            sleep $TIMETOSLEEP
     fi
-
-fi
-
-# ----- SOFTWARE ROUTER -----
-if [ $SOFTWARE_DEVELOPMENT = false ] && [ $SOFTWARE_ENABLED = true ]
-then
-    docker create --name software_router \
-    --link rabbitmq:rabbitmq \
-    --link slurm:slurm \
-    --privileged \
-    -v $SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH \
-    -v $SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH \
-    -v $JOBS_PATH:$JOBS_PATH \
-    -v $SERVER_SSHKEYS_FILEPATH:$SERVER_SSHKEYS_FILEPATH \
-    --restart=unless-stopped \
-    -p 22 \
-    $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
-
-    docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
-    docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
-    docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
-    docker start software_router
-fi
+done
