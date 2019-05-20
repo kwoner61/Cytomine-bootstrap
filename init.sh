@@ -32,7 +32,7 @@ if [[ $CORE_DEVELOPMENT = true ]]; then
     RABBITMQ_ALIAS=localhost
 fi
 if [[ $IMS_DEVELOPMENT = true ]]; then
-    BIOFORMAT_ALIAS=localhost
+    BIOFORMAT_ALIAS=bioformat
 fi
 
 VARIABLES=()
