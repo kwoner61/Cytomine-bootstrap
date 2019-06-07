@@ -1,7 +1,7 @@
 cytomine.ims.charset = "UTF-8"
 
-cytomine.ims.server.url = "http://$IMS_URL1"
-cytomine.ims.server.core.url = "http://$CORE_URL"
+cytomine.ims.server.url = "$HTTP_PROTOCOL://$IMS_URL"
+cytomine.ims.server.core.url = "$HTTP_PROTOCOL://$CORE_URL"
 cytomine.ims.server.publicKey = "$IMS_PUB_KEY"
 cytomine.ims.server.privateKey = "$IMS_PRIV_KEY"
 
@@ -12,6 +12,7 @@ cytomine.ims.conversion.vips.compression = "lzw"
 cytomine.ims.conversion.vips.executable = "vips" // /usr/local/bin/vips
 cytomine.ims.conversion.unzip.executable = "unzip"
 cytomine.ims.conversion.gdal.executable = "gdal_translate"
+cytomine.ims.conversion.ffmpeg.executable = "ffmpeg"
 cytomine.ims.conversion.bioformats.enabled = $BIOFORMAT_ENABLED
 cytomine.ims.conversion.bioformats.hostname = "$BIOFORMAT_ALIAS"
 cytomine.ims.conversion.bioformats.port = 4321
@@ -19,6 +20,7 @@ cytomine.ims.conversion.bioformats.port = 4321
 cytomine.ims.detection.tiffinfo.executable = "tiffinfo"
 cytomine.ims.detection.identify.executable = "identify" // /usr/local/bin/identify
 cytomine.ims.detection.gdal.executable = "gdalinfo"
+cytomine.ims.detection.ffprobe.executable = "ffprobe"
 cytomine.ims.metadata.exiftool.executable = "exiftool"
 
 cytomine.ims.pyramidalTiff.iip.url = "http://$IIP_OFF_URL/fcgi-bin/iipsrv.fcgi"

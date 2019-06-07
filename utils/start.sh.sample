@@ -20,7 +20,7 @@ echo "Starting Cytomine..."
 echo "Configuration:"
 echo "* Main URLs *"
 echo "CORE_URL=$CORE_URL"
-echo "IMS_URL=$IMS_URL1"
+echo "IMS_URL=$IMS_URL"
 echo "UPLOAD_URL=$UPLOAD_URL"
 echo ""
 echo "* Plugins *"
@@ -249,23 +249,16 @@ docker create --name nginx \
 --link core:core \
 --link iipJP2:iipJP2 \
 -v $IMS_BUFFER_PATH:/tmp/uploaded \
+-v $PROXY_CACHE_PATH:/cache \
+-v $CERTIFICATE_PATH:/certificates \
 -p 80:80 \
+-p 443:443 \
 --restart=unless-stopped \
 $NGINX_NAMESPACE/nginx:$NGINX_VERSION > /dev/null
 
 docker cp $PWD/configs/nginx/nginx.conf nginx:/usr/local/nginx/conf/nginx.conf
-
-if [[ $CORE_DEVELOPMENT = false ]]; then
-    docker cp $PWD/configs/nginx/server-core.conf nginx:/usr/local/nginx/conf/server-core.conf;
-else
-    docker cp $PWD/configs/nginx/server-core-dev.conf nginx:/usr/local/nginx/conf/server-core-dev.conf;
-fi
-
-if [[ $IMS_DEVELOPMENT = false ]]; then
-    docker cp $PWD/configs/nginx/server-ims.conf nginx:/usr/local/nginx/conf/server-ims.conf;
-else
-    docker cp $PWD/configs/nginx/server-ims-dev.conf nginx:/usr/local/nginx/conf/server-ims-dev.conf;
-fi
+docker cp $PWD/configs/nginx/server-core.conf nginx:/usr/local/nginx/conf/server-core.conf;
+docker cp $PWD/configs/nginx/server-ims.conf nginx:/usr/local/nginx/conf/server-ims.conf;
 
 if [[ $IRIS_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iris.conf nginx:/usr/local/nginx/conf/server-iris.conf; fi
 if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-retrieval.conf nginx:/usr/local/nginx/conf/server-retrieval.conf; fi

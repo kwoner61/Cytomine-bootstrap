@@ -40,12 +40,13 @@ MONGODB_VOLUME=dev_5d_mongo
 #------------------------------------------------------------------------------
 # IMS
 #------------------------------------------------------------------------------
-IMS_URL1=localhost-ims
+IMS_URL=localhost-ims
 UPLOAD_URL=localhost-upload
 
 IMS_STORAGE_PATH=/data/images
-IMS_BUFFER_PATH=/data/_buffer
+IMS_BUFFER_PATH=/tmp/uploaded
 FAST_DATA_PATH=/data/images
+PROXY_CACHE_PATH=/data/cache
 
 # Advanced configuration.
 IMS_DEVELOPMENT=true
@@ -112,3 +113,23 @@ SERVER_SSHKEYS_PATH=/data/ssh
 RABBITMQ_LOGIN="router"
 RABBITMQ_PASSWORD="router"
 SLURM_VOLUME=slurm_data
+
+#-------------------------------------------------------------------------------
+# HTTPS FOR PUBLIC URLS
+#-------------------------------------------------------------------------------
+
+# Protocol for URLs accessible from outside (CORE_URL, IMS_URL, UPLOAD_URL, IRIS_URL)
+HTTP_PROTOCOL=https # Accepted values: http, https
+
+# Path where certificates are stored:
+CERTIFICATE_PATH=/data/certificates
+
+# To use HTTPS protocol, you need the following certificates in your CERTIFICATE_PATH
+# - ${CORE_URL}.pem (ex: localhost-core.pem)
+# - ${CORE_URL}-key.pem (ex: localhost-core-key.pem)
+# - ${IMS_URL}.pem
+# - ${IMS_URL}-key.pem
+# - ${UPLOAD_URL}.pem
+# - ${UPLOAD_URL}-key.pem
+# - ${IRIS_URL}.pem - only if $IRIS_ENABLED = true
+# - ${IRIS_URL}-key.pem - only if $IRIS_ENABLED = true
