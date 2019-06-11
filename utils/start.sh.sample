@@ -86,12 +86,14 @@ fi
 
 # ----- POSTGRESQL ------
 docker volume create --name $POSTGRESQL_VOLUME > /dev/null
-docker run -d -m 8g \
+docker create --name postgresql \
 -p 5432:5432 \
---name postgresql \
 -v $POSTGRESQL_VOLUME:/var/lib/postgresql \
 --restart=unless-stopped \
-$POSTGIS_NAMESPACE/postgis:$POSTGIS_VERSION > /dev/null
+$POSTGRES_NAMESPACE/postgres:$POSTGRES_VERSION postgres -c 'config_file=/tmp/postgresql.conf' > /dev/null
+
+docker cp $PWD/configs/postgresql/postgresql.conf postgresql:/tmp/postgresql.conf
+docker start postgresql
 
 
 # ----- MONGODB -----
