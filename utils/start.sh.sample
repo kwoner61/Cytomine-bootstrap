@@ -89,6 +89,7 @@ docker volume create --name $POSTGRESQL_VOLUME > /dev/null
 docker create --name postgresql \
 -p 5432:5432 \
 -v $POSTGRESQL_VOLUME:/var/lib/postgresql/data \
+-e PGDATA=/var/lib/postgresql/data/db-files/ \
 --restart=unless-stopped \
 $POSTGRES_NAMESPACE/postgres:$POSTGRES_VERSION postgres -c 'config_file=/tmp/postgresql.conf' > /dev/null
 
