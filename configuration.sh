@@ -120,6 +120,7 @@ SLURM_VOLUME=slurm_data
 
 # Protocol for URLs accessible from outside (CORE_URL, IMS_URL, UPLOAD_URL, IRIS_URL)
 HTTP_PROTOCOL=https # Accepted values: http, https
+HTTP_PROXY=false
 
 # Path where certificates are stored:
 CERTIFICATE_PATH=/data/certificates

@@ -107,7 +107,7 @@ for i in ${FILES[@]}; do
             fi
 
             # Remove ssl in nginx config if http is used as protocol
-            if [[ $HTTP_PROTOCOL == "http" ]]; then
+            if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i "/ssl_/d" $i;
                 sed -i "/443 ssl/d" $i;
             fi
@@ -142,7 +142,7 @@ for i in ${FILES[@]}; do
             fi
 
             # Remove ssl in nginx config if http is used as protocol
-            if [[ $HTTP_PROTOCOL == "http" ]]; then
+            if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i '' -e "/ssl_/d" $i;
                 sed -i '' -e "/443 ssl/d" $i;
             fi
