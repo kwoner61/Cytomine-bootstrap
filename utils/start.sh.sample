@@ -67,7 +67,7 @@ docker create --name memcached \
 --restart=unless-stopped \
 $MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION > /dev/null
 
-docker cp $PWD/configs/memcached/memcached.conf memcached:/etc/memcached.conf
+docker cp "${PWD}/configs/memcached/memcached.conf" memcached:/etc/memcached.conf
 docker start memcached
 
 
@@ -145,7 +145,7 @@ then
     --restart=unless-stopped \
     $RETRIEVAL_NAMESPACE/retrieval:$RETRIEVAL_VERSION > /dev/null
 
-    docker cp $PWD/hosts/retrieval/addHosts.sh retrieval:/tmp/addHosts.sh
+    docker cp "${PWD}/hosts/retrieval/addHosts.sh" retrieval:/tmp/addHosts.sh
     docker start retrieval
 fi
 
@@ -160,7 +160,7 @@ then
     --restart=unless-stopped \
     $IIPJP2_NAMESPACE/iip-jp2000:$IIPJP2_VERSION > /dev/null
 
-    docker cp $PWD/configs/iipJP2/nginx.conf.sample iipJP2:/tmp/nginx.conf.sample
+    docker cp "${PWD}/configs/iipJP2/nginx.conf.sample" iipJP2:/tmp/nginx.conf.sample
     docker start iipJP2
 fi
 
@@ -173,8 +173,8 @@ docker create --name iipCyto \
 --restart=unless-stopped \
 $IIPCYTO_NAMESPACE/iip-cyto:$IIPCYTO_VERSION > /dev/null
 
-docker cp $PWD/configs/iipCyto/nginx.conf.sample iipCyto:/tmp/nginx.conf.sample
-docker cp $PWD/configs/iipCyto/iip-configuration.sh iipCyto:/tmp/iip-configuration.sh
+docker cp "${PWD}/configs/iipCyto/nginx.conf.sample" iipCyto:/tmp/nginx.conf.sample
+docker cp "${PWD}/configs/iipCyto/iip-configuration.sh" iipCyto:/tmp/iip-configuration.sh
 docker start iipCyto
 
 
@@ -204,8 +204,8 @@ then
     --restart=unless-stopped \
     $IMS_NAMESPACE/ims:$IMS_VERSION > /dev/null
 
-    docker cp $PWD/configs/ims/imageserverconfig.properties ims:/usr/share/tomcat7/.grails/imageserverconfig.properties
-    docker cp $PWD/hosts/ims/addHosts.sh ims:/tmp/addHosts.sh
+    docker cp "${PWD}/configs/ims/imageserverconfig.properties" ims:/usr/share/tomcat7/.grails/imageserverconfig.properties
+    docker cp "${PWD}/hosts/ims/addHosts.sh" ims:/tmp/addHosts.sh
     docker start ims
 fi
 
@@ -220,8 +220,8 @@ then
     --restart=unless-stopped \
     $CORE_NAMESPACE/core:$CORE_VERSION > /dev/null
 
-    docker cp $PWD/configs/core/cytomineconfig.groovy core:/usr/share/tomcat7/.grails/cytomineconfig.groovy
-    docker cp $PWD/hosts/core/addHosts.sh core:/tmp/addHosts.sh
+    docker cp "${PWD}/configs/core/cytomineconfig.groovy" core:/usr/share/tomcat7/.grails/cytomineconfig.groovy
+    docker cp "${PWD}/hosts/core/addHosts.sh" core:/tmp/addHosts.sh
     docker start core
 fi
 
@@ -234,9 +234,9 @@ then
     --restart=unless-stopped \
     $IRIS_NAMESPACE/iris:$IRIS_VERSION > /dev/null
 
-    docker cp $PWD/configs/iris/iris-config.groovy iris:/usr/share/tomcat7/.grails/iris-config.groovy
-    docker cp $PWD/configs/iris/iris-production-config.groovy iris:/usr/share/tomcat7/.grails/iris-production-config.groovy
-    docker cp $PWD/hosts/iris/addHosts.sh iris:/tmp/addHosts.sh
+    docker cp "${PWD}/configs/iris/iris-config.groovy" iris:/usr/share/tomcat7/.grails/iris-config.groovy
+    docker cp "${PWD}/configs/iris/iris-production-config.groovy" iris:/usr/share/tomcat7/.grails/iris-production-config.groovy
+    docker cp "${PWD}/hosts/iris/addHosts.sh" iris:/tmp/addHosts.sh
     docker start iris
 fi
 
@@ -253,23 +253,23 @@ docker create --name nginx \
 --restart=unless-stopped \
 $NGINX_NAMESPACE/nginx:$NGINX_VERSION > /dev/null
 
-docker cp $PWD/configs/nginx/nginx.conf nginx:/usr/local/nginx/conf/nginx.conf
+docker cp "${PWD}/configs/nginx/nginx.conf" nginx:/usr/local/nginx/conf/nginx.conf
 
 if [[ $CORE_DEVELOPMENT = false ]]; then
-    docker cp $PWD/configs/nginx/server-core.conf nginx:/usr/local/nginx/conf/server-core.conf;
+    docker cp "${PWD}/configs/nginx/server-core.conf" nginx:/usr/local/nginx/conf/server-core.conf;
 else
-    docker cp $PWD/configs/nginx/server-core-dev.conf nginx:/usr/local/nginx/conf/server-core-dev.conf;
+    docker cp "${PWD}/configs/nginx/server-core-dev.conf" nginx:/usr/local/nginx/conf/server-core-dev.conf;
 fi
 
 if [[ $IMS_DEVELOPMENT = false ]]; then
-    docker cp $PWD/configs/nginx/server-ims.conf nginx:/usr/local/nginx/conf/server-ims.conf;
+    docker cp "${PWD}/configs/nginx/server-ims.conf" nginx:/usr/local/nginx/conf/server-ims.conf;
 else
-    docker cp $PWD/configs/nginx/server-ims-dev.conf nginx:/usr/local/nginx/conf/server-ims-dev.conf;
+    docker cp "${PWD}/configs/nginx/server-ims-dev.conf" nginx:/usr/local/nginx/conf/server-ims-dev.conf;
 fi
 
-if [[ $IRIS_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iris.conf nginx:/usr/local/nginx/conf/server-iris.conf; fi
-if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-retrieval.conf nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
-if [[ $IIP_JP2_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iipjp2.conf nginx:/usr/local/nginx/conf/server-iipjp2.conf; fi
+if [[ $IRIS_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iris.conf" nginx:/usr/local/nginx/conf/server-iris.conf; fi
+if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-retrieval.conf" nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
+if [[ $IIP_JP2_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iipjp2.conf" nginx:/usr/local/nginx/conf/server-iipjp2.conf; fi
 
 docker start nginx
 
@@ -288,7 +288,7 @@ then
     --restart=unless-stopped \
     $SLURM_NAMESPACE/slurm:$SLURM_VERSION > /dev/null
 
-    docker cp $PWD/hosts/slurm/addHosts.sh slurm:/tmp/addHosts.sh
+    docker cp "${PWD}/hosts/slurm/addHosts.sh" slurm:/tmp/addHosts.sh
     docker start slurm
 fi
 
@@ -307,8 +307,8 @@ then
     -p 22 \
     $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION > /dev/null
 
-    docker cp $PWD/hosts/software_router/addHosts.sh software_router:/tmp/addHosts.sh
-    docker cp $PWD/configs/software_router/config.groovy software_router:/opt/config.groovy
-    docker cp $PWD/configs/software_router/log4j.properties software_router:/opt/log4j.properties
+    docker cp "${PWD}/hosts/software_router/addHosts.sh" software_router:/tmp/addHosts.sh
+    docker cp "${PWD}/configs/software_router/config.groovy" software_router:/opt/config.groovy
+    docker cp "${PWD}/configs/software_router/log4j.properties" software_router:/opt/log4j.properties
     docker start software_router
 fi
