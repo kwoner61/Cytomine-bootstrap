@@ -15,12 +15,12 @@
 # limitations under the License.
 
 # Get all the config values.
-. utils/files.sh
-. utils/keys.sh
 . configuration.sh
 . configuration-versions.sh
+. utils/files.sh
+. utils/keys.sh
 
-# Fix container aliases for core/ims development
+# Fix container aliases for core/ims/software-router development
 ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS' 'SLURM_ALIAS')
 
 POSTGRES_ALIAS=postgresql
@@ -28,6 +28,7 @@ MONGODB_ALIAS=mongodb
 RABBITMQ_ALIAS=rabbitmq
 BIOFORMAT_ALIAS=bioformat
 SLURM_ALIAS=slurm
+
 if [[ $CORE_DEVELOPMENT = true ]]; then
     POSTGRES_ALIAS=localhost
     MONGODB_ALIAS=localhost

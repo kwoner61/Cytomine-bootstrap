@@ -102,10 +102,13 @@ IRIS_ID="LOCAL_CYTOMINE_IRIS"
 #Obviously, SOFTWARE_DEVELOPMENT=true implies SOFTWARE_ENABLED=true
 SOFTWARE_ENABLED=true
 SOFTWARE_DEVELOPMENT=false
-PATH_SOFTWAREROUTER_CONFIG=
+PATH_SOFTWAREROUTER_CONFIG=""
+
 #note for the developers: this path is the path which refer to your cytomine software router folder
 #so basically, you have to fill this field with the correct path.
 #example: PATH_SOFTWAREROUTER_CONFIG="${HOME}/Cytomine-ULiege/Cytomine-software-router"
+LIMITCHECKCONTAINERS=50
+TIMETOSLEEP=5
 
 SOFTWARE_CODE_PATH=/data/softwares/code
 SOFTWARE_DOCKER_IMAGES_PATH=/data/softwares/images

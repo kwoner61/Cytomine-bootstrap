@@ -14,19 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. ../configuration.sh
-
 if [[ $CORE_DEVELOPMENT = true ]]; then
-    ADMIN_PWD="A"
-    ADMIN_PUB_KEY="B"
-    ADMIN_PRIV_KEY="C"
-    SUPERADMIN_PUB_KEY="D"
-    SUPERADMIN_PRIV_KEY="E"
-    RABBITMQ_PUB_KEY="F"
-    RABBITMQ_PRIV_KEY="G"
-    IMS_PUB_KEY="H"
-    IMS_PRIV_KEY="I"
-    SERVER_ID="J"
+    ADMIN_PWD="AAAAA-AAAAA"
+    ADMIN_PUB_KEY="BBBBB-BBBBB"
+    ADMIN_PRIV_KEY="CCCCC-CCCCC"
+    SUPERADMIN_PUB_KEY="DDDDD-DDDDD"
+    SUPERADMIN_PRIV_KEY="EEEEE-EEEEE"
+    RABBITMQ_PUB_KEY="FFFFF-FFFFF"
+    RABBITMQ_PRIV_KEY="GGGGG-GGGGG"
+    IMS_PUB_KEY="HHHHH-HHHHH"
+    IMS_PRIV_KEY="IIIII-IIIII"
+    SERVER_ID="JJJJJ-JJJJJ"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     ADMIN_PWD=$(cat /proc/sys/kernel/random/uuid)
     ADMIN_PUB_KEY=$(cat /proc/sys/kernel/random/uuid)
