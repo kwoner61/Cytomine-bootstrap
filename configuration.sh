@@ -26,6 +26,7 @@
 #------------------------------------------------------------------------------
 # CORE
 #------------------------------------------------------------------------------
+UI_URL=localhost-core
 CORE_URL=localhost-core
 SENDER_EMAIL_SMTP_HOST='smtp.gmail.com'
 SENDER_EMAIL_SMTP_PORT='587'
@@ -33,9 +34,9 @@ SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
 
 # Advanced configuration.
-CORE_DEVELOPMENT=true
-POSTGRESQL_VOLUME=dev_5d_postgres
-MONGODB_VOLUME=dev_5d_mongo
+CORE_DEVELOPMENT=false
+POSTGRESQL_VOLUME=db_postgres11
+MONGODB_VOLUME=db_mongo
 
 #------------------------------------------------------------------------------
 # IMS
@@ -49,7 +50,7 @@ FAST_DATA_PATH=/data/images
 PROXY_CACHE_PATH=/data/cache
 
 # Advanced configuration.
-IMS_DEVELOPMENT=true
+IMS_DEVELOPMENT=false
 
 IIP_OFF_URL=localhost-iip-cyto
 IIP_CYTO_URL=localhost-iip-cyto
