@@ -18,6 +18,7 @@ cytomine.customUI.global = [
         software : ["ROLE_USER", "ROLE_ADMIN"]
 ]
 
+grails.UIURL='$HTTP_PROTOCOL://$UI_URL'
 grails.serverURL='$HTTP_PROTOCOL://$CORE_URL'
 grails.imageServerURL=['$HTTP_PROTOCOL://$IMS_URL']
 grails.retrievalServerURL =['http://$RETRIEVAL_URL']
@@ -61,3 +62,10 @@ grails.retrievalPassword = '$RETRIEVAL_PASSWORD'
 grails.messageBrokerServerURL='$RABBITMQ_ALIAS:5672'
 
 grails.serverID='$SERVER_ID'
+
+grails.plugin.springsecurity.successHandler.defaultTargetUrl = "${grails.UIURL}/"
+grails.plugin.springsecurity.successHandler.ajaxSuccessUrl = "${grails.UIURL}/login/ajaxSuccess"
+grails.plugin.springsecurity.failureHandler.defaultFailureUrl = "${grails.UIURL}/login/authfail?login_error=1"
+grails.plugin.springsecurity.failureHandler.ajaxAuthFailUrl = "${grails.UIURL}/login/authfail?ajax=true"
+grails.plugin.springsecurity.logout.afterLogoutUrl = "${grails.UIURL}/"
+grails.plugin.springsecurity.logout. alwaysUseDefaultTargetUrl = true
