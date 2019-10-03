@@ -82,17 +82,18 @@ for i in ${FILES[@]}; do
             # Special treatment due to spaces in these variables
             sed -i "s~\$IRIS_ADMIN_NAME~$IRIS_ADMIN_NAME~g" $i
             sed -i "s~\$IRIS_ADMIN_ORGANIZATION_NAME~$IRIS_ADMIN_ORGANIZATION_NAME~g" $i
+            sed -i "s~\${INSTANCE_PREFIX}~$INSTANCE_PREFIX~g" $i
 
             # Remove links of not used containers
-            if [[ $IRIS_ENABLED = false ]]; then sed -i "/--link iris:iris/d" $i; fi
-            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i "/--link retrieval:retrieval/d" $i; fi
-            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link bioformat:bioformat/d" $i; fi
-            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $IRIS_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}iris:iris/d" $i; fi
+            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}retrieval:retrieval/d" $i; fi
+            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i; fi
+            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}iipJP2:iipJP2/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}rabbitmq:rabbitmq/d" $i; fi
 
             # Remove bindings to container CORE for core development
             if [[ $CORE_DEVELOPMENT = true ]]; then
-                sed -i "/--link core:core/d" $i
+                sed -i "/--link ${INSTANCE_PREFIX}core:core/d" $i
             else
                 sed -i "/-p 5672:5672 -p 15672:15672/d" $i
                 sed -i "/-p 5432:5432/d" $i
@@ -103,7 +104,7 @@ for i in ${FILES[@]}; do
 
             # Remove bindings to container IMS for ims development
             if [[ $IMS_DEVELOPMENT = true ]]; then
-                sed -i "/--link ims:ims/d" $i;
+                sed -i "/--link ${INSTANCE_PREFIX}ims:ims/d" $i;
             fi
 
             # Remove ssl in nginx config if http is used as protocol
@@ -120,15 +121,15 @@ for i in ${FILES[@]}; do
             sed -i '' -e "s~\$IRIS_ADMIN_ORGANIZATION_NAME~$IRIS_ADMIN_ORGANIZATION_NAME~g" $i
 
             # Remove links of not used containers
-            if [[ $IRIS_ENABLED = false ]]; then sed -i '' -e "/--link iris:iris/d" $i; fi
-            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i '' -e "/--link retrieval:retrieval/d" $i; fi
-            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link bioformat:bioformat/d" $i; fi
-            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link iipJP2:iipJP2/d" $i; fi
-            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link rabbitmq:rabbitmq/d" $i; fi
+            if [[ $IRIS_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}iris:iris/d" $i; fi
+            if [[ $RETRIEVAL_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}retrieval:retrieval/d" $i; fi
+            if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i; fi
+            if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}iipJP2:iipJP2/d" $i; fi
+            if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}rabbitmq:rabbitmq/d" $i; fi
 
             # Remove bindings to container CORE for core development
             if [[ $CORE_DEVELOPMENT = true ]]; then 
-                sed -i '' -e "/--link core:core/d" $i
+                sed -i '' -e "/--link ${INSTANCE_PREFIX}core:core/d" $i
             else
                 sed -i '' -e "/-p 5672:5672 -p 15672:15672/d" $i
                 sed -i '' -e "/-p 5432:5432/d" $i
@@ -139,7 +140,7 @@ for i in ${FILES[@]}; do
 
             # Remove bindings to container IMS for ims development
             if [[ $IMS_DEVELOPMENT = true ]]; then
-                sed -i '' -e "/--link ims:ims/d" $i;
+                sed -i '' -e "/--link ${INSTANCE_PREFIX}ims:ims/d" $i;
             fi
 
             # Remove ssl in nginx config if http is used as protocol

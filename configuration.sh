@@ -135,3 +135,7 @@ CERTIFICATE_PATH=/data/certificates
 # - ${UPLOAD_URL}-key.pem
 # - ${IRIS_URL}.pem - only if $IRIS_ENABLED = true
 # - ${IRIS_URL}-key.pem - only if $IRIS_ENABLED = true
+
+INSTANCE_PREFIX=""
+HTTP_NGINX_PORT=80
+HTTPS_NGINX_PORT=443
