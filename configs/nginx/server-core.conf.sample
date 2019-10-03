@@ -75,5 +75,15 @@ server {
                 proxy_set_header Host $host;
                 proxy_pass http://backend-core;
         }
+        location /session {
+               proxy_set_header X-Real-IP $remote_addr;
+               proxy_set_header Host $host;
+               proxy_pass http://backend-core;
+        }
+        location /custom-ui {
+               proxy_set_header X-Real-IP $remote_addr;
+               proxy_set_header Host $host;
+               proxy_pass http://backend-core;
+        }
     }
 }
