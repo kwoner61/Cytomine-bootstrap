@@ -110,6 +110,7 @@ for i in ${FILES[@]}; do
             if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i "/ssl_/d" $i;
                 sed -i "/443 ssl/d" $i;
+                sed -i "/-v $CERTIFICATE_PATH:/certificates/d" $i;
             fi
 
         # For Mac OS, the sed command is interpreted differently
@@ -145,6 +146,7 @@ for i in ${FILES[@]}; do
             if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i '' -e "/ssl_/d" $i;
                 sed -i '' -e "/443 ssl/d" $i;
+                sed -i '' -e "/-v $CERTIFICATE_PATH:/certificates/d" $i;
             fi
         fi
     fi
