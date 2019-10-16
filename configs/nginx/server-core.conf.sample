@@ -15,7 +15,7 @@ server {
         set $cors_cred   true;
         set $cors_method 'GET, PUT, POST, DELETE, OPTIONS';
         set $cors_header 'Content-Type, Content-Range, Content-Length, Content-Disposition, Content-Description, Date, dateFull, authorization, content-type-full, X-Requested-With, Pragma';
-
+}
         location / {
             proxy_pass http://backend-core;
 
@@ -35,55 +35,5 @@ server {
                 return 204;
             }
         }
-    }
-    else {
-        root /web-ui;
-        index index.html;
 
-        location /j_spring_security_check {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /j_spring_security_logout {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /loginWithoutLDAP {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /login {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /logout {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /api {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /server {
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_pass http://backend-core;
-        }
-        location /session {
-               proxy_set_header X-Real-IP $remote_addr;
-               proxy_set_header Host $host;
-               proxy_pass http://backend-core;
-        }
-        location /custom-ui {
-               proxy_set_header X-Real-IP $remote_addr;
-               proxy_set_header Host $host;
-               proxy_pass http://backend-core;
-        }
-    }
 }

@@ -255,7 +255,7 @@ docker create --name ${INSTANCE_PREFIX}nginx \
 -v $PROXY_CACHE_PATH:/cache \
 -v $CERTIFICATE_PATH:/certificates \
 -p $HTTP_NGINX_PORT:80 \
--p $HTTP_NGINX_PORT:443 \
+-p $HTTPS_NGINX_PORT:443 \
 --restart=unless-stopped \
 $NGINX_NAMESPACE/nginx:$NGINX_VERSION > /dev/null
 
