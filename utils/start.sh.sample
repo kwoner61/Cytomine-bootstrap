@@ -252,7 +252,6 @@ docker create --name ${INSTANCE_PREFIX}nginx \
 --link ${INSTANCE_PREFIX}core:core \
 --link ${INSTANCE_PREFIX}iipJP2:iipJP2 \
 -v $IMS_BUFFER_PATH:/tmp/uploaded \
--v $PROXY_CACHE_PATH:/cache \
 -v $CERTIFICATE_PATH:/certificates \
 -p $HTTP_NGINX_PORT:80 \
 -p $HTTPS_NGINX_PORT:443 \
@@ -262,6 +261,7 @@ $NGINX_NAMESPACE/nginx:$NGINX_VERSION > /dev/null
 docker cp $PWD/configs/nginx/nginx.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/nginx.conf
 docker cp $PWD/configs/nginx/server-core.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-core.conf
 docker cp $PWD/configs/nginx/server-ims.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-ims.conf
+docker cp $PWD/configs/web-ui/configuration.json ${INSTANCE_PREFIX}nginx:/web-ui/configuration.json
 
 if [[ $IRIS_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iris.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iris.conf; fi
 if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-retrieval.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
