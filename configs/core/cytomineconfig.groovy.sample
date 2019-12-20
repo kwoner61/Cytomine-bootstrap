@@ -69,3 +69,5 @@ grails.plugin.springsecurity.failureHandler.defaultFailureUrl = "${grails.UIURL}
 grails.plugin.springsecurity.failureHandler.ajaxAuthFailUrl = "${grails.UIURL}/login/authfail?ajax=true"
 grails.plugin.springsecurity.logout.afterLogoutUrl = "${grails.UIURL}/"
 grails.plugin.springsecurity.logout. alwaysUseDefaultTargetUrl = true
+
+cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'
