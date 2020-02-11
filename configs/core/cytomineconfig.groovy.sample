@@ -71,3 +71,5 @@ grails.plugin.springsecurity.logout.afterLogoutUrl = "${grails.UIURL}/"
 grails.plugin.springsecurity.logout. alwaysUseDefaultTargetUrl = true
 
 cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'
+
+grails.useHTTPInternally = false
