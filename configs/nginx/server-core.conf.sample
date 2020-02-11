@@ -1,11 +1,58 @@
+upstream backend-core {
+    server $CORE_ALIAS:8080;
+}
+
+upstream web-ui {
+    server $WEB_UI_ALIAS:$WEB_UI_PORT;
+}
+
 server {
-    client_max_body_size 0;
-    listen       80;
+    listen  80;
+    listen  443 ssl http2;
     server_name  $CORE_URL;
+
+    ssl_certificate /certificates/$CORE_URL.pem;
+    ssl_certificate_key /certificates/$CORE_URL-key.pem;
 
     location / {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Host $host;
-        proxy_pass http://core:8080;
+        proxy_pass http://web-ui;
+    }
+
+    location /api {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://backend-core;
+    }
+    location /api/slicehistogram {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://backend-core;
+        proxy_connect_timeout 600;
+        proxy_send_timeout 600;
+        proxy_read_timeout 600;
+        send_timeout 600;
+    }
+
+    location /j_spring_security { # _check, _logout, _switch_user, _exit_user
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://backend-core;
+    }
+    location ~ /(login|logout) {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://backend-core;
+    }
+    location ~ /(server|session|custom-ui|static) {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://backend-core;
+    }
+    location ~ /(restApiDoc|js/jsondoc|css/jsondoc) {
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header Host $host;
+           proxy_pass http://backend-core;
     }
 }
