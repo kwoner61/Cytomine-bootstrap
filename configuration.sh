@@ -38,6 +38,7 @@ CORE_DEVELOPMENT=false
 POSTGRESQL_VOLUME=db_postgres11
 MONGODB_VOLUME=db_mongo
 
+WEB_UI_DEVELOPMENT=false
 #------------------------------------------------------------------------------
 # IMS
 #------------------------------------------------------------------------------

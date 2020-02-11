@@ -2,6 +2,10 @@ upstream backend-core {
     server $CORE_ALIAS:8080;
 }
 
+upstream web-ui {
+    server $WEB_UI_ALIAS:$WEB_UI_PORT;
+}
+
 server {
     listen  80;
     listen  443 ssl http2;
@@ -10,8 +14,11 @@ server {
     ssl_certificate /certificates/$CORE_URL.pem;
     ssl_certificate_key /certificates/$CORE_URL-key.pem;
 
-    root /web-ui;
-    index index.html;
+    location / {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_pass http://web-ui;
+    }
 
     location /api {
         proxy_set_header X-Real-IP $remote_addr;

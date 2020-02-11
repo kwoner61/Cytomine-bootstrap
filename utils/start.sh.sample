@@ -32,11 +32,13 @@ echo "BIOFORMAT=$BIOFORMAT_ENABLED"
 echo "SOFTWARE=$SOFTWARE_ENABLED"
 echo "CORE_DEVELOPMENT=$CORE_DEVELOPMENT"
 echo "IMS_DEVELOPMENT=$IMS_DEVELOPMENT"
+echo "WEB_UI_DEVELOPMENT=$WEB_UI_DEVELOPMENT"
 echo ""
 echo "* Container versions *"
 echo "$NGINX_NAMESPACE/nginx:$NGINX_VERSION"
-if [[ $CORE_DEVELOPMENT = false ]]; then echo echo "$CORE_NAMESPACE/core:$CORE_VERSION"; fi
-echo "$POSTGIS_NAMESPACE/postgis:$POSTGIS_VERSION"
+if [[ $CORE_DEVELOPMENT = false ]]; then echo "$CORE_NAMESPACE/core:$CORE_VERSION"; fi
+if [[ $WEB_UI_DEVELOPMENT = false ]]; then echo "$WEB_UI_NAMESPACE/web-ui:$WEB_UI_VERSION"; fi
+echo "$POSTGRES_NAMESPACE/postgres:$POSTGRES_VERSION"
 echo "$MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION"
 if [[ $BACKUP_ENABLED = true ]]; then echo "$BACKUP_NAMESPACE/backup:$BACKUP_VERSION"; fi
 if [[ $IMS_DEVELOPMENT = false ]]; then echo "$IMS_NAMESPACE/ims:$IMS_VERSION"; fi
@@ -228,6 +230,19 @@ then
     docker start ${INSTANCE_PREFIX}core
 fi
 
+# ----- WEB-UI -----
+if [[ $WEB_UI_DEVELOPMENT = false ]]
+then
+    docker create --name ${INSTANCE_PREFIX}webUI \
+    -v /etc/localtime:/etc/localtime \
+    --restart=unless-stopped \
+    $WEB_UI_NAMESPACE/web-ui:$WEB_UI_VERSION > /dev/null
+
+    docker cp $PWD/configs/web-ui/configuration.json ${INSTANCE_PREFIX}webUI:/app/configuration.json
+    docker cp $PWD/configs/web-ui/nginx.conf ${INSTANCE_PREFIX}webUI:/etc/nginx/nginx.conf
+    docker start ${INSTANCE_PREFIX}webUI
+fi
+
 # ----- IRIS -----
 if [[ $IRIS_ENABLED = true ]]
 then
@@ -251,6 +266,7 @@ docker create --name ${INSTANCE_PREFIX}nginx \
 --link ${INSTANCE_PREFIX}iipCyto:iipCyto \
 --link ${INSTANCE_PREFIX}core:core \
 --link ${INSTANCE_PREFIX}iipJP2:iipJP2 \
+--link ${INSTANCE_PREFIX}webUI:webUI \
 -v $IMS_BUFFER_PATH:/tmp/uploaded \
 -v $CERTIFICATE_PATH:/certificates \
 -p $HTTP_NGINX_PORT:80 \
@@ -261,7 +277,6 @@ $NGINX_NAMESPACE/nginx:$NGINX_VERSION > /dev/null
 docker cp $PWD/configs/nginx/nginx.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/nginx.conf
 docker cp $PWD/configs/nginx/server-core.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-core.conf
 docker cp $PWD/configs/nginx/server-ims.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-ims.conf
-docker cp $PWD/configs/web-ui/configuration.json ${INSTANCE_PREFIX}nginx:/web-ui/configuration.json
 
 if [[ $IRIS_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-iris.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iris.conf; fi
 if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp $PWD/configs/nginx/server-retrieval.conf ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
