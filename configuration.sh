@@ -68,7 +68,7 @@ BACKUP_PATH=/data/backup
 #------------------------------------------------------------------------------
 # PLUGIN: RETRIEVAL
 #------------------------------------------------------------------------------
-RETRIEVAL_ENABLED=true
+RETRIEVAL_ENABLED=false
 RETRIEVAL_URL=localhost-retrieval
 RETRIEVAL_PATH=/data/thumb
 
@@ -84,7 +84,7 @@ BIOFORMAT_ENABLED=true
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)
 #------------------------------------------------------------------------------
-IIP_JP2_ENABLED=false
+IIP_JP2_ENABLED=true
 
 # Advanced configuration.
 IIP_JP2_URL=localhost-iip-jp2000
@@ -121,7 +121,7 @@ SLURM_VOLUME=slurm_data
 #-------------------------------------------------------------------------------
 
 # Protocol for URLs accessible from outside (CORE_URL, IMS_URL, UPLOAD_URL, IRIS_URL)
-HTTP_PROTOCOL=https # Accepted values: http, https
+HTTP_PROTOCOL=http # Accepted values: http, https
 HTTP_PROXY=false
 
 # Path where certificates are stored:
