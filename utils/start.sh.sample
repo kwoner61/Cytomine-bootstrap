@@ -95,7 +95,7 @@ docker create --name ${INSTANCE_PREFIX}postgresql \
 --restart=unless-stopped \
 $POSTGRES_NAMESPACE/postgres:$POSTGRES_VERSION postgres -c 'config_file=/tmp/postgresql.conf' > /dev/null
 
-docker cp "${PWD}configs/postgresql/postgresql.conf" ${INSTANCE_PREFIX}postgresql:/tmp/postgresql.conf
+docker cp "${PWD}/configs/postgresql/postgresql.conf" ${INSTANCE_PREFIX}postgresql:/tmp/postgresql.conf
 docker start ${INSTANCE_PREFIX}postgresql
 
 
