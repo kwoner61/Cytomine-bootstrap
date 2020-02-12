@@ -48,7 +48,7 @@ if [[ $WEB_UI_DEVELOPMENT = true ]]; then
     WEB_UI_PORT=8081
 fi
 if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
-    BIOFORMAT_ALIAS=localhost
+    BIOFORMAT_ALIAS=172.17.0.1
 fi
 
 
