@@ -47,6 +47,9 @@ if [[ $WEB_UI_DEVELOPMENT = true ]]; then
     WEB_UI_ALIAS=172.17.0.1
     WEB_UI_PORT=8081
 fi
+if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
+    BIOFORMAT_ALIAS=localhost
+fi
 
 
 # Get variables in configuration.sh
@@ -116,8 +119,13 @@ for i in ${FILES[@]}; do
             fi
 
             # Remove bindings to container webUI for webUi development
-            if [[ $WEB_UI_DEVLELOPMENT = true ]]; then
+            if [[ $WEB_UI_DEVELOPMENT = true ]]; then
                 sed -i "/--link ${INSTANCE_PREFIX}webUI:webUI/d" $i;
+            fi
+
+            # Remove bindings to container Bioformat for bioformat developement
+            if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
+                sed -i "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i;
             fi
 
             # Remove ssl in nginx config if http is used as protocol
@@ -163,8 +171,13 @@ for i in ${FILES[@]}; do
             fi
 
             # Remove bindings to container webUI for webUi development
-            if [[ $WEB_UI_DEVLELOPMENT = true ]]; then
+            if [[ $WEB_UI_DEVELOPMENT = true ]]; then
                 sed -i '' -e "/--link ${INSTANCE_PREFIX}webUI:webUI/d" $i;
+            fi
+
+            # Remove bindings to container Bioformat for bioformat developement
+            if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
+                sed -i '' -e "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i;
             fi
 
             # Remove ssl in nginx config if http is used as protocol

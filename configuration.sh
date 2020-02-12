@@ -80,6 +80,7 @@ RETRIEVAL_ENGINE=redis #possible values : memory, redis
 # PLUGIN: BIOFORMAT
 #------------------------------------------------------------------------------
 BIOFORMAT_ENABLED=true
+BIOFORMAT_DEVELOPMENT=false
 
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)
