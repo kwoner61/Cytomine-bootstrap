@@ -121,6 +121,8 @@ for i in ${FILES[@]}; do
             # Remove bindings to container webUI for webUi development
             if [[ $WEB_UI_DEVELOPMENT = true ]]; then
                 sed -i "/--link ${INSTANCE_PREFIX}webUI:webUI/d" $i;
+            else
+                sed -i "/include \/usr\/local\/nginx\/conf\/web-ui-dev-cors.conf;/d" $i;
             fi
 
             # Remove bindings to container Bioformat for bioformat developement
@@ -173,6 +175,8 @@ for i in ${FILES[@]}; do
             # Remove bindings to container webUI for webUi development
             if [[ $WEB_UI_DEVELOPMENT = true ]]; then
                 sed -i '' -e "/--link ${INSTANCE_PREFIX}webUI:webUI/d" $i;
+            else
+                sed -i '' -e "/include \/usr\/local\/nginx\/conf\/web-ui-dev-cors.conf;/d" $i;
             fi
 
             # Remove bindings to container Bioformat for bioformat developement

@@ -282,7 +282,7 @@ docker cp "${PWD}/configs/nginx/server-ims.conf" ${INSTANCE_PREFIX}nginx:/usr/lo
 if [[ $IRIS_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iris.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iris.conf; fi
 if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-retrieval.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
 if [[ $IIP_JP2_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iipjp2.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iipjp2.conf; fi
-
+if [[ $WEB_UI_DEVELOPMENT = true ]]; then docker cp "${PWD}/configs/nginx/web-ui-dev-cors.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/web-ui-dev-cors.conf; fi
 docker start ${INSTANCE_PREFIX}nginx
 
 
