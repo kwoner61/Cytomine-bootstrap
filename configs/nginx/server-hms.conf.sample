@@ -1,0 +1,8 @@
+server {
+    listen       80;
+    server_name  $HMS_URL;
+
+    location / {
+        proxy_pass http://$HMS_ALIAS:$HMS_PORT;
+    }
+}

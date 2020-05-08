@@ -196,6 +196,20 @@ then
     docker start ${INSTANCE_PREFIX}bioformat
 fi
 
+# ----- HMS -----
+if [[ $HMS_ENABLED = true && $HMS_DEVELOPMENT = false ]]
+then
+    docker create --name ${INSTANCE_PREFIX}hms \
+    -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
+    -v $FAST_DATA_PATH:$FAST_DATA_PATH \
+    --restart=unless-stopped \
+    $HMS_NAMESPACE/hms:$HMS_VERSION > /dev/null
+
+    docker cp "${PWD}/configs/hms/config.py" ${INSTANCE_PREFIX}hms:/app/cytomine_hms/config.py
+    docker cp "${PWD}/hosts/hms/addHosts.sh" ${INSTANCE_PREFIX}hms:/tmp/addHosts.sh
+    docker start ${INSTANCE_PREFIX}hms
+fi
+
 
 # ----- IMS -----
 if [[ $IMS_DEVELOPMENT = false ]]
@@ -268,6 +282,7 @@ docker create --name ${INSTANCE_PREFIX}nginx \
 --link ${INSTANCE_PREFIX}core:core \
 --link ${INSTANCE_PREFIX}iipJP2:iipJP2 \
 --link ${INSTANCE_PREFIX}webUI:webUI \
+--link ${INSTANCE_PREFIX}hms:hms \
 -v $IMS_BUFFER_PATH:/tmp/uploaded \
 -v $CERTIFICATE_PATH:/certificates \
 -p $HTTP_NGINX_PORT:80 \
@@ -282,6 +297,7 @@ docker cp "${PWD}/configs/nginx/server-ims.conf" ${INSTANCE_PREFIX}nginx:/usr/lo
 if [[ $IRIS_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iris.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iris.conf; fi
 if [[ $RETRIEVAL_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-retrieval.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-retrieval.conf; fi
 if [[ $IIP_JP2_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-iipjp2.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-iipjp2.conf; fi
+if [[ $HMS_ENABLED = true ]]; then docker cp "${PWD}/configs/nginx/server-hms.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/server-hms.conf; fi
 if [[ $WEB_UI_DEVELOPMENT = true ]]; then docker cp "${PWD}/configs/nginx/web-ui-dev-cors.conf" ${INSTANCE_PREFIX}nginx:/usr/local/nginx/conf/web-ui-dev-cors.conf; fi
 docker start ${INSTANCE_PREFIX}nginx
 

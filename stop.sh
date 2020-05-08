@@ -104,4 +104,10 @@ then
     docker rm -v ${INSTANCE_PREFIX}slurm
 fi
 
+if [[ "$(docker ps -q -f name=${INSTANCE_PREFIX}hms)" ]]
+then
+    docker stop ${INSTANCE_PREFIX}hms
+    docker rm -v ${INSTANCE_PREFIX}hms
+fi
+
 echo "Done."

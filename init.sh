@@ -21,7 +21,7 @@
 . configuration-versions.sh
 
 # Fix container aliases for core/ims development
-ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS' 'CORE_ALIAS' 'IMS_ALIAS' 'IMS_PORT' 'WEB_UI_ALIAS' 'WEB_UI_PORT')
+ALIASES=('POSTGRES_ALIAS' 'MONGODB_ALIAS' 'RABBITMQ_ALIAS' 'BIOFORMAT_ALIAS' 'CORE_ALIAS' 'IMS_ALIAS' 'IMS_PORT' 'WEB_UI_ALIAS' 'WEB_UI_PORT' 'HMS_ALIAS' 'HMS_PORT')
 POSTGRES_ALIAS=postgresql
 MONGODB_ALIAS=mongodb
 RABBITMQ_ALIAS=rabbitmq
@@ -31,6 +31,8 @@ IMS_ALIAS=ims
 IMS_PORT=8080
 WEB_UI_ALIAS=webUI
 WEB_UI_PORT=80
+HMS_ALIAS=hms
+HMS_PORT=8080
 
 if [[ $CORE_DEVELOPMENT = true ]]; then
     POSTGRES_ALIAS=localhost
@@ -49,6 +51,10 @@ if [[ $WEB_UI_DEVELOPMENT = true ]]; then
 fi
 if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
     BIOFORMAT_ALIAS=172.17.0.1
+fi
+if [[ $HMS_DEVELOPMENT = true ]]; then
+    HMS_ALIAS=172.17.0.1
+    HMS_PORT=5000
 fi
 
 
@@ -101,6 +107,7 @@ for i in ${FILES[@]}; do
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}iipJP2:iipJP2/d" $i; fi
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}rabbitmq:rabbitmq/d" $i; fi
+            if [[ $HMS_ENABLED = false ]]; then sed -i "/--link ${INSTANCE_PREFIX}hms:hms/d" $i; fi
 
             # Remove bindings to container CORE for core development
             if [[ $CORE_DEVELOPMENT = true ]]; then
@@ -130,6 +137,10 @@ for i in ${FILES[@]}; do
                 sed -i "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i;
             fi
 
+            if [[ $HMS_DEVELOPMENT = true ]]; then
+                sed -i "/--link ${INSTANCE_PREFIX}hms:hms/d" $i;
+            fi
+
             # Remove ssl in nginx config if http is used as protocol
             if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i "/ssl_/d" $i;
@@ -155,6 +166,7 @@ for i in ${FILES[@]}; do
             if [[ $BIOFORMAT_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i; fi
             if [[ $IIP_JP2_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}iipJP2:iipJP2/d" $i; fi
             if [[ $SOFTWARE_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}rabbitmq:rabbitmq/d" $i; fi
+            if [[ $HMS_ENABLED = false ]]; then sed -i '' -e "/--link ${INSTANCE_PREFIX}hms:hms/d" $i; fi
 
             # Remove bindings to container CORE for core development
             if [[ $CORE_DEVELOPMENT = true ]]; then 
@@ -182,6 +194,10 @@ for i in ${FILES[@]}; do
             # Remove bindings to container Bioformat for bioformat developement
             if [[ $BIOFORMAT_DEVELOPMENT = true ]]; then
                 sed -i '' -e "/--link ${INSTANCE_PREFIX}bioformat:bioformat/d" $i;
+            fi
+
+            if [[ $HMS_DEVELOPMENT = true ]]; then
+                sed -i '' -e "/--link ${INSTANCE_PREFIX}hms:hms/d" $i;
             fi
 
             # Remove ssl in nginx config if http is used as protocol
