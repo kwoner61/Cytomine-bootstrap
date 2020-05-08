@@ -23,7 +23,7 @@ grails.serverURL='$HTTP_PROTOCOL://$CORE_URL'
 grails.imageServerURL=['$HTTP_PROTOCOL://$IMS_URL']
 grails.retrievalServerURL =['http://$RETRIEVAL_URL']
 grails.uploadURL='$HTTP_PROTOCOL://$UPLOAD_URL'
-grails.hyperspectralServerURL='$HTTP_PROTOCOL://$HMS_URL'
+grails.hyperspectralServerURL='http://$HMS_URL'
 
 storage_buffer='$IMS_BUFFER_PATH'
 storage_path='$IMS_STORAGE_PATH'
