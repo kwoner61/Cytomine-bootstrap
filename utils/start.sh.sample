@@ -205,7 +205,7 @@ then
     --restart=unless-stopped \
     $HMS_NAMESPACE/hms:$HMS_VERSION > /dev/null
 
-    docker cp "${PWD}/configs/hms/config.py" ${INSTANCE_PREFIX}hms:/app/cytomine_hms/config.py
+    docker cp "${PWD}/configs/hms/config.cfg" ${INSTANCE_PREFIX}hms:/app/config.cfg
     docker cp "${PWD}/hosts/hms/addHosts.sh" ${INSTANCE_PREFIX}hms:/tmp/addHosts.sh
     docker start ${INSTANCE_PREFIX}hms
 fi
