@@ -156,6 +156,9 @@ for i in ${FILES[@]}; do
 
         # For Mac OS, the sed command is interpreted differently
         elif [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' -e "/-v \/etc\/localtime:\/etc\/localtime/d" $i
+            sed -i '' -e "s~\${INSTANCE_PREFIX}~$INSTANCE_PREFIX~g" $i
+
             # Special treatment due to spaces in these variables
             sed -i '' -e "s~\$IRIS_ADMIN_NAME~$IRIS_ADMIN_NAME~g" $i
             sed -i '' -e "s~\$IRIS_ADMIN_ORGANIZATION_NAME~$IRIS_ADMIN_ORGANIZATION_NAME~g" $i
@@ -204,7 +207,7 @@ for i in ${FILES[@]}; do
             if [[ $HTTP_PROTOCOL == "http" || $HTTP_PROXY = true ]]; then
                 sed -i '' -e "/ssl_/d" $i;
                 sed -i '' -e "/443 ssl/d" $i;
-                sed -i '' -e "/-v ${CERTIFICATE_PATH//\//\\/}:/certificates/d" $i;
+                sed -i '' -e "/-v ${CERTIFICATE_PATH//\//\\/}:\/certificates/d" $i;
             fi
 
             if [[ $HTTP_PROTOCOL == "https" ]]; then
