@@ -32,6 +32,7 @@ SENDER_EMAIL_SMTP_HOST='smtp.gmail.com'
 SENDER_EMAIL_SMTP_PORT='587'
 SENDER_EMAIL_PASS='passwd'
 SENDER_EMAIL='your.email@gmail.com'
+ATTACHED_FILES_PATH=/data/attached
 
 # Advanced configuration.
 CORE_DEVELOPMENT=false

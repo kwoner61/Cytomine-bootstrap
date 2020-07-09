@@ -236,6 +236,7 @@ then
     --link ${INSTANCE_PREFIX}postgresql:postgresql \
     --link ${INSTANCE_PREFIX}mongodb:mongodb \
     --link ${INSTANCE_PREFIX}rabbitmq:rabbitmq \
+    -v $ATTACHED_FILES_PATH:$ATTACHED_FILES_PATH \
     -v /etc/localtime:/etc/localtime \
     --restart=unless-stopped \
     $CORE_NAMESPACE/core:$CORE_VERSION > /dev/null
