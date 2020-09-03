@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# -- CYTOMINE APP RELEASE VERSION --
+CYTOMINE_FLAVOR=ULiege
+CYTOMINE_VERSION=2020.2
+# --
+
 MEMCACHED_NAMESPACE=cytomineuliege
 MEMCACHED_VERSION=v1.1.2
 
@@ -46,7 +51,7 @@ CORE_NAMESPACE=cytomineuliege
 CORE_VERSION=v2.2.0
 
 WEB_UI_NAMESPACE=cytomineuliege
-WEB_UI_VERSION=v1.2.0
+WEB_UI_VERSION=v1.2.1
 
 IRIS_NAMESPACE=cytomineuliege
 IRIS_VERSION=v1.1.2
