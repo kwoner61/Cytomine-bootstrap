@@ -38,6 +38,7 @@ server {
         proxy_ignore_headers Cache-Control;
         proxy_cache_key $host$request_uri|$request_body;
         proxy_cache_valid 200 60d;
+        proxy_no_cache $request_body_file;
     }
 
     location /slice/crop {
@@ -51,6 +52,7 @@ server {
         proxy_cache_key $host$request_uri|$request_body;
         proxy_cache_valid 200 30d;
         proxy_cache_min_uses 3;
+        proxy_no_cache $request_body_file;
     }
 
     location /slice/tile {
@@ -64,6 +66,7 @@ server {
         proxy_cache_key $host$request_uri;
         proxy_cache_valid 200 30d;
         proxy_cache_min_uses 5;
+        proxy_no_cache $request_body_file;
     }
 }
 
