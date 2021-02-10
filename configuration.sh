@@ -26,8 +26,8 @@
 #------------------------------------------------------------------------------
 # CORE
 #------------------------------------------------------------------------------
-UI_URL=localhost-core
-CORE_URL=localhost-core
+UI_URL=cytomine-snuhpia.ddns.net
+CORE_URL=cytomine-snuhpia.ddns.net
 SENDER_EMAIL_SMTP_HOST='smtp.gmail.com'
 SENDER_EMAIL_SMTP_PORT='587'
 SENDER_EMAIL_PASS='passwd'
@@ -43,8 +43,8 @@ WEB_UI_DEVELOPMENT=false
 #------------------------------------------------------------------------------
 # IMS
 #------------------------------------------------------------------------------
-IMS_URL=localhost-ims
-UPLOAD_URL=localhost-upload
+IMS_URL=cytomineims-b1.ddns.net
+UPLOAD_URL=cytomineupload-b1.ddns.net
 
 IMS_STORAGE_PATH=/data/images
 IMS_BUFFER_PATH=/tmp/uploaded
@@ -134,7 +134,7 @@ DOCKERHUB_PASSWORD=""
 #-------------------------------------------------------------------------------
 
 # Protocol for URLs accessible from outside (CORE_URL, IMS_URL, UPLOAD_URL, IRIS_URL)
-HTTP_PROTOCOL=http # Accepted values: http, https
+HTTP_PROTOCOL=https # Accepted values: http, https
 HTTP_PROXY=false
 
 # Path where certificates are stored:
@@ -151,5 +151,5 @@ CERTIFICATE_PATH=/data/certificates
 # - ${IRIS_URL}-key.pem - only if $IRIS_ENABLED = true
 
 INSTANCE_PREFIX=""
-HTTP_NGINX_PORT=80
-HTTPS_NGINX_PORT=443
+HTTP_NGINX_PORT=10080
+HTTPS_NGINX_PORT=9143
