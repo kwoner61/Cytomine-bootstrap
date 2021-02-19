@@ -26,8 +26,8 @@
 #------------------------------------------------------------------------------
 # CORE
 #------------------------------------------------------------------------------
-UI_URL=cytomine-snuhpia.ddns.net
-CORE_URL=cytomine-snuhpia.ddns.net
+UI_URL=cytomine-core.snuhpia.org
+CORE_URL=cytomine-core.snuhpia.org
 SENDER_EMAIL_SMTP_HOST='smtp.gmail.com'
 SENDER_EMAIL_SMTP_PORT='587'
 SENDER_EMAIL_PASS='passwd'
@@ -43,8 +43,8 @@ WEB_UI_DEVELOPMENT=false
 #------------------------------------------------------------------------------
 # IMS
 #------------------------------------------------------------------------------
-IMS_URL=cytomineims-b1.ddns.net
-UPLOAD_URL=cytomineupload-b1.ddns.net
+IMS_URL=cytomine-ims.snuhpia.org
+UPLOAD_URL=cytomine-upload.snuhpia.org
 
 IMS_STORAGE_PATH=/data/images
 IMS_BUFFER_PATH=/tmp/uploaded
