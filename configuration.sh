@@ -47,7 +47,7 @@ IMS_URL=cytomine-ims.snuhpia.org
 UPLOAD_URL=cytomine-upload.snuhpia.org
 
 IMS_STORAGE_PATH=/data/images
-IMS_BUFFER_PATH=/tmp/uploaded
+IMS_BUFFER_PATH=/data/tmp/uploaded
 FAST_DATA_PATH=/data/images
 PROXY_CACHE_PATH=/data/cache
 

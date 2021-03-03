@@ -219,7 +219,7 @@ then
     -e IMS_STORAGE_PATH=$IMS_STORAGE_PATH \
     -e FAST_DATA_PATH=$FAST_DATA_PATH \
     -v $IMS_STORAGE_PATH:$IMS_STORAGE_PATH \
-    -v $IMS_BUFFER_PATH:/tmp/uploaded \
+    -v $IMS_BUFFER_PATH:/data/tmp/uploaded \
     -v $FAST_DATA_PATH:$FAST_DATA_PATH \
     --restart=unless-stopped \
     $IMS_NAMESPACE/ims:$IMS_VERSION > /dev/null
@@ -300,7 +300,7 @@ docker create --name ${INSTANCE_PREFIX}nginx \
 --link ${INSTANCE_PREFIX}iipJP2:iipJP2 \
 --link ${INSTANCE_PREFIX}webUI:webUI \
 --link ${INSTANCE_PREFIX}hms:hms \
--v $IMS_BUFFER_PATH:/tmp/uploaded \
+-v $IMS_BUFFER_PATH:/data/tmp/uploaded \
 -v $CERTIFICATE_PATH:/certificates \
 -p $HTTP_NGINX_PORT:80 \
 -p $HTTPS_NGINX_PORT:443 \
