@@ -47,7 +47,7 @@ IMS_URL=localhost-ims
 UPLOAD_URL=localhost-upload
 
 IMS_STORAGE_PATH=/data/images
-IMS_BUFFER_PATH=/tmp/uploaded
+IMS_BUFFER_PATH=/data/tmp/uploaded
 FAST_DATA_PATH=/data/images
 PROXY_CACHE_PATH=/data/cache
 
@@ -80,20 +80,20 @@ RETRIEVAL_ENGINE=redis #possible values : memory, redis
 #------------------------------------------------------------------------------
 # PLUGIN: BIOFORMAT
 #------------------------------------------------------------------------------
-BIOFORMAT_ENABLED=true
+BIOFORMAT_ENABLED=false
 BIOFORMAT_DEVELOPMENT=false
 
 #------------------------------------------------------------------------------
 # PLUGIN: HMS
 #------------------------------------------------------------------------------
-HMS_ENABLED=true
+HMS_ENABLED=false
 HMS_DEVELOPMENT=false
 HMS_URL=localhost-hms
 
 #------------------------------------------------------------------------------
 # PLUGIN: IIP-JP2 (JPEG 2000 native support)
 #------------------------------------------------------------------------------
-IIP_JP2_ENABLED=true
+IIP_JP2_ENABLED=false
 
 # Advanced configuration.
 IIP_JP2_URL=localhost-iip-jp2000
