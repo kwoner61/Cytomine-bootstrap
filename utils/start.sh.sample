@@ -230,6 +230,7 @@ then
 
     docker cp "${PWD}/configs/ims/ims-config.groovy" ${INSTANCE_PREFIX}ims:/usr/share/tomcat7/.grails/ims-config.groovy
     docker cp "${PWD}/hosts/ims/addHosts.sh" ${INSTANCE_PREFIX}ims:/tmp/addHosts.sh
+    docker cp /home/jangus/cacerts-snuhpia ${INSTANCE_PREFIX}ims:/usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts
     docker start ${INSTANCE_PREFIX}ims
 fi
 
@@ -255,6 +256,7 @@ then
 
     docker cp "${PWD}/configs/core/cytomineconfig.groovy" ${INSTANCE_PREFIX}core:/usr/share/tomcat7/.grails/cytomineconfig.groovy
     docker cp "${PWD}/hosts/core/addHosts.sh" ${INSTANCE_PREFIX}core:/tmp/addHosts.sh
+    docker cp /home/jangus/cacerts-snuhpia ${INSTANCE_PREFIX}core:/usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts
     docker start ${INSTANCE_PREFIX}core
 fi
 
